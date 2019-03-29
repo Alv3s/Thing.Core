@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="IoC.cpp" />
+    <ClCompile Include="AbstractAppTest.cpp" />
+    <ClCompile Include="InputHelpersTest.cpp" />
+    <ClCompile Include="IOManagerTest.cpp" />
+    <ClCompile Include="LoggerManagerTest.cpp" />
+    <ClCompile Include="UtilsTest.cpp" />
+    <ClCompile Include="GenericDigitalOutputTest.cpp">
+      <Filter>Outputs</Filter>
+    </ClCompile>
+    <ClCompile Include="GenericAnalogInputTest.cpp">
+      <Filter>Inputs</Filter>
+    </ClCompile>
+    <ClCompile Include="GenericDigitalInputTest.cpp">
+      <Filter>Inputs</Filter>
+    </ClCompile>
+    <ClCompile Include="ThresholdedAnalogInputTest.cpp">
+      <Filter>Inputs</Filter>
+    </ClCompile>
+    <ClCompile Include="GenericInverseDigitalOutputTest.cpp">
+      <Filter>Outputs</Filter>
+    </ClCompile>
+    <ClCompile Include="AppTaskSchedulerTest.cpp" />
+    <ClCompile Include="IPAddressTest.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Inputs">
+      <UniqueIdentifier>{eb5b8aef-632b-48be-8d82-09d07e28d98d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Outputs">
+      <UniqueIdentifier>{b21bdbeb-8f97-4c5d-8434-bdae27708d13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mocks">
+      <UniqueIdentifier>{4f8f2534-69c1-481c-93a5-df2b96c3f0f4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DigitalInputListenerMock.h">
+      <Filter>Mocks</Filter>
+    </ClInclude>
+    <ClInclude Include="DigitalInputMock.h">
+      <Filter>Mocks</Filter>
+    </ClInclude>
+    <ClInclude Include="IAppListenerMock.h">
+      <Filter>Mocks</Filter>
+    </ClInclude>
+    <ClInclude Include="IMillisListener.h">
+      <Filter>Mocks</Filter>
+    </ClInclude>
+    <ClInclude Include="HardwareMock.h">
+      <Filter>Mocks</Filter>
+    </ClInclude>
+    <ClInclude Include="AbstractAppMock.h">
+      <Filter>Mocks</Filter>
+    </ClInclude>
+    <ClInclude Include="DigitalOutputMock.h">
+      <Filter>Mocks</Filter>
+    </ClInclude>
+    <ClInclude Include="LoggerMock.h">
+      <Filter>Mocks</Filter>
+    </ClInclude>
+    <ClInclude Include="DigitalOutputListenerMock.h">
+      <Filter>Mocks</Filter>
+    </ClInclude>
+    <ClInclude Include="InterruptHardwareMock.h">
+      <Filter>Mocks</Filter>
+    </ClInclude>
+    <ClInclude Include="LoggerListenerMock.h">
+      <Filter>Mocks</Filter>
+    </ClInclude>
+    <ClInclude Include="TimedHardwareMock.h">
+      <Filter>Mocks</Filter>
+    </ClInclude>
+    <ClInclude Include="AnalogInputMock.h">
+      <Filter>Mocks</Filter>
+    </ClInclude>
+    <ClInclude Include="AnalogInputListenerMock.h">
+      <Filter>Mocks</Filter>
+    </ClInclude>
+    <ClInclude Include="AbstractAppTest.h" />
+    <ClInclude Include="IOManagerTest.h" />
+    <ClInclude Include="LoggerManagerTest.h" />
+    <ClInclude Include="UtilsTest.h" />
+    <ClInclude Include="IDigitalOutputTest.h">
+      <Filter>Outputs</Filter>
+    </ClInclude>
+    <ClInclude Include="GenericDigitalOutputTest.h">
+      <Filter>Outputs</Filter>
+    </ClInclude>
+    <ClInclude Include="GenericAnalogInputTest.h">
+      <Filter>Inputs</Filter>
+    </ClInclude>
+    <ClInclude Include="GenericDigitalInputTest.h">
+      <Filter>Inputs</Filter>
+    </ClInclude>
+    <ClInclude Include="IDigitalInputTest.h">
+      <Filter>Inputs</Filter>
+    </ClInclude>
+    <ClInclude Include="ThresholdedAnalogInputTest.h">
+      <Filter>Inputs</Filter>
+    </ClInclude>
+    <ClInclude Include="GenericInverseDigitalOutputTest.h">
+      <Filter>Outputs</Filter>
+    </ClInclude>
+    <ClInclude Include="AppTaskSchedulerTest.h" />
+    <ClInclude Include="RunnableMock.h">
+      <Filter>Mocks</Filter>
+    </ClInclude>
+    <ClInclude Include="AppMock.h">
+      <Filter>Mocks</Filter>
+    </ClInclude>
+    <ClInclude Include="LoggerManagerMock.h" />
+    <ClInclude Include="TaskSchedulerMock.h">
+      <Filter>Mocks</Filter>
+    </ClInclude>
+    <ClInclude Include="IPAddressTest.h" />
+  </ItemGroup>
+</Project>
