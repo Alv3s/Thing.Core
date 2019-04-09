@@ -24,6 +24,8 @@
     </ClCompile>
     <ClCompile Include="AppTaskSchedulerTest.cpp" />
     <ClCompile Include="IPAddressTest.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gtest\gtest-all.cc" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gmock\gmock-all.cc" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

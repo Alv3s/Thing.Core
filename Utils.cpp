@@ -1,6 +1,7 @@
 #include "Utils.h"
 #include <stdio.h>
 #include <stdarg.h>
+#include <string>
 
 namespace Thing
 {

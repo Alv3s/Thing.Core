@@ -3,6 +3,7 @@
 #include <list>
 #include <map>
 #include <algorithm>
+#include <string>
 
 namespace Thing
 {
