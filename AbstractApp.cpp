@@ -41,7 +41,7 @@ namespace Thing
 				if ((*it)->OnLoop())
 					it = _listeners.erase(it);
 				else
-					it++;
+					++it;
 			}
 		}
 	}
