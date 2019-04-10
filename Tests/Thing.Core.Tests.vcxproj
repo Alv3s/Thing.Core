@@ -56,6 +56,7 @@
     <ClCompile Include="LoggerManagerTest.cpp" />
     <ClCompile Include="ThresholdedAnalogInputTest.cpp" />
     <ClCompile Include="UtilsTest.cpp" />
+    <ClCompile Include="WiFiBaseTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -84,6 +85,7 @@
     <ClInclude Include="IDigitalOutputTest.h" />
     <ClInclude Include="IMillisListener.h" />
     <ClInclude Include="IPAddressTest.h" />
+    <ClInclude Include="IWiFiListenerMock.h" />
     <ClInclude Include="LoggerListenerMock.h" />
     <ClInclude Include="LoggerManagerMock.h" />
     <ClInclude Include="LoggerManagerTest.h" />
@@ -93,6 +95,8 @@
     <ClInclude Include="ThresholdedAnalogInputTest.h" />
     <ClInclude Include="TimedHardwareMock.h" />
     <ClInclude Include="UtilsTest.h" />
+    <ClInclude Include="WiFiBaseMock.h" />
+    <ClInclude Include="WiFiBaseTest.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Thing.Core.vcxproj">

@@ -27,6 +27,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gtest\gtest-all.cc" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gmock\gmock-all.cc" />
     <ClCompile Include="GenericInverseDigitalInputTest.cpp" />
+    <ClCompile Include="WiFiBaseTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -123,5 +124,10 @@
     </ClInclude>
     <ClInclude Include="IPAddressTest.h" />
     <ClInclude Include="GenericInverseDigitalInputTest.h" />
+    <ClInclude Include="WiFiBaseTest.h" />
+    <ClInclude Include="IWiFiListenerMock.h">
+      <Filter>Mocks</Filter>
+    </ClInclude>
+    <ClInclude Include="WiFiBaseMock.h" />
   </ItemGroup>
 </Project>

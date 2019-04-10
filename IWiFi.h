@@ -8,6 +8,13 @@ namespace Thing
 {
 	namespace Core
 	{
+		class IWiFiListener
+		{
+		public:
+			virtual void OnConnect() = 0;
+			virtual void OnDisconnect() = 0;
+		};
+
 		class IWiFi
 		{
 		public:
@@ -15,6 +22,12 @@ namespace Thing
 			virtual void Disconnect() = 0;
 			virtual WiFiStatus Status() = 0;
 			virtual IPAddress GetIP() = 0;
+
+			virtual void AddListener(IWiFiListener* listener) = 0;
+			virtual void AddListener(IWiFiListener& listener) = 0;
+
+			virtual void RemoveListener(IWiFiListener* listener) = 0;
+			virtual void RemoveListener(IWiFiListener& listener) = 0;
 		};
 	}
 }

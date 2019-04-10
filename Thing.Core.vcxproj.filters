@@ -78,6 +78,9 @@
     <ClCompile Include="GenericInverseDigitalInput.cpp">
       <Filter>Source Files\Inputs</Filter>
     </ClCompile>
+    <ClCompile Include="WiFiBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HardwareEnumerations.h">
@@ -205,6 +208,9 @@
     </ClInclude>
     <ClInclude Include="GenericInverseDigitalInput.h">
       <Filter>Header Files\Inputs</Filter>
+    </ClInclude>
+    <ClInclude Include="WiFiBase.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
