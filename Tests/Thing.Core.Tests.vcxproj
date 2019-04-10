@@ -45,6 +45,7 @@
     <ClCompile Include="AppTaskSchedulerTest.cpp" />
     <ClCompile Include="GenericAnalogInputTest.cpp" />
     <ClCompile Include="GenericDigitalInputTest.cpp" />
+    <ClCompile Include="GenericInverseDigitalInputTest.cpp" />
     <ClCompile Include="GenericInverseDigitalOutputTest.cpp" />
     <ClCompile Include="IoC.cpp" />
     <ClCompile Include="IOManagerTest.cpp" />
@@ -70,6 +71,7 @@
     <ClInclude Include="DigitalOutputMock.h" />
     <ClInclude Include="GenericAnalogInputTest.h" />
     <ClInclude Include="GenericDigitalInputTest.h" />
+    <ClInclude Include="GenericInverseDigitalInputTest.h" />
     <ClInclude Include="GenericInverseDigitalOutputTest.h" />
     <ClInclude Include="InterruptHardwareMock.h" />
     <ClInclude Include="IOManagerTest.h" />
@@ -223,7 +225,7 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-	<Error Condition="!Exists('$(SolutionDir)\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets'))" />
+    <Error Condition="!Exists('$(SolutionDir)\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets'))" />
     <Error Condition="!Exists('$(SolutionDir)\packages\gmock.1.7.0\build\native\gmock.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\packages\gmock.1.7.0\build\native\gmock.targets'))" />
   </Target>
 </Project>

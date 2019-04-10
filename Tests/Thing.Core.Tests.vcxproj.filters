@@ -26,6 +26,7 @@
     <ClCompile Include="IPAddressTest.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gtest\gtest-all.cc" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gmock\gmock-all.cc" />
+    <ClCompile Include="GenericInverseDigitalInputTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -121,5 +122,6 @@
       <Filter>Mocks</Filter>
     </ClInclude>
     <ClInclude Include="IPAddressTest.h" />
+    <ClInclude Include="GenericInverseDigitalInputTest.h" />
   </ItemGroup>
 </Project>

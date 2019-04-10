@@ -75,6 +75,9 @@
     <ClCompile Include="IOManagerAnalogInput.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GenericInverseDigitalInput.cpp">
+      <Filter>Source Files\Inputs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HardwareEnumerations.h">
@@ -196,6 +199,12 @@
     </ClInclude>
     <ClInclude Include="IDigitalCounter.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GenericDigitalInputBase.h">
+      <Filter>Header Files\Inputs</Filter>
+    </ClInclude>
+    <ClInclude Include="GenericInverseDigitalInput.h">
+      <Filter>Header Files\Inputs</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

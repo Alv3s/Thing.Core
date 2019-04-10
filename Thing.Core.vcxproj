@@ -25,6 +25,7 @@
     <ClCompile Include="GenericAnalogInput.cpp" />
     <ClCompile Include="GenericDigitalInput.cpp" />
     <ClCompile Include="GenericDigitalOutput.cpp" />
+    <ClCompile Include="GenericInverseDigitalInput.cpp" />
     <ClCompile Include="GenericInverseDigitalOutput.cpp" />
     <ClCompile Include="IOManager.cpp" />
     <ClCompile Include="AbstractApp.cpp" />
@@ -41,7 +42,9 @@
     <ClInclude Include="DigitalOutputMonitor.h" />
     <ClInclude Include="GenericAnalogInput.h" />
     <ClInclude Include="GenericDigitalInput.h" />
+    <ClInclude Include="GenericDigitalInputBase.h" />
     <ClInclude Include="GenericDigitalOutputBase.h" />
+    <ClInclude Include="GenericInverseDigitalInput.h" />
     <ClInclude Include="GenericInverseDigitalOutput.h" />
     <ClInclude Include="IAnalogIO.h" />
     <ClInclude Include="IDigitalCounter.h" />

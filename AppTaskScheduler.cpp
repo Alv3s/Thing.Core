@@ -36,8 +36,6 @@ namespace Thing
 			return false;
 		}
 
-
-
 		void AppTaskScheduler::AttachOnce(unsigned long milli, Thing::Core::IRunnable * runnable)
 		{
 			ScheduledTask task;
