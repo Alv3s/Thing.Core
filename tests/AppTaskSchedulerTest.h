@@ -2,7 +2,7 @@
 
 #include "gtest/gtest.h"
 #include "TimedHardwareMock.h"
-#include "AppMock.h"
+#include "AppContainerMock.h"
 
 namespace Thing {
 	namespace Core {
@@ -13,7 +13,7 @@ namespace Thing {
 				void SetUp() override;
 				void TearDown() override;
 
-				AppMock appMock;
+				AppContainerMock appContainerMock;
 				TimedHardwareMock hardwareMock;
 			};
 		}

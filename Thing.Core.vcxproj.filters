@@ -36,9 +36,6 @@
     <ClCompile Include="ThresholdedAnalogInput.cpp">
       <Filter>Source Files\Inputs</Filter>
     </ClCompile>
-    <ClCompile Include="AbstractApp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="IOManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -81,6 +78,9 @@
     <ClCompile Include="WiFiBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AppContainer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HardwareEnumerations.h">
@@ -94,9 +94,6 @@
     </ClInclude>
     <ClInclude Include="ThresholdedAnalogInput.h">
       <Filter>Header Files\Inputs</Filter>
-    </ClInclude>
-    <ClInclude Include="AbstractApp.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IOManager.h">
       <Filter>Header Files</Filter>
@@ -210,6 +207,12 @@
       <Filter>Header Files\Inputs</Filter>
     </ClInclude>
     <ClInclude Include="WiFiBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IAppContainer.h">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="AppContainer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

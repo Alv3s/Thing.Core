@@ -50,7 +50,7 @@
     <ClCompile Include="IoC.cpp" />
     <ClCompile Include="IOManagerTest.cpp" />
     <ClCompile Include="GenericDigitalOutputTest.cpp" />
-    <ClCompile Include="AbstractAppTest.cpp" />
+    <ClCompile Include="AppContainerTest.cpp" />
     <ClCompile Include="InputHelpersTest.cpp" />
     <ClCompile Include="IPAddressTest.cpp" />
     <ClCompile Include="LoggerManagerTest.cpp" />
@@ -64,6 +64,7 @@
   <ItemGroup>
     <ClInclude Include="AnalogInputListenerMock.h" />
     <ClInclude Include="AnalogInputMock.h" />
+    <ClInclude Include="AppContainerMock.h" />
     <ClInclude Include="AppMock.h" />
     <ClInclude Include="AppTaskSchedulerTest.h" />
     <ClInclude Include="DigitalInputListenerMock.h" />
@@ -79,8 +80,7 @@
     <ClInclude Include="GenericDigitalOutputTest.h" />
     <ClInclude Include="HardwareMock.h" />
     <ClInclude Include="IAppListenerMock.h" />
-    <ClInclude Include="AbstractAppMock.h" />
-    <ClInclude Include="AbstractAppTest.h" />
+    <ClInclude Include="AppContainerTest.h" />
     <ClInclude Include="IDigitalInputTest.h" />
     <ClInclude Include="IDigitalOutputTest.h" />
     <ClInclude Include="IMillisListener.h" />

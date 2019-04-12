@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ITaskScheduler.h"
-#include "IApp.h"
+#include "IAppContainer.h"
 #include <list>
 
 namespace Thing
@@ -19,8 +19,8 @@ namespace Thing
 			/// <summary>
 			/// Initializes a new instance of the <see cref="AppTaskScheduler"/> class.
 			/// </summary>
-			/// <param name="App">The IApp object on which the tasks will be run.</param>
-			AppTaskScheduler(IApp& App);			
+			/// <param name="AppContainer">The IAppContainer object on which the tasks will be run.</param>
+			AppTaskScheduler(IAppContainer& AppContainer);			
 			/// <summary>
 			/// Finalizes an instance of the <see cref="AppTaskScheduler"/> class.
 			/// </summary>
@@ -70,7 +70,7 @@ namespace Thing
 			/// <param name="runnable">The runnable task being cancelled.</param>
 			virtual void Detach(Thing::Core::IRunnable& runnable) override;
 		private:
-			const IApp* app;
+			const IAppContainer* app;
 
 			struct ScheduledTask
 			{

@@ -1,18 +1,20 @@
 #pragma once
 
 #include "gtest/gtest.h"
-#include "AbstractAppMock.h"
+#include "../AppContainer.h"
+#include "AppMock.h"
 
 namespace Thing {
 	namespace Core {
 		namespace Tests {
-			class AbstractAppTest : public testing::Test
+			class AppContainerTest : public testing::Test
 			{
 			public:
 				void SetUp() override;
 				void TearDown() override;
 
-				AbstractAppMock App;
+				AppMock App;
+				AppContainer AppContainer;
 			};
 		}
 	}

@@ -5,9 +5,9 @@ namespace Thing
 {
 	namespace Core
 	{
-		AppTaskScheduler::AppTaskScheduler(IApp& App) : app(&App)
+		AppTaskScheduler::AppTaskScheduler(IAppContainer& AppContainer) : app(&AppContainer)
 		{
-			App.AddListener(this);
+			AppContainer.AddListener(this);
 		}
 
 		AppTaskScheduler::~AppTaskScheduler()

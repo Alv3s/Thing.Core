@@ -9,12 +9,6 @@ namespace Thing {
 			class AppMock : public virtual IApp
 			{
 			public:
-				MOCK_METHOD1(AddListener, void(IAppListener*));
-				MOCK_METHOD1(AddListener, void(IAppListener&));
-
-				MOCK_METHOD1(RemoveListener, void(IAppListener*));
-				MOCK_METHOD1(RemoveListener, void(IAppListener&));
-
 				MOCK_METHOD0(Setup, void());
 				MOCK_METHOD0(Loop, void());
 			};

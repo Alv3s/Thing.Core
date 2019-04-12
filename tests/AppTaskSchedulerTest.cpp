@@ -24,8 +24,8 @@ namespace Thing {
 			/// </summary>
 			TEST_F(AppTaskSchedulerTest, AddedAsListenerTest)
 			{
-				EXPECT_CALL(appMock, AddListener(An<IAppListener*>())).Times(1);
-				AppTaskScheduler taskScheduler(appMock);
+				EXPECT_CALL(appContainerMock, AddListener(An<IAppListener*>())).Times(1);
+				AppTaskScheduler taskScheduler(appContainerMock);
 			}
 
 			/// <summary>
@@ -35,7 +35,7 @@ namespace Thing {
 			{
 				const int millis = 100;
 
-				AppTaskScheduler taskScheduler(appMock);
+				AppTaskScheduler taskScheduler(appContainerMock);
 
 				RunnableMock runnable;
 				taskScheduler.AttachOnce(millis, runnable);
@@ -67,7 +67,7 @@ namespace Thing {
 			{
 				const int millis = 100;
 
-				AppTaskScheduler taskScheduler(appMock);
+				AppTaskScheduler taskScheduler(appContainerMock);
 
 				RunnableMock runnable;
 				taskScheduler.AttachOnce(millis, &runnable);
@@ -100,7 +100,7 @@ namespace Thing {
 				const int millis = 100;
 				const int retries = 4;
 
-				AppTaskScheduler taskScheduler(appMock);
+				AppTaskScheduler taskScheduler(appContainerMock);
 
 				RunnableMock runnable;
 				taskScheduler.AttachPeriodic(millis, runnable);
@@ -141,7 +141,7 @@ namespace Thing {
 				const int millis = 100;
 				const int retries = 4;
 
-				AppTaskScheduler taskScheduler(appMock);
+				AppTaskScheduler taskScheduler(appContainerMock);
 
 				RunnableMock runnable;
 				taskScheduler.AttachPeriodic(millis, &runnable);
@@ -181,7 +181,7 @@ namespace Thing {
 			{
 				const int millis = 100;
 
-				AppTaskScheduler taskScheduler(appMock);
+				AppTaskScheduler taskScheduler(appContainerMock);
 
 				RunnableMock runnable;
 				taskScheduler.AttachPeriodic(millis, runnable);
@@ -205,7 +205,7 @@ namespace Thing {
 			{
 				const int millis = 100;
 
-				AppTaskScheduler taskScheduler(appMock);
+				AppTaskScheduler taskScheduler(appContainerMock);
 
 				RunnableMock runnable;
 				taskScheduler.AttachPeriodic(millis, runnable);
@@ -229,7 +229,7 @@ namespace Thing {
 			{
 				const int millis = 100;
 
-				AppTaskScheduler taskScheduler(appMock);
+				AppTaskScheduler taskScheduler(appContainerMock);
 
 				RunnableMock runnable;
 				taskScheduler.AttachPeriodic(millis, runnable);

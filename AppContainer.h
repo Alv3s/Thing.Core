@@ -1,15 +1,18 @@
 #pragma once
 
 #include <list>
-#include "IApp.h"
+#include "IAppContainer.h"
 
 namespace Thing
 {
 	namespace Core
 	{
-		class AbstractApp : public virtual IApp
+		class AppContainer : public virtual IAppContainer
 		{
 		public:
+			void SetApp(IApp* app);
+			void SetApp(IApp& app);
+
 			virtual void AddListener(IAppListener* listener) override;
 			virtual void RemoveListener(IAppListener* listener) override;
 
@@ -18,10 +21,8 @@ namespace Thing
 
 			virtual void Setup() override;
 			virtual void Loop() override;
-
-			virtual void OnSetup() = 0;
-			virtual void OnLoop() = 0;
 		private:
+			IApp* app;
 			std::list<IAppListener*> _listeners;
 		};
 	}

@@ -28,7 +28,7 @@
     <ClCompile Include="GenericInverseDigitalInput.cpp" />
     <ClCompile Include="GenericInverseDigitalOutput.cpp" />
     <ClCompile Include="IOManager.cpp" />
-    <ClCompile Include="AbstractApp.cpp" />
+    <ClCompile Include="AppContainer.cpp" />
     <ClCompile Include="InputHelpers.cpp" />
     <ClCompile Include="IOManagerAnalogInput.cpp" />
     <ClCompile Include="IOManagerDigitalInput.cpp" />
@@ -48,6 +48,7 @@
     <ClInclude Include="GenericInverseDigitalInput.h" />
     <ClInclude Include="GenericInverseDigitalOutput.h" />
     <ClInclude Include="IAnalogIO.h" />
+    <ClInclude Include="IAppContainer.h" />
     <ClInclude Include="IDigitalCounter.h" />
     <ClInclude Include="IDigitalIO.h" />
     <ClInclude Include="IDigitalIOMonitor.h" />
@@ -61,7 +62,7 @@
     <ClInclude Include="GenericDigitalOutput.h" />
     <ClInclude Include="HardwareEnumerations.h" />
     <ClInclude Include="IAnalogInput.h" />
-    <ClInclude Include="AbstractApp.h" />
+    <ClInclude Include="AppContainer.h" />
     <ClInclude Include="IApp.h" />
     <ClInclude Include="IDigitalInput.h" />
     <ClInclude Include="IDigitalOutput.h" />
