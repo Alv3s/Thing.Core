@@ -13,6 +13,7 @@ namespace Thing
 		public:
 			virtual void OnConnect() = 0;
 			virtual void OnDisconnect() = 0;
+			virtual void OnFailed() = 0;
 		};
 
 		class IWiFi

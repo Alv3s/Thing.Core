@@ -37,5 +37,11 @@ namespace Thing
 			for (auto l : listeners)
 				l->OnDisconnect();
 		}
+
+		void WiFiBase::SignalOnFailed()
+		{
+			for (auto l : listeners)
+				l->OnFailed();
+		}
 	}
 }

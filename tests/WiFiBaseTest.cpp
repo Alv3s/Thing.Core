@@ -31,6 +31,7 @@ namespace Thing {
 				{
 					EXPECT_CALL(listeners[i], OnConnect()).Times(1);
 					EXPECT_CALL(listeners[i], OnDisconnect()).Times(0);
+					EXPECT_CALL(listeners[i], OnFailed()).Times(0);
 				}
 				WiFi.SignalOnConnectMock();
 
@@ -38,8 +39,17 @@ namespace Thing {
 				{
 					EXPECT_CALL(listeners[i], OnConnect()).Times(0);
 					EXPECT_CALL(listeners[i], OnDisconnect()).Times(1);
+					EXPECT_CALL(listeners[i], OnFailed()).Times(0);
 				}
 				WiFi.SignalOnDisconnectMock();
+
+				for (int i = 0; i < totalListeners; ++i)
+				{
+					EXPECT_CALL(listeners[i], OnConnect()).Times(0);
+					EXPECT_CALL(listeners[i], OnDisconnect()).Times(0);
+					EXPECT_CALL(listeners[i], OnFailed()).Times(1);
+				}
+				WiFi.SignalOnFailedMock();
 			}
 
 			TEST_F(WiFiBaseTest, NotifyDigitalInputListenersViaReference)
@@ -55,6 +65,7 @@ namespace Thing {
 				{
 					EXPECT_CALL(listeners[i], OnConnect()).Times(1);
 					EXPECT_CALL(listeners[i], OnDisconnect()).Times(0);
+					EXPECT_CALL(listeners[i], OnFailed()).Times(0);
 				}
 				WiFi.SignalOnConnectMock();
 
@@ -62,8 +73,17 @@ namespace Thing {
 				{
 					EXPECT_CALL(listeners[i], OnConnect()).Times(0);
 					EXPECT_CALL(listeners[i], OnDisconnect()).Times(1);
+					EXPECT_CALL(listeners[i], OnFailed()).Times(0);
 				}
 				WiFi.SignalOnDisconnectMock();
+
+				for (int i = 0; i < totalListeners; ++i)
+				{
+					EXPECT_CALL(listeners[i], OnConnect()).Times(0);
+					EXPECT_CALL(listeners[i], OnDisconnect()).Times(0);
+					EXPECT_CALL(listeners[i], OnFailed()).Times(1);
+				}
+				WiFi.SignalOnFailedMock();
 			}
 
 			TEST_F(WiFiBaseTest, RemoveDigitalInputListenersViaReference)

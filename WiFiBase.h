@@ -19,6 +19,7 @@ namespace Thing
 		protected:
 			void SignalOnConnect();
 			void SignalOnDisconnect();
+			void SignalOnFailed();
 
 		private:
 			std::list<IWiFiListener*> listeners;

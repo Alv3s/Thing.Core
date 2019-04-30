@@ -23,6 +23,11 @@ namespace Thing {
 				{
 					SignalOnDisconnect();
 				}
+
+				void SignalOnFailedMock()
+				{
+					SignalOnFailed();
+				}
 			};
 		}
 	}

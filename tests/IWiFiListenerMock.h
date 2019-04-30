@@ -11,6 +11,7 @@ namespace Thing {
 			public:
 				MOCK_METHOD0(OnConnect, void());
 				MOCK_METHOD0(OnDisconnect, void());
+				MOCK_METHOD0(OnFailed, void());
 			};
 		}
 	}
