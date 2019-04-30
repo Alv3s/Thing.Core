@@ -75,12 +75,18 @@ namespace Thing
 			IDigitalIOMonitor& OnInactivating(IDigitalOutput* output);
 			IDigitalIOMonitor& OnInactivating(IDigitalOutput& output);
 
+			ITimedDigitalIOMonitor& OnActive(IDigitalInput* input);
+			ITimedDigitalIOMonitor& OnActive(IDigitalInput& input);
+
+			ITimedDigitalIOMonitor& OnInactive(IDigitalInput* input);
+			ITimedDigitalIOMonitor& OnInactive(IDigitalInput& input);
+
 			void Process();
 			void ProcessAnalog();
 			void ProcessDigital();
 		private:
-			IDigitalIOMonitor & On(IDigitalInput& input, DigitalInputState state);
-			IDigitalIOMonitor & On(IDigitalOutput& input, DigitalInputState state);
+			DigitalIOMonitor& On(IDigitalInput& input, DigitalInputState state);
+			DigitalIOMonitor& On(IDigitalOutput& input, DigitalInputState state);
 
 			std::list<IOManagerAnalogInput> analogInputs;
 			std::list<IAnalogInputListener*> analogInputListeners;

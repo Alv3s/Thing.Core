@@ -261,7 +261,7 @@ namespace Thing
 			return OnInactivating(*output);
 		}
 
-		IDigitalIOMonitor& IOManager::On(IDigitalInput& input, DigitalInputState state)
+		DigitalIOMonitor& IOManager::On(IDigitalInput& input, DigitalInputState state)
 		{
 			AddDigitalInput(input);
 
@@ -271,7 +271,7 @@ namespace Thing
 			return *monitor;
 		}
 
-		IDigitalIOMonitor& IOManager::On(IDigitalOutput& output, DigitalInputState state)
+		DigitalIOMonitor& IOManager::On(IDigitalOutput& output, DigitalInputState state)
 		{
 			AddDigitalOutput(output);
 
@@ -280,6 +280,27 @@ namespace Thing
 			AddListener((IDigitalOutputListener*)monitor);
 			return *monitor;
 		}
+
+		ITimedDigitalIOMonitor& IOManager::OnActive(IDigitalInput* input)
+		{
+			return OnActive(*input);
+		}
+
+		ITimedDigitalIOMonitor& IOManager::OnActive(IDigitalInput& input)
+		{
+			return On(input, DigitalInputState::WasActivated);
+		}
+
+		ITimedDigitalIOMonitor& IOManager::OnInactive(IDigitalInput* input)
+		{
+			return OnInactive(*input);
+		}
+
+		ITimedDigitalIOMonitor& IOManager::OnInactive(IDigitalInput& input)
+		{
+			return On(input, DigitalInputState::WasInactivated);
+		}
+
 
 		void IOManager::ProcessAnalog()
 		{

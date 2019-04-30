@@ -20,5 +20,11 @@ namespace Thing
 			virtual IDigitalOutputMonitor& SetLow(IDigitalOutput& output) = 0;
 			virtual IDigitalOutputMonitor& SetLow(IDigitalOutput* output) = 0;
 		};
+
+		class ITimedDigitalIOMonitor
+		{
+		public:
+			virtual IDigitalIOMonitor& For(int millis) = 0;
+		};
 	}
 }

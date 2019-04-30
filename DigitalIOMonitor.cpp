@@ -1,16 +1,25 @@
 #include "DigitalIOMonitor.h"
 #include "IOManager.h"
+#include "IoC.h"
 
 namespace Thing
 {
 	namespace Core
 	{
-		DigitalIOMonitor::DigitalIOMonitor(IOManager& manager, IDigitalInput* input, DigitalInputState action) : outputMonitor(manager), io(input), actionType(action)
+		DigitalIOMonitor::DigitalIOMonitor(IOManager& manager, IDigitalInput* input, DigitalInputState action) :
+			outputMonitor(manager),
+			io(input),
+			actionType(action),
+			timePressedMillis(0)
 		{
 			manager.AddDigitalInput(input);
 		}
 
-		DigitalIOMonitor::DigitalIOMonitor(IOManager& manager, IDigitalOutput* output, DigitalInputState action) : outputMonitor(manager), io(output), actionType(action)
+		DigitalIOMonitor::DigitalIOMonitor(IOManager& manager, IDigitalOutput* output, DigitalInputState action) : 
+			outputMonitor(manager), 
+			io(output), 
+			actionType(action),
+			timePressedMillis(0)
 		{
 			manager.AddDigitalOutput(output);
 		}
@@ -26,6 +35,15 @@ namespace Thing
 			if (io->GetCode() != code)
 				return;
 
+			if (timePressedMillis)
+			{
+				if (actionType == DigitalInputState::WasActivated)
+					TaskScheduler->AttachOnce(timePressedMillis, this);
+				else
+					TaskScheduler->Detach(this);
+				return;
+			}
+
 			if (actionType == DigitalInputState::WasActivated)
 				outputMonitor.Action();
 		}
@@ -39,6 +57,15 @@ namespace Thing
 		{
 			if (io->GetCode() != code)
 				return;
+
+			if (timePressedMillis)
+			{
+				if (actionType == DigitalInputState::WasInactivated)
+					TaskScheduler->AttachOnce(timePressedMillis, this);
+				else
+					TaskScheduler->Detach(this);
+				return;
+			}
 
 			if (actionType == DigitalInputState::WasInactivated)
 				outputMonitor.Action();
@@ -79,6 +106,17 @@ namespace Thing
 		{
 			outputMonitor.SetOutput(output, DigitalValue::Low);
 			return outputMonitor;
+		}
+
+		IDigitalIOMonitor& DigitalIOMonitor::For(int millis)
+		{
+			timePressedMillis = millis;
+			return *this;
+		}
+
+		void DigitalIOMonitor::Run()
+		{
+			outputMonitor.Action();
 		}
 	}
 }
