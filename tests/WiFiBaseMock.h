@@ -13,6 +13,7 @@ namespace Thing {
 				MOCK_METHOD0(Disconnect, void());
 				MOCK_METHOD0(Status, WiFiStatus());
 				MOCK_METHOD0(GetIP, IPAddress());
+				MOCK_METHOD0(GetMACAddress, MACAddress());
 
 				void SignalOnConnectMock()
 				{

@@ -66,8 +66,11 @@ namespace Thing {
 				virtual void OnMillisChange(unsigned long millis) override
 				{
 					std::list<Thing::Core::IRunnable*> detachRunnables;
-
+					std::list<PeriodicTask*> auxTasks;
 					for (auto t : tasks)
+						auxTasks.push_back(t);
+
+					for (auto t : auxTasks)
 						if (t->next_run_at == millis)
 						{
 							t->runnable->Run();

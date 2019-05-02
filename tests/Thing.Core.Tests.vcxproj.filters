@@ -28,6 +28,7 @@
     <ClCompile Include="GenericInverseDigitalInputTest.cpp" />
     <ClCompile Include="WiFiBaseTest.cpp" />
     <ClCompile Include="AppContainerTest.cpp" />
+    <ClCompile Include="MACAddressTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -127,5 +128,6 @@
     <ClInclude Include="WiFiBaseMock.h" />
     <ClInclude Include="AppContainerMock.h" />
     <ClInclude Include="AppContainerTest.h" />
+    <ClInclude Include="MACAddressTest.h" />
   </ItemGroup>
 </Project>

@@ -81,6 +81,9 @@
     <ClCompile Include="AppContainer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MACAddress.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HardwareEnumerations.h">
@@ -213,6 +216,9 @@
       <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="AppContainer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MACAddress.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

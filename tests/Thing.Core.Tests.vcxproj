@@ -54,6 +54,7 @@
     <ClCompile Include="InputHelpersTest.cpp" />
     <ClCompile Include="IPAddressTest.cpp" />
     <ClCompile Include="LoggerManagerTest.cpp" />
+    <ClCompile Include="MACAddressTest.cpp" />
     <ClCompile Include="ThresholdedAnalogInputTest.cpp" />
     <ClCompile Include="UtilsTest.cpp" />
     <ClCompile Include="WiFiBaseTest.cpp" />
@@ -90,6 +91,7 @@
     <ClInclude Include="LoggerManagerMock.h" />
     <ClInclude Include="LoggerManagerTest.h" />
     <ClInclude Include="LoggerMock.h" />
+    <ClInclude Include="MACAddressTest.h" />
     <ClInclude Include="RunnableMock.h" />
     <ClInclude Include="TaskSchedulerMock.h" />
     <ClInclude Include="ThresholdedAnalogInputTest.h" />

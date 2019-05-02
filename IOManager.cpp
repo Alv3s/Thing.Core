@@ -301,6 +301,26 @@ namespace Thing
 			return On(input, DigitalInputState::WasInactivated);
 		}
 
+		ITimedDigitalIOMonitor& IOManager::OnActive(IDigitalOutput* output)
+		{
+			return OnActive(*output);
+		}
+
+		ITimedDigitalIOMonitor& IOManager::OnActive(IDigitalOutput& output)
+		{
+			return On(output, DigitalInputState::WasActivated);
+		}
+
+		ITimedDigitalIOMonitor& IOManager::OnInactive(IDigitalOutput* output)
+		{
+			return OnInactive(*output);
+		}
+		
+		ITimedDigitalIOMonitor& IOManager::OnInactive(IDigitalOutput& output)
+		{
+			return On(output, DigitalInputState::WasInactivated);
+		}
+
 
 		void IOManager::ProcessAnalog()
 		{

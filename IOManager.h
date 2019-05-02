@@ -81,6 +81,12 @@ namespace Thing
 			ITimedDigitalIOMonitor& OnInactive(IDigitalInput* input);
 			ITimedDigitalIOMonitor& OnInactive(IDigitalInput& input);
 
+			ITimedDigitalIOMonitor& OnActive(IDigitalOutput* output);
+			ITimedDigitalIOMonitor& OnActive(IDigitalOutput& output);
+
+			ITimedDigitalIOMonitor& OnInactive(IDigitalOutput* output);
+			ITimedDigitalIOMonitor& OnInactive(IDigitalOutput& output);
+
 			void Process();
 			void ProcessAnalog();
 			void ProcessDigital();

@@ -3,6 +3,7 @@
 #include <string>
 #include "HardwareEnumerations.h"
 #include "IP.h"
+#include "MACAddress.h"
 
 namespace Thing
 {
@@ -23,6 +24,7 @@ namespace Thing
 			virtual void Disconnect() = 0;
 			virtual WiFiStatus Status() = 0;
 			virtual IPAddress GetIP() = 0;
+			virtual MACAddress GetMACAddress() = 0;
 
 			virtual void AddListener(IWiFiListener* listener) = 0;
 			virtual void AddListener(IWiFiListener& listener) = 0;

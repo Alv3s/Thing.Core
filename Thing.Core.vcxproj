@@ -33,6 +33,7 @@
     <ClCompile Include="IOManagerAnalogInput.cpp" />
     <ClCompile Include="IOManagerDigitalInput.cpp" />
     <ClCompile Include="IP.cpp" />
+    <ClCompile Include="MACAddress.cpp" />
     <ClCompile Include="ThresholdedAnalogInput.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="WiFiBase.cpp" />
@@ -79,6 +80,7 @@
     <ClInclude Include="IWiFi.h" />
     <ClInclude Include="LoggerManager.h" />
     <ClInclude Include="LogLevel.h" />
+    <ClInclude Include="MACAddress.h" />
     <ClInclude Include="ThresholdedAnalogInput.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="WiFiBase.h" />
