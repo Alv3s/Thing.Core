@@ -236,6 +236,26 @@ namespace Thing {
 
 				ASSERT_NO_FATAL_FAILURE(taskScheduler.Detach(NULL));
 			}
+
+			TEST_F(AppTaskSchedulerTest, DetachRunonceTaskInsideOwnRun)
+			{
+				const int millis = 100;
+
+				AppTaskScheduler taskScheduler(appContainerMock);
+
+				RunnableMock runnable;
+				taskScheduler.AttachOnce(millis, runnable);
+
+				ON_CALL(runnable, Run()).WillByDefault(testing::Invoke(
+					[&taskScheduler, &runnable]()
+					{
+						taskScheduler.Detach(runnable);
+					}
+				));
+
+				Hardware->Delay(millis);
+				ASSERT_NO_FATAL_FAILURE(taskScheduler.OnLoop());
+			}
 		}
 	}
 }

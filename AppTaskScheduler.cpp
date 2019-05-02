@@ -17,13 +17,19 @@ namespace Thing
 		bool AppTaskScheduler::OnLoop()
 		{
 			unsigned long currentTimestamp = Hardware->Millis();
-			for(std::list<ScheduledTask>::iterator i = tasks.begin(); i != tasks.end();)
+			for (std::list<ScheduledTask>::iterator i = tasks.begin(); i != tasks.end();)
 			{
+				if ((bool)(i->status & AppTaskStatus::ShouldDelete))
+				{
+					i = tasks.erase(i);
+					continue;
+				}
+
 				if (currentTimestamp - i->scheduledTimestamp >= i->interval)
 				{
 					i->runnable->Run();
-					if (i->once)
-						tasks.erase(i++);
+					if ((bool)(i->status & AppTaskStatus::Once))
+						i = tasks.erase(i);
 					else
 					{
 						i->scheduledTimestamp = currentTimestamp;
@@ -36,47 +42,47 @@ namespace Thing
 			return false;
 		}
 
-		void AppTaskScheduler::AttachOnce(unsigned long milli, Thing::Core::IRunnable * runnable)
+		void AppTaskScheduler::AttachOnce(unsigned long milli, Thing::Core::IRunnable* runnable)
 		{
 			ScheduledTask task;
-			task.once = true;
+			task.status = AppTaskStatus::Once;
 			task.scheduledTimestamp = Hardware->Millis();
 			task.interval = milli;
 			task.runnable = runnable;
 			tasks.push_back(task);
 		}
 
-		void AppTaskScheduler::AttachOnce(unsigned long milli, Thing::Core::IRunnable & runnable)
+		void AppTaskScheduler::AttachOnce(unsigned long milli, Thing::Core::IRunnable& runnable)
 		{
 			AttachOnce(milli, &runnable);
 		}
 
-		void AppTaskScheduler::AttachPeriodic(unsigned long milli, Thing::Core::IRunnable * runnable)
+		void AppTaskScheduler::AttachPeriodic(unsigned long milli, Thing::Core::IRunnable* runnable)
 		{
 			ScheduledTask task;
-			task.once = false;
+			task.status = AppTaskStatus::Periodic;
 			task.scheduledTimestamp = Hardware->Millis();
 			task.interval = milli;
 			task.runnable = runnable;
 			tasks.push_back(task);
 		}
 
-		void AppTaskScheduler::AttachPeriodic(unsigned long milli, Thing::Core::IRunnable & runnable)
+		void AppTaskScheduler::AttachPeriodic(unsigned long milli, Thing::Core::IRunnable& runnable)
 		{
 			AttachPeriodic(milli, &runnable);
 		}
 
-		void AppTaskScheduler::Detach(Thing::Core::IRunnable * runnable)
+		void AppTaskScheduler::Detach(Thing::Core::IRunnable* runnable)
 		{
 			for (std::list<ScheduledTask>::iterator i = tasks.begin(); i != tasks.end(); ++i)
-				if(i->runnable == runnable)
+				if (i->runnable == runnable)
 				{
-					tasks.erase(i);
+					i->status = i->status | AppTaskStatus::ShouldDelete;
 					return;
 				}
 		}
 
-		void AppTaskScheduler::Detach(Thing::Core::IRunnable & runnable)
+		void AppTaskScheduler::Detach(Thing::Core::IRunnable& runnable)
 		{
 			Detach(&runnable);
 		}
