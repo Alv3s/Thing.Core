@@ -21,25 +21,27 @@ namespace Thing
 
 #pragma region Inputs Management
 #pragma region Analogic
-		void IOManager::AddListener(IAnalogInputListener& listener)
+		void IOManager::AddListener(IAnalogInputListener & listener)
 		{
 			AddListener(&listener);
 		}
 
-		void IOManager::RemoveListener(IAnalogInputListener& listener)
+		void IOManager::RemoveListener(IAnalogInputListener & listener)
 		{
 			RemoveListener(&listener);
 		}
 
-		void IOManager::AddListener(IAnalogInputListener* listener)
+		void IOManager::AddListener(IAnalogInputListener * listener)
 		{
-			if (!Utils::Contains(analogInputListeners, listener))
+			if (std::find(analogInputListeners.begin(), analogInputListeners.end(), listener) == analogInputListeners.end())
 				analogInputListeners.push_back(listener);
 		}
 
-		void IOManager::RemoveListener(IAnalogInputListener* listener)
+		void IOManager::RemoveListener(IAnalogInputListener * listener)
 		{
-			analogInputListeners.remove(listener);
+			auto l = std::find(analogInputListeners.begin(), analogInputListeners.end(), listener);
+			if (l != analogInputListeners.end())
+				l->shouldDelete = true;
 		}
 
 		void IOManager::AddAnalogInput(IAnalogInput * input)
@@ -80,38 +82,40 @@ namespace Thing
 #pragma endregion
 
 #pragma region Digital
-		void IOManager::AddListener(IDigitalInputListener& listener)
+		void IOManager::AddListener(IDigitalInputListener & listener)
 		{
 			AddListener(&listener);
 		}
 
-		void IOManager::RemoveListener(IDigitalInputListener& listener)
+		void IOManager::RemoveListener(IDigitalInputListener & listener)
 		{
 			RemoveListener(&listener);
 		}
 
-		void IOManager::AddListener(IDigitalInputListener* listener)
+		void IOManager::AddListener(IDigitalInputListener * listener)
 		{
-			if (!Utils::Contains(digitalInputListeners, listener))
+			if (std::find(digitalInputListeners.begin(), digitalInputListeners.end(), listener) == digitalInputListeners.end())
 				digitalInputListeners.push_back(listener);
 		}
 
-		void IOManager::RemoveListener(IDigitalInputListener* listener)
+		void IOManager::RemoveListener(IDigitalInputListener * listener)
 		{
-			digitalInputListeners.remove(listener);
+			auto l = std::find(digitalInputListeners.begin(), digitalInputListeners.end(), listener);
+			if (l != digitalInputListeners.end())
+				l->shouldDelete = true;
 		}
 
-		void IOManager::AddDigitalInput(IDigitalInput& input)
+		void IOManager::AddDigitalInput(IDigitalInput & input)
 		{
 			AddDigitalInput(&input);
 		}
 
-		void IOManager::RemoveDigitalInput(IDigitalInput& input)
+		void IOManager::RemoveDigitalInput(IDigitalInput & input)
 		{
 			RemoveDigitalInput(&input);
 		}
 
-		void IOManager::AddDigitalInput(IDigitalInput* input)
+		void IOManager::AddDigitalInput(IDigitalInput * input)
 		{
 			if (!IOManagerDigitalInput::Contains(digitalInputs, input))
 			{
@@ -124,7 +128,7 @@ namespace Thing
 			}
 		}
 
-		void IOManager::RemoveDigitalInput(IDigitalInput* input)
+		void IOManager::RemoveDigitalInput(IDigitalInput * input)
 		{
 			for (auto item = digitalInputs.begin(); item != digitalInputs.end(); ++item)
 			{
@@ -140,49 +144,51 @@ namespace Thing
 #pragma endregion
 
 #pragma region Outputs Management
-		void IOManager::AddListener(IDigitalOutputListener& listener)
+		void IOManager::AddListener(IDigitalOutputListener & listener)
 		{
 			AddListener(&listener);
 		}
 
-		void IOManager::RemoveListener(IDigitalOutputListener& listener)
+		void IOManager::RemoveListener(IDigitalOutputListener & listener)
 		{
 			RemoveListener(&listener);
 		}
 
-		void IOManager::AddListener(IDigitalOutputListener* listener)
+		void IOManager::AddListener(IDigitalOutputListener * listener)
 		{
-			if (!Utils::Contains(digitalOutputListeners, listener))
+			if (std::find(digitalOutputListeners.begin(), digitalOutputListeners.end(), listener) == digitalOutputListeners.end())
 				digitalOutputListeners.push_back(listener);
 		}
 
-		void IOManager::RemoveListener(IDigitalOutputListener* listener)
+		void IOManager::RemoveListener(IDigitalOutputListener * listener)
 		{
-			digitalOutputListeners.remove(listener);
+			auto l = std::find(digitalOutputListeners.begin(), digitalOutputListeners.end(), listener);
+			if (l != digitalOutputListeners.end())
+				l->shouldDelete = true;
 		}
 
 
 
-		void IOManager::AddDigitalOutput(IDigitalOutput& output)
+		void IOManager::AddDigitalOutput(IDigitalOutput & output)
 		{
 			AddDigitalOutput(&output);
 		}
 
-		void IOManager::RemoveDigitalOutput(IDigitalOutput& output)
+		void IOManager::RemoveDigitalOutput(IDigitalOutput & output)
 		{
 			RemoveDigitalOutput(&output);
 		}
 
-		void IOManager::AddDigitalOutput(IDigitalOutput* output)
+		void IOManager::AddDigitalOutput(IDigitalOutput * output)
 		{
 			if (!Utils::Contains(digitalOutputs, output))
 			{
 				Logger->Debug("IOManager.AddDigitalOutput -> code = %d", output->GetCode());
 				digitalOutputs.push_back(output);
-			}	
+			}
 		}
 
-		void IOManager::RemoveDigitalOutput(IDigitalOutput* output)
+		void IOManager::RemoveDigitalOutput(IDigitalOutput * output)
 		{
 			Logger->Debug("IOManager.RemoveDigitalOutput -> code = %d", output->GetCode());
 
@@ -191,7 +197,7 @@ namespace Thing
 #pragma endregion
 
 
-		void IOManager::DigitalWrite(IDigitalOutput* output, DigitalValue writeState)
+		void IOManager::DigitalWrite(IDigitalOutput * output, DigitalValue writeState)
 		{
 			AddDigitalOutput(output);
 
@@ -205,63 +211,89 @@ namespace Thing
 			switch (state)
 			{
 			case DigitalInputState::WasActivated:
-				for (IDigitalOutputListener* l : digitalOutputListeners)
-					l->OnActivating(code);
+				for (auto it = digitalOutputListeners.begin(); it != digitalOutputListeners.end();)
+					if (it->shouldDelete)
+						it = digitalOutputListeners.erase(it);
+					else
+					{
+						it->listener.OnActivating(code);
+						++it;
+					}
 				break;
 			case DigitalInputState::WasInactivated:
-				for (IDigitalOutputListener* l : digitalOutputListeners)
-					l->OnInactivating(code);
+				for (auto it = digitalOutputListeners.begin(); it != digitalOutputListeners.end();)
+					if (it->shouldDelete)
+						it = digitalOutputListeners.erase(it);
+					else
+					{
+						it->listener.OnInactivating(code);
+						++it;
+					}
 				break;
 			}
 		}
 
-		void IOManager::DigitalWrite(IDigitalOutput& output, DigitalValue state)
+		void IOManager::DigitalWrite(IDigitalOutput & output, DigitalValue state)
 		{
 			DigitalWrite(&output, state);
 		}
 
-		IDigitalIOMonitor& IOManager::OnActivating(IDigitalInput& input)
+		void IOManager::DigitalWrite(IDigitalOutput * output, DigitalValue state, unsigned long millis)
+		{
+			DigitalWrite(output, state);
+			DigitalValue newState = state == DigitalValue::High ? DigitalValue::Low : state == DigitalValue::Low ? DigitalValue::High : DigitalValue::Toggle;
+
+			new IOManager::IOManagerRevertDigitalWrite(*this, *output, newState, millis);
+		}
+
+		void IOManager::DigitalWrite(IDigitalOutput & output, DigitalValue state, unsigned long millis)
+		{
+			DigitalWrite(&output, state, millis);
+		}
+
+#pragma region Bindings and Configurations
+		IDigitalIOMonitor& IOManager::OnActivating(IDigitalInput & input)
 		{
 			return On(input, DigitalInputState::WasActivated);
 		}
 
-		IDigitalIOMonitor& IOManager::OnActivating(IDigitalInput* input)
+		IDigitalIOMonitor& IOManager::OnActivating(IDigitalInput * input)
 		{
 			return OnActivating(*input);
 		}
 
-		IDigitalIOMonitor& IOManager::OnInactivating(IDigitalInput& input)
+		IDigitalIOMonitor& IOManager::OnInactivating(IDigitalInput & input)
 		{
 			return On(input, DigitalInputState::WasInactivated);
 		}
 
-		IDigitalIOMonitor& IOManager::OnInactivating(IDigitalInput* input)
+		IDigitalIOMonitor& IOManager::OnInactivating(IDigitalInput * input)
 		{
 			return OnInactivating(*input);
 		}
 
 
-		IDigitalIOMonitor& IOManager::OnActivating(IDigitalOutput& output)
+		IDigitalIOMonitor& IOManager::OnActivating(IDigitalOutput & output)
 		{
 			return On(output, DigitalInputState::WasActivated);
 		}
 
-		IDigitalIOMonitor& IOManager::OnActivating(IDigitalOutput* output)
+		IDigitalIOMonitor& IOManager::OnActivating(IDigitalOutput * output)
 		{
 			return OnActivating(*output);
 		}
 
-		IDigitalIOMonitor& IOManager::OnInactivating(IDigitalOutput& output)
+		IDigitalIOMonitor& IOManager::OnInactivating(IDigitalOutput & output)
 		{
 			return On(output, DigitalInputState::WasInactivated);
 		}
 
-		IDigitalIOMonitor& IOManager::OnInactivating(IDigitalOutput* output)
+		IDigitalIOMonitor& IOManager::OnInactivating(IDigitalOutput * output)
 		{
 			return OnInactivating(*output);
 		}
 
-		DigitalIOMonitor& IOManager::On(IDigitalInput& input, DigitalInputState state)
+		DigitalIOMonitor& IOManager::On(IDigitalInput & input, DigitalInputState state)
 		{
 			AddDigitalInput(input);
 
@@ -271,7 +303,7 @@ namespace Thing
 			return *monitor;
 		}
 
-		DigitalIOMonitor& IOManager::On(IDigitalOutput& output, DigitalInputState state)
+		DigitalIOMonitor& IOManager::On(IDigitalOutput & output, DigitalInputState state)
 		{
 			AddDigitalOutput(output);
 
@@ -281,46 +313,46 @@ namespace Thing
 			return *monitor;
 		}
 
-		ITimedDigitalIOMonitor& IOManager::OnActive(IDigitalInput* input)
+		ITimedDigitalIOMonitor& IOManager::OnActive(IDigitalInput * input)
 		{
 			return OnActive(*input);
 		}
 
-		ITimedDigitalIOMonitor& IOManager::OnActive(IDigitalInput& input)
+		ITimedDigitalIOMonitor& IOManager::OnActive(IDigitalInput & input)
 		{
 			return On(input, DigitalInputState::WasActivated);
 		}
 
-		ITimedDigitalIOMonitor& IOManager::OnInactive(IDigitalInput* input)
+		ITimedDigitalIOMonitor& IOManager::OnInactive(IDigitalInput * input)
 		{
 			return OnInactive(*input);
 		}
 
-		ITimedDigitalIOMonitor& IOManager::OnInactive(IDigitalInput& input)
+		ITimedDigitalIOMonitor& IOManager::OnInactive(IDigitalInput & input)
 		{
 			return On(input, DigitalInputState::WasInactivated);
 		}
 
-		ITimedDigitalIOMonitor& IOManager::OnActive(IDigitalOutput* output)
+		ITimedDigitalIOMonitor& IOManager::OnActive(IDigitalOutput * output)
 		{
 			return OnActive(*output);
 		}
 
-		ITimedDigitalIOMonitor& IOManager::OnActive(IDigitalOutput& output)
+		ITimedDigitalIOMonitor& IOManager::OnActive(IDigitalOutput & output)
 		{
 			return On(output, DigitalInputState::WasActivated);
 		}
 
-		ITimedDigitalIOMonitor& IOManager::OnInactive(IDigitalOutput* output)
+		ITimedDigitalIOMonitor& IOManager::OnInactive(IDigitalOutput * output)
 		{
 			return OnInactive(*output);
 		}
-		
-		ITimedDigitalIOMonitor& IOManager::OnInactive(IDigitalOutput& output)
+
+		ITimedDigitalIOMonitor& IOManager::OnInactive(IDigitalOutput & output)
 		{
 			return On(output, DigitalInputState::WasInactivated);
 		}
-
+#pragma endregion
 
 		void IOManager::ProcessAnalog()
 		{
@@ -347,14 +379,26 @@ namespace Thing
 
 				if (currentAnalogValue - precision >= previousAnalogValue)
 				{
-					for (IAnalogInputListener* l : analogInputListeners)
-						l->OnIncreasingValue(code, currentAnalogValue);
+					for (auto it = analogInputListeners.begin(); it != analogInputListeners.end();)
+						if (it->shouldDelete)
+							it = analogInputListeners.erase(it);
+						else
+						{
+							it->listener.OnIncreasingValue(code, currentAnalogValue);
+							++it;
+						}
 					entry.LastReadValue = currentAnalogValue;
 				}
 				else if (currentAnalogValue + precision <= previousAnalogValue)
 				{
-					for (IAnalogInputListener* l : analogInputListeners)
-						l->OnDecreasingValue(code, currentAnalogValue);
+					for (auto it = analogInputListeners.begin(); it != analogInputListeners.end();)
+						if (it->shouldDelete)
+							it = analogInputListeners.erase(it);
+						else
+						{
+							it->listener.OnDecreasingValue(code, currentAnalogValue);
+							++it;
+						}
 					entry.LastReadValue = currentAnalogValue;
 				}
 			}
@@ -364,7 +408,7 @@ namespace Thing
 		{
 			if (digitalInputListeners.size() == 0)
 				return;
-			
+
 			for (auto& entry : digitalInputs)
 			{
 				IDigitalInput* input = entry.DigitalInput;
@@ -379,15 +423,27 @@ namespace Thing
 				case DigitalInputState::WasActivated:
 				{
 					auto triggerCount = entry.IncrementWasActivatedCount();
-					for (IDigitalInputListener* l : digitalInputListeners)
-						l->OnActivating(code, triggerCount);
+					for (auto it = digitalInputListeners.begin(); it != digitalInputListeners.end();)
+						if (it->shouldDelete)
+							it = digitalInputListeners.erase(it);
+						else
+						{
+							it->listener.OnActivating(code, triggerCount);
+							++it;
+						}
 					break;
 				}
 				case DigitalInputState::WasInactivated:
 				{
 					auto triggerCount = entry.IncrementWasInactivatedCount();
-					for (IDigitalInputListener* l : digitalInputListeners)
-						l->OnInactivating(code, triggerCount);
+					for (auto it = digitalInputListeners.begin(); it != digitalInputListeners.end();)
+						if (it->shouldDelete)
+							it = digitalInputListeners.erase(it);
+						else
+						{
+							it->listener.OnInactivating(code, triggerCount);
+							++it;
+						}
 					break;
 				}
 				}
@@ -399,5 +455,60 @@ namespace Thing
 			ProcessDigital();
 			ProcessAnalog();
 		}
+
+#pragma region IOManagerRevertDigitalWrite
+		IOManager::IOManagerRevertDigitalWrite::IOManagerRevertDigitalWrite(IOManager & manager, IDigitalOutput & output, DigitalValue toState, unsigned long millis) :
+			manager(&manager),
+			output(&output),
+			toState(toState)
+		{
+			TaskScheduler->AttachOnce(millis, this);
+			this->manager->AddListener(this);
+		}
+
+		IOManager::IOManagerRevertDigitalWrite::~IOManagerRevertDigitalWrite()
+		{
+			TaskScheduler->Detach(this);
+			manager->RemoveListener(this);
+		}
+
+		void IOManager::IOManagerRevertDigitalWrite::Run()
+		{
+			manager->DigitalWrite(output, toState);
+			delete this;
+		}
+
+		void IOManager::IOManagerRevertDigitalWrite::OnActivating(int code)
+		{
+			if (output->GetCode() != code)
+				return;
+
+			delete this;
+		}
+
+		void IOManager::IOManagerRevertDigitalWrite::OnActivating(int code, unsigned int count)
+		{
+			if (output->GetCode() != code)
+				return;
+
+			delete this;
+		}
+
+		void IOManager::IOManagerRevertDigitalWrite::OnInactivating(int code)
+		{
+			if (output->GetCode() != code)
+				return;
+
+			delete this;
+		}
+
+		void IOManager::IOManagerRevertDigitalWrite::OnInactivating(int code, unsigned int count)
+		{
+			if (output->GetCode() != code)
+				return;
+
+			delete this;
+		}
+#pragma endregion
 	}
 }

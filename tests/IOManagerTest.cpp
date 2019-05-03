@@ -7,6 +7,8 @@
 #include "../IOManager.h"
 #include "AnalogInputListenerMock.h"
 #include "AnalogInputMock.h"
+#include "AppContainerMock.h"
+#include "AppTaskScheduler.h"
 
 using ::testing::Return;
 using ::testing::_;
@@ -531,6 +533,30 @@ namespace Thing {
 
 				TestRemoveAnalogInputs(Manager, input1, input2, input3);
 			}
+
+			TEST_F(IOManagerTest, AnalogInputListenerRemovedInsideEvent)
+			{
+				AnalogInputMock analogInput;
+				EXPECT_CALL(analogInput, GetPrecision()).WillRepeatedly(Return(1));
+				EXPECT_CALL(analogInput, GetCode()).WillRepeatedly(Return(1));
+				EXPECT_CALL(analogInput, AnalogRead()).WillRepeatedly(Return(0));
+
+				Thing::Core::IOManager manager;
+				manager.AddAnalogInput(analogInput);
+
+				AnalogInputListenerMock listener;
+				manager.AddListener(listener);
+
+				ON_CALL(listener, OnIncreasingValue(_, _)).WillByDefault(testing::Invoke(
+					[&manager, &listener](int code, int value)
+					{
+						manager.RemoveListener(listener);
+					}
+				));
+
+				EXPECT_CALL(analogInput, AnalogRead()).WillRepeatedly(Return(1000));
+				ASSERT_NO_FATAL_FAILURE(manager.ProcessAnalog());
+			}
 #pragma endregion
 
 #pragma region Digital Inputs Tests
@@ -943,6 +969,29 @@ namespace Thing {
 				manager.AddListener(listener);
 				manager.AddListener(listener);
 				manager.Process();
+			}
+
+			TEST_F(IOManagerTest, DigitalInputListenerRemovedInsideEvent)
+			{
+				DigitalInputMock digitalInput;
+				EXPECT_CALL(digitalInput, GetCode()).WillRepeatedly(Return(1));
+				EXPECT_CALL(digitalInput, DigitalRead()).WillRepeatedly(Return(Thing::Core::DigitalValue::Low));
+
+				Thing::Core::IOManager manager;
+				manager.AddDigitalInput(digitalInput);
+
+				DigitalInputListenerMock listener;
+				manager.AddListener(listener);
+
+				ON_CALL(listener, OnActivating(_, _)).WillByDefault(testing::Invoke(
+					[&manager, &listener](int code, unsigned int count)
+					{
+						manager.RemoveListener(listener);
+					}
+				));
+
+				EXPECT_CALL(digitalInput, DigitalRead()).WillRepeatedly(Return(Thing::Core::DigitalValue::High));
+				ASSERT_NO_FATAL_FAILURE(manager.ProcessDigital());
 			}
 #pragma endregion
 #pragma endregion
@@ -1396,24 +1445,207 @@ namespace Thing {
 				manager.DigitalWrite(output, Thing::Core::DigitalValue::Low);
 			}
 
-			TEST_F(IOManagerTest, OneOutputListenerAddedMultipleTimes)
+			//TEST_F(IOManagerTest, OneOutputListenerAddedMultipleTimes)
+			//{
+			//	const int code = 1;
+
+			//	DigitalOutputMock output;
+			//	EXPECT_CALL(output, GetCode()).WillRepeatedly(Return(code));
+			//	EXPECT_CALL(output, GetState()).WillOnce(Return(Thing::Core::DigitalValue::Low)).WillOnce(Return(Thing::Core::DigitalValue::High));
+
+			//	DigitalOutputListenerMock listener;
+			//	EXPECT_CALL(listener, OnActivating(code)).Times(1);
+
+			//	Thing::Core::IOManager manager;
+			//	manager.AddDigitalOutput(output);
+			//	manager.AddListener(listener);
+			//	manager.AddListener(listener);
+			//	manager.DigitalWrite(output, Thing::Core::DigitalValue::Low);
+			//}
+
+			//TEST_F(IOManagerTest, DigitalWriteWithTimerViaReference)
+			//{
+			//	const Thing::Core::DigitalValue states[] = { Thing::Core::DigitalValue::Low, Thing::Core::DigitalValue::High, Thing::Core::DigitalValue::Toggle };
+			//	const unsigned long time[] = { 1000, 2000, 3000 };
+
+			//	Thing::Core::IOManager Manager;
+			//	AppContainerMock containerMock;
+			//	AppTaskScheduler scheduler(containerMock);
+			//	TaskScheduler = &scheduler;
+
+			//	DigitalOutputMock output;
+			//	EXPECT_CALL(output, GetState()).WillRepeatedly(Return(Thing::Core::DigitalValue::Low));
+
+			//	Manager.AddDigitalOutput(output);
+
+			//	for (int i = 0; i < sizeof(states) / sizeof(Thing::Core::DigitalValue); ++i)
+			//		for(int j = 0; j < sizeof(time) / sizeof(unsigned long); ++j)
+			//		{
+			//			EXPECT_CALL(output, DigitalWrite(states[i])).Times(1);
+			//			Manager.DigitalWrite(output, states[i], time[i]);
+
+			//			Hardware->Delay(time[i] - 1);
+			//			scheduler.OnLoop();
+			//			switch (states[i])
+			//			{
+			//			case Thing::Core::DigitalValue::Low:
+			//				EXPECT_CALL(output, DigitalWrite(Thing::Core::DigitalValue::High)).Times(1);
+			//				break;
+			//			case Thing::Core::DigitalValue::High:
+			//				EXPECT_CALL(output, DigitalWrite(Thing::Core::DigitalValue::Low)).Times(1);
+			//				break;
+			//			case Thing::Core::DigitalValue::Toggle:
+			//				EXPECT_CALL(output, DigitalWrite(Thing::Core::DigitalValue::Toggle)).Times(1);
+			//				break;
+			//			}
+			//			Hardware->Delay(1);
+			//			scheduler.OnLoop();
+
+			//			//Make sure it doesn't trigger again
+			//			Hardware->Delay(time[i]);
+			//			scheduler.OnLoop();
+			//		}
+			//}
+
+			//TEST_F(IOManagerTest, DigitalWriteWithTimerViaPointer)
+			//{
+			//	const Thing::Core::DigitalValue states[] = { Thing::Core::DigitalValue::Low, Thing::Core::DigitalValue::High, Thing::Core::DigitalValue::Toggle };
+			//	const unsigned long time[] = { 1000, 2000, 3000 };
+
+			//	Thing::Core::IOManager Manager;
+			//	AppContainerMock containerMock;
+			//	AppTaskScheduler scheduler(containerMock);
+			//	TaskScheduler = &scheduler;
+
+			//	DigitalOutputMock output;
+			//	EXPECT_CALL(output, GetState()).WillRepeatedly(Return(Thing::Core::DigitalValue::Low));
+
+			//	Manager.AddDigitalOutput(&output);
+
+			//	for (int i = 0; i < sizeof(states) / sizeof(Thing::Core::DigitalValue); ++i)
+			//		for (int j = 0; j < sizeof(time) / sizeof(unsigned long); ++j)
+			//		{
+			//			EXPECT_CALL(output, DigitalWrite(states[i])).Times(1);
+			//			Manager.DigitalWrite(&output, states[i], time[i]);
+
+			//			Hardware->Delay(time[i] - 1);
+			//			scheduler.OnLoop();
+			//			switch (states[i])
+			//			{
+			//			case Thing::Core::DigitalValue::Low:
+			//				EXPECT_CALL(output, DigitalWrite(Thing::Core::DigitalValue::High)).Times(1);
+			//				break;
+			//			case Thing::Core::DigitalValue::High:
+			//				EXPECT_CALL(output, DigitalWrite(Thing::Core::DigitalValue::Low)).Times(1);
+			//				break;
+			//			case Thing::Core::DigitalValue::Toggle:
+			//				EXPECT_CALL(output, DigitalWrite(Thing::Core::DigitalValue::Toggle)).Times(1);
+			//				break;
+			//			}
+			//			Hardware->Delay(1);
+			//			scheduler.OnLoop();
+
+			//			//Make sure it doesn't trigger again
+			//			Hardware->Delay(time[i]);
+			//			scheduler.OnLoop();
+			//		}
+			//}
+
+			//TEST_F(IOManagerTest, DigitalWriteWithTimerAndValueChangedViaReference)
+			//{
+			//	const Thing::Core::DigitalValue states[] = { Thing::Core::DigitalValue::Low };// , Thing::Core::DigitalValue::High, Thing::Core::DigitalValue::Toggle};
+			//	const unsigned long time[] = { 1000 };// , 2000, 3000};
+
+			//	Thing::Core::IOManager Manager;
+			//	AppContainerMock containerMock;
+			//	AppTaskScheduler scheduler(containerMock);
+			//	TaskScheduler = &scheduler;
+
+			//	DigitalOutputMock output;
+
+			//	Manager.AddDigitalOutput(output);
+
+			//	for (int i = 0; i < sizeof(states) / sizeof(Thing::Core::DigitalValue); ++i)
+			//		for (int j = 0; j < sizeof(time) / sizeof(unsigned long); ++j)
+			//		{
+			//			EXPECT_CALL(output, GetState())
+			//				.WillOnce(Return(states[i] == Thing::Core::DigitalValue::Low ? Thing::Core::DigitalValue::High : Thing::Core::DigitalValue::Low))
+			//				.WillOnce(Return(states[i] == Thing::Core::DigitalValue::Low ? Thing::Core::DigitalValue::Low : Thing::Core::DigitalValue::High));
+			//			EXPECT_CALL(output, DigitalWrite(states[i])).Times(1);
+			//			Manager.DigitalWrite(output, states[i], time[i]);
+
+			//			Hardware->Delay(time[i] - 1);
+			//			scheduler.OnLoop();
+
+			//			EXPECT_CALL(output, GetState())
+			//				.WillOnce(Return(states[i] == Thing::Core::DigitalValue::Low ? Thing::Core::DigitalValue::Low : Thing::Core::DigitalValue::High))
+			//				.WillOnce(Return(states[i] == Thing::Core::DigitalValue::Low ? Thing::Core::DigitalValue::High : Thing::Core::DigitalValue::Low));
+			//			EXPECT_CALL(output, DigitalWrite(Thing::Core::DigitalValue::Toggle)).Times(1);
+			//			Manager.DigitalWrite(output, Thing::Core::DigitalValue::Toggle);
+			//			Hardware->Delay(1);
+			//			scheduler.OnLoop();
+			//		}
+			//}
+			//
+			//TEST_F(IOManagerTest, DigitalWriteWithTimerAndValueChangedViaPointer)
+			//{
+			//	const Thing::Core::DigitalValue states[] = { Thing::Core::DigitalValue::Low };// , Thing::Core::DigitalValue::High, Thing::Core::DigitalValue::Toggle};
+			//	const unsigned long time[] = { 1000 };// , 2000, 3000};
+
+			//	Thing::Core::IOManager Manager;
+			//	AppContainerMock containerMock;
+			//	AppTaskScheduler scheduler(containerMock);
+			//	TaskScheduler = &scheduler;
+
+			//	DigitalOutputMock output;
+
+			//	Manager.AddDigitalOutput(&output);
+
+			//	for (int i = 0; i < sizeof(states) / sizeof(Thing::Core::DigitalValue); ++i)
+			//		for (int j = 0; j < sizeof(time) / sizeof(unsigned long); ++j)
+			//		{
+			//			EXPECT_CALL(output, GetState())
+			//				.WillOnce(Return(states[i] == Thing::Core::DigitalValue::Low ? Thing::Core::DigitalValue::High : Thing::Core::DigitalValue::Low))
+			//				.WillOnce(Return(states[i] == Thing::Core::DigitalValue::Low ? Thing::Core::DigitalValue::Low : Thing::Core::DigitalValue::High));
+			//			EXPECT_CALL(output, DigitalWrite(states[i])).Times(1);
+			//			Manager.DigitalWrite(&output, states[i], time[i]);
+
+			//			Hardware->Delay(time[i] - 1);
+			//			scheduler.OnLoop();
+
+			//			EXPECT_CALL(output, GetState())
+			//				.WillOnce(Return(states[i] == Thing::Core::DigitalValue::Low ? Thing::Core::DigitalValue::Low : Thing::Core::DigitalValue::High))
+			//				.WillOnce(Return(states[i] == Thing::Core::DigitalValue::Low ? Thing::Core::DigitalValue::High : Thing::Core::DigitalValue::Low));
+			//			EXPECT_CALL(output, DigitalWrite(Thing::Core::DigitalValue::Toggle)).Times(1);
+			//			Manager.DigitalWrite(&output, Thing::Core::DigitalValue::Toggle);
+			//			Hardware->Delay(1);
+			//			scheduler.OnLoop();
+			//		}
+			//}
+
+			TEST_F(IOManagerTest, DigitalOutputListenerRemovedInsideEvent)
 			{
-				const int code = 1;
-
 				DigitalOutputMock output;
-				EXPECT_CALL(output, GetCode()).WillRepeatedly(Return(code));
-				EXPECT_CALL(output, GetState()).WillOnce(Return(Thing::Core::DigitalValue::Low)).WillOnce(Return(Thing::Core::DigitalValue::High));
-
-				DigitalOutputListenerMock listener;
-				EXPECT_CALL(listener, OnActivating(code)).Times(1);
+				EXPECT_CALL(output, GetCode()).WillRepeatedly(Return(1));
 
 				Thing::Core::IOManager manager;
 				manager.AddDigitalOutput(output);
-				manager.AddListener(listener);
-				manager.AddListener(listener);
-				manager.DigitalWrite(output, Thing::Core::DigitalValue::Low);
-			}
 
+				DigitalOutputListenerMock listener;
+				manager.AddListener(listener);
+
+				ON_CALL(listener, OnActivating(_)).WillByDefault(testing::Invoke(
+					[&manager, &listener](int code)
+					{
+						manager.RemoveListener(listener);
+					}
+				));
+
+				EXPECT_CALL(output, GetState())
+					.WillOnce(Return(Thing::Core::DigitalValue::Low))
+					.WillOnce(Return(Thing::Core::DigitalValue::High));
+				ASSERT_NO_FATAL_FAILURE(manager.DigitalWrite(output, Thing::Core::DigitalValue::High));
+			}
 #pragma endregion
 
 #pragma region DigitalIOMonitor Input Test
