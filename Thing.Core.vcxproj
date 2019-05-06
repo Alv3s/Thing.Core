@@ -31,7 +31,6 @@
     <ClCompile Include="AppContainer.cpp" />
     <ClCompile Include="InputHelpers.cpp" />
     <ClCompile Include="IOManagerAnalogInput.cpp" />
-    <ClCompile Include="IOManagerDigitalInput.cpp" />
     <ClCompile Include="IP.cpp" />
     <ClCompile Include="MACAddress.cpp" />
     <ClCompile Include="ThresholdedAnalogInput.cpp" />
@@ -70,6 +69,8 @@
     <ClInclude Include="IHardware.h" />
     <ClInclude Include="IOManagerAnalogInput.h" />
     <ClInclude Include="IOManagerDigitalInput.h" />
+    <ClInclude Include="IOManagerDigitalIO.h" />
+    <ClInclude Include="IOManagerDigitalOutput.h" />
     <ClInclude Include="IP.h" />
     <ClInclude Include="IPrinter.h" />
     <ClInclude Include="InputHelpers.h" />

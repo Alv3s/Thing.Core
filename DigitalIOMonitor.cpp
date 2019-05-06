@@ -30,7 +30,7 @@ namespace Thing
 
 
 #pragma region Digital Input Listener Methods
-		void DigitalIOMonitor::OnActivating(int code)
+		void DigitalIOMonitor::OnActivating(int code, unsigned int count)
 		{
 			if (io->GetCode() != code)
 				return;
@@ -48,12 +48,7 @@ namespace Thing
 				outputMonitor.Action();
 		}
 
-		void DigitalIOMonitor::OnActivating(int code, unsigned int count)
-		{
-			this->OnActivating(code);
-		}
-
-		void DigitalIOMonitor::OnInactivating(int code)
+		void DigitalIOMonitor::OnInactivating(int code, unsigned int count)
 		{
 			if (io->GetCode() != code)
 				return;
@@ -69,10 +64,6 @@ namespace Thing
 
 			if (actionType == DigitalInputState::WasInactivated)
 				outputMonitor.Action();
-		}
-		void DigitalIOMonitor::OnInactivating(int code, unsigned int count)
-		{
-			this->OnInactivating(code);
 		}
 #pragma endregion
 

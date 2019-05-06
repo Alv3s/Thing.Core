@@ -66,9 +66,6 @@
     <ClCompile Include="IP.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="IOManagerDigitalInput.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="IOManagerAnalogInput.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -219,6 +216,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MACAddress.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IOManagerDigitalIO.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IOManagerDigitalOutput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

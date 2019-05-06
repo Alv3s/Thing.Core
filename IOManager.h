@@ -8,6 +8,7 @@
 #include "IDigitalIOListeners.h"
 #include "DigitalIOMonitor.h"
 #include "IOManagerDigitalInput.h"
+#include "IOManagerDigitalOutput.h"
 #include "IOManagerAnalogInput.h"
 
 namespace Thing
@@ -128,7 +129,7 @@ namespace Thing
 			std::list<IOManagerDigitalInput> digitalInputs;
 			std::list<Listener<IDigitalInputListener> > digitalInputListeners;
 
-			std::list<IDigitalOutput*> digitalOutputs;
+			std::list<IOManagerDigitalOutput> digitalOutputs;
 			std::list<Listener<IDigitalOutputListener> > digitalOutputListeners;
 
 			std::list<DigitalIOMonitor*> monitors;
@@ -141,9 +142,7 @@ namespace Thing
 
 				virtual void Run() override;
 
-				virtual void OnActivating(int code) override;
 				virtual void OnActivating(int code, unsigned int count) override;
-				virtual void OnInactivating(int code) override;
 				virtual void OnInactivating(int code, unsigned int count) override;
 			private:
 				IOManager* manager;

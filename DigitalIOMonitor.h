@@ -39,9 +39,7 @@ namespace Thing
 			const DigitalInputState actionType;
 
 
-			virtual void OnActivating(int code) override;
 			virtual void OnActivating(int code, unsigned int count) override;
-			virtual void OnInactivating(int code) override;
 			virtual void OnInactivating(int code, unsigned int count) override;
 
 			void Run() override;

@@ -1,5 +1,5 @@
 #pragma once
-#include "IDigitalInput.h"
+#include "IDigitalOutput.h"
 #include "HardwareEnumerations.h"
 #include "IOManagerDigitalIO.h"
 
@@ -7,11 +7,9 @@ namespace Thing
 {
 	namespace Core
 	{
-		class IOManagerDigitalInput : public IOManagerDigitalIO<IDigitalInput>
+		class IOManagerDigitalOutput : public IOManagerDigitalIO<IDigitalOutput>
 		{
 			friend class IOManager;
-		private:
-			DigitalValue LastReadValue;
 		};
 	}
 }

@@ -7,9 +7,7 @@ namespace Thing
 		class IDigitalIOListener
 		{
 		public:
-			virtual void OnActivating(int code) = 0;
 			virtual void OnActivating(int code, unsigned int count) = 0;
-			virtual void OnInactivating(int code) = 0;
 			virtual void OnInactivating(int code, unsigned int count) = 0;
 		};
 

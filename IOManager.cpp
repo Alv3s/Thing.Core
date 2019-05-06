@@ -120,7 +120,7 @@ namespace Thing
 			if (!IOManagerDigitalInput::Contains(digitalInputs, input))
 			{
 				IOManagerDigitalInput managerInput;
-				managerInput.DigitalInput = input;
+				managerInput.DigitalIO = input;
 				managerInput.LastReadValue = input->DigitalRead();
 				digitalInputs.push_back(managerInput);
 
@@ -132,7 +132,7 @@ namespace Thing
 		{
 			for (auto item = digitalInputs.begin(); item != digitalInputs.end(); ++item)
 			{
-				if (item->DigitalInput == input)
+				if (item->DigitalIO == input)
 				{
 					digitalInputs.erase(item);
 					Logger->Debug("IOManager.RemoveDigitalInput -> code = %d", input->GetCode());
@@ -181,18 +181,27 @@ namespace Thing
 
 		void IOManager::AddDigitalOutput(IDigitalOutput * output)
 		{
-			if (!Utils::Contains(digitalOutputs, output))
+			if (!IOManagerDigitalOutput::Contains(digitalOutputs, output))
 			{
+				IOManagerDigitalOutput managerOutput;
+				managerOutput.DigitalIO = output;
+				digitalOutputs.push_back(managerOutput);
+
 				Logger->Debug("IOManager.AddDigitalOutput -> code = %d", output->GetCode());
-				digitalOutputs.push_back(output);
 			}
 		}
 
 		void IOManager::RemoveDigitalOutput(IDigitalOutput * output)
 		{
-			Logger->Debug("IOManager.RemoveDigitalOutput -> code = %d", output->GetCode());
-
-			digitalOutputs.remove(output);
+			for (auto item = digitalOutputs.begin(); item != digitalOutputs.end(); ++item)
+			{
+				if (item->DigitalIO == output)
+				{
+					digitalOutputs.erase(item);
+					Logger->Debug("IOManager.RemoveDigitalOutput -> code = %d", output->GetCode());
+					return;
+				}
+			}
 		}
 #pragma endregion
 
@@ -200,6 +209,7 @@ namespace Thing
 		void IOManager::DigitalWrite(IDigitalOutput * output, DigitalValue writeState)
 		{
 			AddDigitalOutput(output);
+			auto entry = IOManagerDigitalOutput::Find(digitalOutputs, output);
 
 			DigitalValue previousValue = output->GetState();
 			output->DigitalWrite(writeState);
@@ -211,25 +221,31 @@ namespace Thing
 			switch (state)
 			{
 			case DigitalInputState::WasActivated:
-				for (auto it = digitalOutputListeners.begin(); it != digitalOutputListeners.end();)
-					if (it->shouldDelete)
-						it = digitalOutputListeners.erase(it);
-					else
-					{
-						it->listener.OnActivating(code);
-						++it;
-					}
-				break;
+				{
+					auto triggerCount = entry->IncrementWasActivatedCount();
+					for (auto it = digitalOutputListeners.begin(); it != digitalOutputListeners.end();)
+						if (it->shouldDelete)
+							it = digitalOutputListeners.erase(it);
+						else
+						{
+							it->listener.OnActivating(code, triggerCount);
+							++it;
+						}
+					break;
+				}
 			case DigitalInputState::WasInactivated:
-				for (auto it = digitalOutputListeners.begin(); it != digitalOutputListeners.end();)
-					if (it->shouldDelete)
-						it = digitalOutputListeners.erase(it);
-					else
-					{
-						it->listener.OnInactivating(code);
-						++it;
-					}
-				break;
+				{
+					auto triggerCount = entry->IncrementWasInactivatedCount();
+					for (auto it = digitalOutputListeners.begin(); it != digitalOutputListeners.end();)
+						if (it->shouldDelete)
+							it = digitalOutputListeners.erase(it);
+						else
+						{
+							it->listener.OnInactivating(code, triggerCount);
+							++it;
+						}
+					break;
+				}
 			}
 		}
 
@@ -411,7 +427,7 @@ namespace Thing
 
 			for (auto& entry : digitalInputs)
 			{
-				IDigitalInput* input = entry.DigitalInput;
+				IDigitalInput* input = entry.DigitalIO;
 				DigitalValue previousState = entry.LastReadValue;
 				DigitalValue state = input->DigitalRead();
 				DigitalInputState result = DigitalReadToInputState(previousState, state);
@@ -478,23 +494,7 @@ namespace Thing
 			delete this;
 		}
 
-		void IOManager::IOManagerRevertDigitalWrite::OnActivating(int code)
-		{
-			if (output->GetCode() != code)
-				return;
-
-			delete this;
-		}
-
 		void IOManager::IOManagerRevertDigitalWrite::OnActivating(int code, unsigned int count)
-		{
-			if (output->GetCode() != code)
-				return;
-
-			delete this;
-		}
-
-		void IOManager::IOManagerRevertDigitalWrite::OnInactivating(int code)
 		{
 			if (output->GetCode() != code)
 				return;
