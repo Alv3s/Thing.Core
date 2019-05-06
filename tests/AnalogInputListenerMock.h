@@ -9,8 +9,8 @@ namespace Thing {
 			class AnalogInputListenerMock : public virtual Thing::Core::IAnalogInputListener
 			{
 			public:
-				MOCK_METHOD2(OnIncreasingValue, void(int code, int value));
-				MOCK_METHOD2(OnDecreasingValue, void(int code, int value));
+				MOCK_METHOD2(OnIncreasingValue, void(IAnalogIO* io, int value));
+				MOCK_METHOD2(OnDecreasingValue, void(IAnalogIO* io, int value));
 			};
 		}
 	}

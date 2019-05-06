@@ -8,7 +8,7 @@
 #include "AnalogInputListenerMock.h"
 #include "AnalogInputMock.h"
 #include "AppContainerMock.h"
-#include "AppTaskScheduler.h"
+#include "../AppTaskScheduler.h"
 
 using ::testing::Return;
 using ::testing::_;
@@ -45,7 +45,6 @@ namespace Thing {
 #pragma region Analogic Inputs Tests
 			void IOManagerTest::NotifyAnalogInputListeners(Thing::Core::IOManager& Manager, const int totalListeners, AnalogInputListenerMock* listeners)
 			{
-				const int code = 1;
 				AnalogInputMock input;
 
 				// Setup the AnalogRead method to be called with value = 10 when AddAnalogInput is called.
@@ -54,10 +53,6 @@ namespace Thing {
 
 				// Setup call GetPrecision
 				EXPECT_CALL(input, GetPrecision()).WillRepeatedly(Return(5));
-
-				// Setup call GetCode to return always 1
-				EXPECT_CALL(input, GetCode()).WillRepeatedly(Return(code));
-
 
 				// Test: When current value (10) is exactly equal to previous value (10)
 				EXPECT_CALL(input, AnalogRead()).WillOnce(Return(10));
@@ -261,101 +256,101 @@ namespace Thing {
 
 				// Test: When current value (10) is exactly equal to previous value (10)
 				EXPECT_CALL(inputs[0], AnalogRead()).WillOnce(Return(10));
-				EXPECT_CALL(listener, OnIncreasingValue(0, _)).Times(0);
-				EXPECT_CALL(listener, OnDecreasingValue(0, _)).Times(0);
+				EXPECT_CALL(listener, OnIncreasingValue(&inputs[0], _)).Times(0);
+				EXPECT_CALL(listener, OnDecreasingValue(&inputs[0], _)).Times(0);
 				for (int code = 1; code < totalInputs; ++code)
 				{
-					EXPECT_CALL(listener, OnIncreasingValue(code, _)).Times(0);
-					EXPECT_CALL(listener, OnDecreasingValue(code, _)).Times(0);
+					EXPECT_CALL(listener, OnIncreasingValue(&inputs[code], _)).Times(0);
+					EXPECT_CALL(listener, OnDecreasingValue(&inputs[code], _)).Times(0);
 				}
 				Manager.Process();
 
 				// Test: When current value (14) is not higher than previous value (10) + precision (5)
 				EXPECT_CALL(inputs[0], AnalogRead()).WillOnce(Return(14));
-				EXPECT_CALL(listener, OnIncreasingValue(0, _)).Times(0);
-				EXPECT_CALL(listener, OnDecreasingValue(0, _)).Times(0);
+				EXPECT_CALL(listener, OnIncreasingValue(&inputs[0], _)).Times(0);
+				EXPECT_CALL(listener, OnDecreasingValue(&inputs[0], _)).Times(0);
 				for (int code = 1; code < totalInputs; ++code)
 				{
-					EXPECT_CALL(listener, OnIncreasingValue(code, _)).Times(0);
-					EXPECT_CALL(listener, OnDecreasingValue(code, _)).Times(0);
+					EXPECT_CALL(listener, OnIncreasingValue(&inputs[code], _)).Times(0);
+					EXPECT_CALL(listener, OnDecreasingValue(&inputs[code], _)).Times(0);
 				}
 				Manager.Process();
 
 				// Test: When current value (10) is not lower than previous value (14) - precision (5)
 				EXPECT_CALL(inputs[0], AnalogRead()).WillOnce(Return(10));
-				EXPECT_CALL(listener, OnIncreasingValue(0, _)).Times(0);
-				EXPECT_CALL(listener, OnDecreasingValue(0, _)).Times(0);
+				EXPECT_CALL(listener, OnIncreasingValue(&inputs[0], _)).Times(0);
+				EXPECT_CALL(listener, OnDecreasingValue(&inputs[0], _)).Times(0);
 				for (int code = 1; code < totalInputs; ++code)
 				{
-					EXPECT_CALL(listener, OnIncreasingValue(code, _)).Times(0);
-					EXPECT_CALL(listener, OnDecreasingValue(code, _)).Times(0);
+					EXPECT_CALL(listener, OnIncreasingValue(&inputs[code], _)).Times(0);
+					EXPECT_CALL(listener, OnDecreasingValue(&inputs[code], _)).Times(0);
 				}
 				Manager.Process();
 
 				// Test: When current value (15) is equal to previous value (10) + precision (5)
 				EXPECT_CALL(inputs[0], AnalogRead()).WillOnce(Return(15));
-				EXPECT_CALL(listener, OnIncreasingValue(0, _)).Times(1);
-				EXPECT_CALL(listener, OnDecreasingValue(0, _)).Times(0);
+				EXPECT_CALL(listener, OnIncreasingValue(&inputs[0], _)).Times(1);
+				EXPECT_CALL(listener, OnDecreasingValue(&inputs[0], _)).Times(0);
 				for (int code = 1; code < totalInputs; ++code)
 				{
-					EXPECT_CALL(listener, OnIncreasingValue(code, _)).Times(0);
-					EXPECT_CALL(listener, OnDecreasingValue(code, _)).Times(0);
+					EXPECT_CALL(listener, OnIncreasingValue(&inputs[code], _)).Times(0);
+					EXPECT_CALL(listener, OnDecreasingValue(&inputs[code], _)).Times(0);
 				}
 				Manager.Process();
 
 				// Test: When current value (10) is equal to previous value (15) - precision (5)
 				EXPECT_CALL(inputs[0], AnalogRead()).WillOnce(Return(10));
-				EXPECT_CALL(listener, OnIncreasingValue(0, _)).Times(0);
-				EXPECT_CALL(listener, OnDecreasingValue(0, _)).Times(1);
+				EXPECT_CALL(listener, OnIncreasingValue(&inputs[0], _)).Times(0);
+				EXPECT_CALL(listener, OnDecreasingValue(&inputs[0], _)).Times(1);
 				for (int code = 1; code < totalInputs; ++code)
 				{
-					EXPECT_CALL(listener, OnIncreasingValue(code, _)).Times(0);
-					EXPECT_CALL(listener, OnDecreasingValue(code, _)).Times(0);
+					EXPECT_CALL(listener, OnIncreasingValue(&inputs[code], _)).Times(0);
+					EXPECT_CALL(listener, OnDecreasingValue(&inputs[code], _)).Times(0);
 				}
 				Manager.Process();
 
 				// Test: When current value (16) is higher than previous value (10) + precision (5)
 				EXPECT_CALL(inputs[0], AnalogRead()).WillOnce(Return(16));
-				EXPECT_CALL(listener, OnIncreasingValue(0, _)).Times(1);
-				EXPECT_CALL(listener, OnDecreasingValue(0, _)).Times(0);
+				EXPECT_CALL(listener, OnIncreasingValue(&inputs[0], _)).Times(1);
+				EXPECT_CALL(listener, OnDecreasingValue(&inputs[0], _)).Times(0);
 				for (int code = 1; code < totalInputs; ++code)
 				{
-					EXPECT_CALL(listener, OnIncreasingValue(code, _)).Times(0);
-					EXPECT_CALL(listener, OnDecreasingValue(code, _)).Times(0);
+					EXPECT_CALL(listener, OnIncreasingValue(&inputs[code], _)).Times(0);
+					EXPECT_CALL(listener, OnDecreasingValue(&inputs[code], _)).Times(0);
 				}
 				Manager.Process();
 
 				// Test: When current value (10) is lower than previous value (16) - precision (5)
 				EXPECT_CALL(inputs[0], AnalogRead()).WillOnce(Return(10));
-				EXPECT_CALL(listener, OnIncreasingValue(0, _)).Times(0);
-				EXPECT_CALL(listener, OnDecreasingValue(0, _)).Times(1);
+				EXPECT_CALL(listener, OnIncreasingValue(&inputs[0], _)).Times(0);
+				EXPECT_CALL(listener, OnDecreasingValue(&inputs[0], _)).Times(1);
 				for (int code = 1; code < totalInputs; ++code)
 				{
-					EXPECT_CALL(listener, OnIncreasingValue(code, _)).Times(0);
-					EXPECT_CALL(listener, OnDecreasingValue(code, _)).Times(0);
+					EXPECT_CALL(listener, OnIncreasingValue(&inputs[code], _)).Times(0);
+					EXPECT_CALL(listener, OnDecreasingValue(&inputs[code], _)).Times(0);
 				}
 				Manager.Process();
 
 				// Test: When the current value increases two times without reach the precision but the sum of two values are greater than precision
 				EXPECT_CALL(inputs[0], AnalogRead()).WillOnce(Return(12)).WillOnce(Return(16));
-				EXPECT_CALL(listener, OnIncreasingValue(0, _)).Times(1);
-				EXPECT_CALL(listener, OnDecreasingValue(0, _)).Times(0);
+				EXPECT_CALL(listener, OnIncreasingValue(&inputs[0], _)).Times(1);
+				EXPECT_CALL(listener, OnDecreasingValue(&inputs[0], _)).Times(0);
 				for (int code = 1; code < totalInputs; ++code)
 				{
-					EXPECT_CALL(listener, OnIncreasingValue(code, _)).Times(0);
-					EXPECT_CALL(listener, OnDecreasingValue(code, _)).Times(0);
+					EXPECT_CALL(listener, OnIncreasingValue(&inputs[code], _)).Times(0);
+					EXPECT_CALL(listener, OnDecreasingValue(&inputs[code], _)).Times(0);
 				}
 				Manager.Process();
 				Manager.Process();
 
 				// Test: When the current value decreases two times without reach the precision but the sum of two values are greater than precision
 				EXPECT_CALL(inputs[0], AnalogRead()).WillOnce(Return(12)).WillOnce(Return(10));
-				EXPECT_CALL(listener, OnIncreasingValue(0, _)).Times(0);
-				EXPECT_CALL(listener, OnDecreasingValue(0, _)).Times(1);
+				EXPECT_CALL(listener, OnIncreasingValue(&inputs[0], _)).Times(0);
+				EXPECT_CALL(listener, OnDecreasingValue(&inputs[0], _)).Times(1);
 				for (int code = 1; code < totalInputs; ++code)
 				{
-					EXPECT_CALL(listener, OnIncreasingValue(code, _)).Times(0);
-					EXPECT_CALL(listener, OnDecreasingValue(code, _)).Times(0);
+					EXPECT_CALL(listener, OnIncreasingValue(&inputs[code], _)).Times(0);
+					EXPECT_CALL(listener, OnDecreasingValue(&inputs[code], _)).Times(0);
 				}
 				Manager.Process();
 				Manager.Process();
@@ -363,24 +358,24 @@ namespace Thing {
 				// Test: When the precision is too big
 				EXPECT_CALL(inputs[0], AnalogRead()).WillOnce(Return(20));
 				EXPECT_CALL(inputs[0], GetPrecision()).WillOnce(Return(5000));
-				EXPECT_CALL(listener, OnIncreasingValue(0, _)).Times(0);
-				EXPECT_CALL(listener, OnDecreasingValue(0, _)).Times(0);
+				EXPECT_CALL(listener, OnIncreasingValue(&inputs[0], _)).Times(0);
+				EXPECT_CALL(listener, OnDecreasingValue(&inputs[0], _)).Times(0);
 				for (int code = 1; code < totalInputs; ++code)
 				{
-					EXPECT_CALL(listener, OnIncreasingValue(code, _)).Times(0);
-					EXPECT_CALL(listener, OnDecreasingValue(code, _)).Times(0);
+					EXPECT_CALL(listener, OnIncreasingValue(&inputs[code], _)).Times(0);
+					EXPECT_CALL(listener, OnDecreasingValue(&inputs[code], _)).Times(0);
 				}
 				Manager.Process();
 
 				// Test: When the input precision is zero
 				EXPECT_CALL(inputs[0], AnalogRead()).WillOnce(Return(15));
 				EXPECT_CALL(inputs[0], GetPrecision()).WillOnce(Return(0));
-				EXPECT_CALL(listener, OnIncreasingValue(0, _)).Times(0);
-				EXPECT_CALL(listener, OnDecreasingValue(0, _)).Times(0);
+				EXPECT_CALL(listener, OnIncreasingValue(&inputs[0], _)).Times(0);
+				EXPECT_CALL(listener, OnDecreasingValue(&inputs[0], _)).Times(0);
 				for (int code = 1; code < totalInputs; ++code)
 				{
-					EXPECT_CALL(listener, OnIncreasingValue(code, _)).Times(0);
-					EXPECT_CALL(listener, OnDecreasingValue(code, _)).Times(0);
+					EXPECT_CALL(listener, OnIncreasingValue(&inputs[code], _)).Times(0);
+					EXPECT_CALL(listener, OnDecreasingValue(&inputs[code], _)).Times(0);
 				}
 				Manager.Process();
 			}
@@ -409,7 +404,6 @@ namespace Thing {
 				for (int i = 0; i < totalInputs; ++i)
 				{
 					EXPECT_CALL(inputs[i], AnalogRead()).WillRepeatedly(Return(10));
-					EXPECT_CALL(inputs[i], GetCode()).WillRepeatedly(Return(i));
 					EXPECT_CALL(inputs[i], GetPrecision()).WillRepeatedly(Return(5));
 					Manager.AddAnalogInput(inputs[i]);					
 				}
@@ -442,7 +436,6 @@ namespace Thing {
 				for (int i = 0; i < totalInputs; ++i)
 				{
 					EXPECT_CALL(inputs[i], AnalogRead()).WillRepeatedly(Return(10));
-					EXPECT_CALL(inputs[i], GetCode()).WillRepeatedly(Return(i));
 					EXPECT_CALL(inputs[i], GetPrecision()).WillRepeatedly(Return(5));
 					Manager.AddAnalogInput(&inputs[i]);
 				}
@@ -457,9 +450,9 @@ namespace Thing {
 
 				int readedValue = 15;				
 
-				EXPECT_CALL(listener, OnIncreasingValue(1, _)).Times(1);
-				EXPECT_CALL(listener, OnIncreasingValue(2, _)).Times(2);
-				EXPECT_CALL(listener, OnIncreasingValue(3, _)).Times(3);
+				EXPECT_CALL(listener, OnIncreasingValue(&input1, _)).Times(1);
+				EXPECT_CALL(listener, OnIncreasingValue(&input2, _)).Times(2);
+				EXPECT_CALL(listener, OnIncreasingValue(&input3, _)).Times(3);
 				
 				EXPECT_CALL(input1, AnalogRead()).WillOnce(Return(readedValue += 5));
 				EXPECT_CALL(input2, AnalogRead()).WillOnce(Return(readedValue += 5));
@@ -486,19 +479,16 @@ namespace Thing {
 				// Setup
 				AnalogInputMock input1;
 				EXPECT_CALL(input1, AnalogRead()).WillOnce(Return(10));
-				EXPECT_CALL(input1, GetCode()).WillRepeatedly(Return(1));
 				EXPECT_CALL(input1, GetPrecision()).WillRepeatedly(Return(1));
 				Manager.AddAnalogInput(input1);
 
 				AnalogInputMock input2;
 				EXPECT_CALL(input2, AnalogRead()).WillOnce(Return(10));
-				EXPECT_CALL(input2, GetCode()).WillRepeatedly(Return(2));
 				EXPECT_CALL(input2, GetPrecision()).WillRepeatedly(Return(1));
 				Manager.AddAnalogInput(input2);
 
 				AnalogInputMock input3;
 				EXPECT_CALL(input3, AnalogRead()).WillOnce(Return(10));
-				EXPECT_CALL(input3, GetCode()).WillRepeatedly(Return(3));
 				EXPECT_CALL(input3, GetPrecision()).WillRepeatedly(Return(1));
 				Manager.AddAnalogInput(input3);
 
@@ -515,19 +505,16 @@ namespace Thing {
 				// Setup
 				AnalogInputMock input1;
 				EXPECT_CALL(input1, AnalogRead()).WillOnce(Return(10));
-				EXPECT_CALL(input1, GetCode()).WillRepeatedly(Return(1));
 				EXPECT_CALL(input1, GetPrecision()).WillRepeatedly(Return(1));
 				Manager.AddAnalogInput(&input1);
 
 				AnalogInputMock input2;
 				EXPECT_CALL(input2, AnalogRead()).WillOnce(Return(10));
-				EXPECT_CALL(input2, GetCode()).WillRepeatedly(Return(2));
 				EXPECT_CALL(input2, GetPrecision()).WillRepeatedly(Return(1));
 				Manager.AddAnalogInput(&input2);
 
 				AnalogInputMock input3;
 				EXPECT_CALL(input3, AnalogRead()).WillOnce(Return(10));
-				EXPECT_CALL(input3, GetCode()).WillRepeatedly(Return(3));
 				EXPECT_CALL(input3, GetPrecision()).WillRepeatedly(Return(1));
 				Manager.AddAnalogInput(&input3);
 
@@ -538,7 +525,6 @@ namespace Thing {
 			{
 				AnalogInputMock analogInput;
 				EXPECT_CALL(analogInput, GetPrecision()).WillRepeatedly(Return(1));
-				EXPECT_CALL(analogInput, GetCode()).WillRepeatedly(Return(1));
 				EXPECT_CALL(analogInput, AnalogRead()).WillRepeatedly(Return(0));
 
 				Thing::Core::IOManager manager;
@@ -548,7 +534,7 @@ namespace Thing {
 				manager.AddListener(listener);
 
 				ON_CALL(listener, OnIncreasingValue(_, _)).WillByDefault(testing::Invoke(
-					[&manager, &listener](int code, int value)
+					[&manager, &listener](IAnalogIO* io, int value)
 					{
 						manager.RemoveListener(listener);
 					}
@@ -583,29 +569,29 @@ namespace Thing {
 				for (int i = 0; i < totalListeners; ++i)
 				{
 					EXPECT_CALL(listeners[i], OnActivating(_,1)).Times(1);
-					EXPECT_CALL(listeners[i], OnInactivating(_)).Times(0);
+					EXPECT_CALL(listeners[i], OnInactivating(_, _)).Times(0);
 				}
 				Manager.Process();
 
 
 				for (int i = 0; i < totalListeners; ++i)
 				{
-					EXPECT_CALL(listeners[i], OnActivating(_)).Times(0);
-					EXPECT_CALL(listeners[i], OnInactivating(_)).Times(0);
+					EXPECT_CALL(listeners[i], OnActivating(_, _)).Times(0);
+					EXPECT_CALL(listeners[i], OnInactivating(_, _)).Times(0);
 				}
 				Manager.Process();
 
 				for (int i = 0; i < totalListeners; ++i)
 				{
-					EXPECT_CALL(listeners[i], OnActivating(_)).Times(0);
+					EXPECT_CALL(listeners[i], OnActivating(_, _)).Times(0);
 					EXPECT_CALL(listeners[i], OnInactivating(_,1)).Times(1);
 				}
 				Manager.Process();
 
 				for (int i = 0; i < totalListeners; ++i)
 				{
-					EXPECT_CALL(listeners[i], OnActivating(_)).Times(0);
-					EXPECT_CALL(listeners[i], OnInactivating(_)).Times(0);
+					EXPECT_CALL(listeners[i], OnActivating(_, _)).Times(0);
+					EXPECT_CALL(listeners[i], OnInactivating(_, _)).Times(0);
 				}
 				Manager.Process();
 			}
@@ -633,29 +619,29 @@ namespace Thing {
 				for (int i = 0; i < totalListeners; ++i)
 				{
 					EXPECT_CALL(listeners[i], OnActivating(_,1)).Times(1);
-					EXPECT_CALL(listeners[i], OnInactivating(_)).Times(0);
+					EXPECT_CALL(listeners[i], OnInactivating(_, _)).Times(0);
 				}
 				Manager.Process();
 
 
 				for (int i = 0; i < totalListeners; ++i)
 				{
-					EXPECT_CALL(listeners[i], OnActivating(_)).Times(0);
-					EXPECT_CALL(listeners[i], OnInactivating(_)).Times(0);
+					EXPECT_CALL(listeners[i], OnActivating(_, _)).Times(0);
+					EXPECT_CALL(listeners[i], OnInactivating(_, _)).Times(0);
 				}
 				Manager.Process();
 
 				for (int i = 0; i < totalListeners; ++i)
 				{
-					EXPECT_CALL(listeners[i], OnActivating(_)).Times(0);
-					EXPECT_CALL(listeners[i], OnInactivating(_,1)).Times(1);
+					EXPECT_CALL(listeners[i], OnActivating(_, _)).Times(0);
+					EXPECT_CALL(listeners[i], OnInactivating(_, 1)).Times(1);
 				}
 				Manager.Process();
 
 				for (int i = 0; i < totalListeners; ++i)
 				{
-					EXPECT_CALL(listeners[i], OnActivating(_)).Times(0);
-					EXPECT_CALL(listeners[i], OnInactivating(_)).Times(0);
+					EXPECT_CALL(listeners[i], OnActivating(_, _)).Times(0);
+					EXPECT_CALL(listeners[i], OnInactivating(_, _)).Times(0);
 				}
 				Manager.Process();
 			}
@@ -778,10 +764,8 @@ namespace Thing {
 				for (int i = 1; i < totalInputs; ++i)
 				{
 					EXPECT_CALL(inputs[i], DigitalRead()).WillRepeatedly(Return(Thing::Core::DigitalValue::Low));
-					EXPECT_CALL(inputs[i], GetCode()).WillRepeatedly(Return(i));
 					Manager.AddDigitalInput(inputs[i]);
 				}
-				EXPECT_CALL(inputs[0], GetCode()).WillRepeatedly(Return(0));
 				EXPECT_CALL(inputs[0], DigitalRead()).WillOnce(Return(Thing::Core::DigitalValue::Low));
 				Manager.AddDigitalInput(inputs[0]);
 
@@ -789,12 +773,12 @@ namespace Thing {
 				Manager.AddListener(listener);
 
 				EXPECT_CALL(inputs[0], DigitalRead()).WillOnce(Return(Thing::Core::DigitalValue::Low));
-				EXPECT_CALL(listener, OnActivating(_, _)).Times(0);
+				EXPECT_CALL(listener, OnActivating(&inputs[0], _)).Times(0);
 				EXPECT_CALL(listener, OnInactivating(_, _)).Times(0);
 				Manager.Process();
 
 				EXPECT_CALL(inputs[0], DigitalRead()).WillOnce(Return(Thing::Core::DigitalValue::High));
-				EXPECT_CALL(listener, OnActivating(0, _)).Times(1);
+				EXPECT_CALL(listener, OnActivating(&inputs[0], _)).Times(1);
 				EXPECT_CALL(listener, OnInactivating(_, _)).Times(0);
 				Manager.Process();
 
@@ -805,7 +789,7 @@ namespace Thing {
 
 				EXPECT_CALL(inputs[0], DigitalRead()).WillOnce(Return(Thing::Core::DigitalValue::Low));
 				EXPECT_CALL(listener, OnActivating(_, _)).Times(0);
-				EXPECT_CALL(listener, OnInactivating(0,_)).Times(1);
+				EXPECT_CALL(listener, OnInactivating(&inputs[0],_)).Times(1);
 				Manager.Process();
 			}
 
@@ -820,10 +804,8 @@ namespace Thing {
 				for (int i = 1; i < totalInputs; ++i)
 				{
 					EXPECT_CALL(inputs[i], DigitalRead()).WillRepeatedly(Return(Thing::Core::DigitalValue::Low));
-					EXPECT_CALL(inputs[i], GetCode()).WillRepeatedly(Return(i));
 					Manager.AddDigitalInput(&inputs[i]);
 				}
-				EXPECT_CALL(inputs[0], GetCode()).WillRepeatedly(Return(0));
 				EXPECT_CALL(inputs[0], DigitalRead()).WillOnce(Return(Thing::Core::DigitalValue::Low));
 				Manager.AddDigitalInput(&inputs[0]);
 
@@ -836,7 +818,7 @@ namespace Thing {
 				Manager.Process();
 
 				EXPECT_CALL(inputs[0], DigitalRead()).WillOnce(Return(Thing::Core::DigitalValue::High));
-				EXPECT_CALL(listener, OnActivating(0,_)).Times(1);
+				EXPECT_CALL(listener, OnActivating(&inputs[0], _)).Times(1);
 				EXPECT_CALL(listener, OnInactivating(_, _)).Times(0);
 				Manager.Process();
 
@@ -847,7 +829,7 @@ namespace Thing {
 
 				EXPECT_CALL(inputs[0], DigitalRead()).WillOnce(Return(Thing::Core::DigitalValue::Low));
 				EXPECT_CALL(listener, OnActivating(_, _)).Times(0);
-				EXPECT_CALL(listener, OnInactivating(0, _)).Times(1);
+				EXPECT_CALL(listener, OnInactivating(&inputs[0], _)).Times(1);
 				Manager.Process();
 			}
 
@@ -859,7 +841,6 @@ namespace Thing {
 				EXPECT_CALL(input1, DigitalRead())
 					.WillOnce(Return(Thing::Core::DigitalValue::Low))
 					.WillOnce(Return(Thing::Core::DigitalValue::High));
-				EXPECT_CALL(input1, GetCode()).WillRepeatedly(Return(1));
 				Manager.AddDigitalInput(input1);
 
 				DigitalInputMock input2;
@@ -867,7 +848,6 @@ namespace Thing {
 					.WillOnce(Return(Thing::Core::DigitalValue::Low))
 					.WillOnce(Return(Thing::Core::DigitalValue::High))
 					.WillOnce(Return(Thing::Core::DigitalValue::Low));
-				EXPECT_CALL(input2, GetCode()).WillRepeatedly(Return(2));
 				Manager.AddDigitalInput(input2);
 
 				DigitalInputMock input3;
@@ -876,16 +856,15 @@ namespace Thing {
 					.WillOnce(Return(Thing::Core::DigitalValue::High))
 					.WillOnce(Return(Thing::Core::DigitalValue::Low))
 					.WillOnce(Return(Thing::Core::DigitalValue::High));
-				EXPECT_CALL(input3, GetCode()).WillRepeatedly(Return(3));
 				Manager.AddDigitalInput(input3);
 
 				DigitalInputListenerMock listener;
-				EXPECT_CALL(listener, OnActivating(1, _)).Times(1);
-				EXPECT_CALL(listener, OnInactivating(1, _)).Times(0);
-				EXPECT_CALL(listener, OnActivating(2, _)).Times(1);
-				EXPECT_CALL(listener, OnInactivating(2, _)).Times(1);
-				EXPECT_CALL(listener, OnActivating(3, _)).Times(2);
-				EXPECT_CALL(listener, OnInactivating(3, _)).Times(1);
+				EXPECT_CALL(listener, OnActivating(&input1, _)).Times(1);
+				EXPECT_CALL(listener, OnInactivating(&input1, _)).Times(0);
+				EXPECT_CALL(listener, OnActivating(&input2, _)).Times(1);
+				EXPECT_CALL(listener, OnInactivating(&input2, _)).Times(1);
+				EXPECT_CALL(listener, OnActivating(&input3, _)).Times(2);
+				EXPECT_CALL(listener, OnInactivating(&input3, _)).Times(1);
 				Manager.AddListener(listener);
 
 				Manager.Process();
@@ -903,7 +882,6 @@ namespace Thing {
 				EXPECT_CALL(input1, DigitalRead())
 					.WillOnce(Return(Thing::Core::DigitalValue::Low))
 					.WillOnce(Return(Thing::Core::DigitalValue::High));
-				EXPECT_CALL(input1, GetCode()).WillRepeatedly(Return(1));
 				Manager.AddDigitalInput(&input1);
 
 				DigitalInputMock input2;
@@ -911,7 +889,6 @@ namespace Thing {
 					.WillOnce(Return(Thing::Core::DigitalValue::Low))
 					.WillOnce(Return(Thing::Core::DigitalValue::High))
 					.WillOnce(Return(Thing::Core::DigitalValue::Low));
-				EXPECT_CALL(input2, GetCode()).WillRepeatedly(Return(2));
 				Manager.AddDigitalInput(&input2);
 
 				DigitalInputMock input3;
@@ -920,16 +897,15 @@ namespace Thing {
 					.WillOnce(Return(Thing::Core::DigitalValue::High))
 					.WillOnce(Return(Thing::Core::DigitalValue::Low))
 					.WillOnce(Return(Thing::Core::DigitalValue::High));
-				EXPECT_CALL(input3, GetCode()).WillRepeatedly(Return(3));
 				Manager.AddDigitalInput(&input3);
 
 				DigitalInputListenerMock listener;
-				EXPECT_CALL(listener, OnActivating(1, _)).Times(1);
-				EXPECT_CALL(listener, OnInactivating(1, _)).Times(0);
-				EXPECT_CALL(listener, OnActivating(2, _)).Times(1);
-				EXPECT_CALL(listener, OnInactivating(2, _)).Times(1);
-				EXPECT_CALL(listener, OnActivating(3, _)).Times(2);
-				EXPECT_CALL(listener, OnInactivating(3, _)).Times(1);
+				EXPECT_CALL(listener, OnActivating(&input1, _)).Times(1);
+				EXPECT_CALL(listener, OnInactivating(&input1, _)).Times(0);
+				EXPECT_CALL(listener, OnActivating(&input2, _)).Times(1);
+				EXPECT_CALL(listener, OnInactivating(&input2, _)).Times(1);
+				EXPECT_CALL(listener, OnActivating(&input3, _)).Times(2);
+				EXPECT_CALL(listener, OnInactivating(&input3, _)).Times(1);
 				Manager.AddListener(listener);
 
 				Manager.Process();
@@ -955,14 +931,11 @@ namespace Thing {
 
 			TEST_F(IOManagerTest, OneDigitalInputListenerAddedMultipleTimes)
 			{
-				const int code = 1;
-
 				DigitalInputMock input;
-				EXPECT_CALL(input, GetCode()).WillRepeatedly(Return(code));
 				EXPECT_CALL(input, DigitalRead()).WillOnce(Return(Thing::Core::DigitalValue::Low)).WillOnce(Return(Thing::Core::DigitalValue::High));
 
 				DigitalInputListenerMock listener;
-				EXPECT_CALL(listener, OnActivating(code, _)).Times(1);
+				EXPECT_CALL(listener, OnActivating(&input, _)).Times(1);
 
 				Thing::Core::IOManager manager;
 				manager.AddDigitalInput(input);
@@ -974,7 +947,6 @@ namespace Thing {
 			TEST_F(IOManagerTest, DigitalInputListenerRemovedInsideEvent)
 			{
 				DigitalInputMock digitalInput;
-				EXPECT_CALL(digitalInput, GetCode()).WillRepeatedly(Return(1));
 				EXPECT_CALL(digitalInput, DigitalRead()).WillRepeatedly(Return(Thing::Core::DigitalValue::Low));
 
 				Thing::Core::IOManager manager;
@@ -984,7 +956,7 @@ namespace Thing {
 				manager.AddListener(listener);
 
 				ON_CALL(listener, OnActivating(_, _)).WillByDefault(testing::Invoke(
-					[&manager, &listener](int code, unsigned int count)
+					[&manager, &listener](Thing::Core::IDigitalIO* io, unsigned int count)
 					{
 						manager.RemoveListener(listener);
 					}
@@ -1041,7 +1013,6 @@ namespace Thing {
 				DigitalOutputMock output[totalOutputs];
 				for (int i = 0; i < totalOutputs; ++i)
 				{
-					EXPECT_CALL(output[i], GetCode()).WillRepeatedly(Return(i));
 					EXPECT_CALL(output[i], GetState()).WillRepeatedly(Return(Thing::Core::DigitalValue::Low));
 					Manager.AddDigitalOutput(output[i]);
 				}
@@ -1074,7 +1045,6 @@ namespace Thing {
 				DigitalOutputMock output[totalOutputs];
 				for (int i = 0; i < totalOutputs; ++i)
 				{
-					EXPECT_CALL(output[i], GetCode()).WillRepeatedly(Return(i));
 					EXPECT_CALL(output[i], GetState()).WillRepeatedly(Return(Thing::Core::DigitalValue::Low));
 					Manager.AddDigitalOutput(&output[i]);
 				}
@@ -1100,7 +1070,6 @@ namespace Thing {
 			TEST_F(IOManagerTest, NotifyOutputListenersViaReference)
 			{
 				const int totalListeners = 10;
-				const int code = 1;
 				Thing::Core::IOManager Manager;
 
 				DigitalOutputListenerMock listeners[totalListeners];
@@ -1108,7 +1077,6 @@ namespace Thing {
 					Manager.AddListener(listeners[i]);
 
 				DigitalOutputMock output;
-				EXPECT_CALL(output, GetCode()).WillRepeatedly(Return(code));
 				EXPECT_CALL(output, GetState())
 					.Times(8)
 					.WillOnce(Return(Thing::Core::DigitalValue::Low))
@@ -1130,7 +1098,7 @@ namespace Thing {
 
 				for (int i = 0; i < totalListeners; ++i)
 				{
-					EXPECT_CALL(listeners[i], OnActivating(code, _)).Times(1);
+					EXPECT_CALL(listeners[i], OnActivating(&output, _)).Times(1);
 					EXPECT_CALL(listeners[i], OnInactivating(_, _)).Times(0);
 				}
 				Manager.DigitalWrite(output, Thing::Core::DigitalValue::High);
@@ -1145,7 +1113,7 @@ namespace Thing {
 				for (int i = 0; i < totalListeners; ++i)
 				{
 					EXPECT_CALL(listeners[i], OnActivating(_, _)).Times(0);
-					EXPECT_CALL(listeners[i], OnInactivating(code, _)).Times(1);
+					EXPECT_CALL(listeners[i], OnInactivating(&output, _)).Times(1);
 				}
 				Manager.DigitalWrite(output, Thing::Core::DigitalValue::Low);
 			}
@@ -1153,7 +1121,6 @@ namespace Thing {
 			TEST_F(IOManagerTest, NotifyOutputListenersViaPointer)
 			{
 				const int totalListeners = 10;
-				const int code = 1;
 				Thing::Core::IOManager Manager;
 
 				DigitalOutputListenerMock listeners[totalListeners];
@@ -1161,7 +1128,6 @@ namespace Thing {
 					Manager.AddListener(&listeners[i]);
 
 				DigitalOutputMock output;
-				EXPECT_CALL(output, GetCode()).WillRepeatedly(Return(code));
 				EXPECT_CALL(output, GetState())
 					.Times(8)
 					.WillOnce(Return(Thing::Core::DigitalValue::Low))
@@ -1183,7 +1149,7 @@ namespace Thing {
 
 				for (int i = 0; i < totalListeners; ++i)
 				{
-					EXPECT_CALL(listeners[i], OnActivating(code, _)).Times(1);
+					EXPECT_CALL(listeners[i], OnActivating(&output, _)).Times(1);
 					EXPECT_CALL(listeners[i], OnInactivating(_, _)).Times(0);
 				}
 				Manager.DigitalWrite(&output, Thing::Core::DigitalValue::High);
@@ -1198,7 +1164,7 @@ namespace Thing {
 				for (int i = 0; i < totalListeners; ++i)
 				{
 					EXPECT_CALL(listeners[i], OnActivating(_, _)).Times(0);
-					EXPECT_CALL(listeners[i], OnInactivating(code, _)).Times(1);
+					EXPECT_CALL(listeners[i], OnInactivating(&output, _)).Times(1);
 				}
 				Manager.DigitalWrite(&output, Thing::Core::DigitalValue::Low);
 			}
@@ -1322,11 +1288,9 @@ namespace Thing {
 				for (int i = 1; i < totalOutputs; ++i)
 				{
 					EXPECT_CALL(outputs[i], GetState()).WillRepeatedly(Return(Thing::Core::DigitalValue::Low));
-					EXPECT_CALL(outputs[i], GetCode()).WillRepeatedly(Return(i));
 					EXPECT_CALL(outputs[i], DigitalWrite(_)).Times(0);
 					Manager.AddDigitalOutput(outputs[i]);
 				}
-				EXPECT_CALL(outputs[0], GetCode()).WillRepeatedly(Return(0));
 				EXPECT_CALL(outputs[0], DigitalWrite(_)).WillRepeatedly(Return());
 				Manager.AddDigitalOutput(outputs[0]);
 
@@ -1334,13 +1298,13 @@ namespace Thing {
 				Manager.AddListener(listener);
 				
 				EXPECT_CALL(outputs[0], GetState()).Times(2).WillOnce(Return(Thing::Core::DigitalValue::Low)).WillOnce(Return(Thing::Core::DigitalValue::High));
-				EXPECT_CALL(listener, OnActivating(0, _)).Times(1);
+				EXPECT_CALL(listener, OnActivating(&outputs[0], _)).Times(1);
 				EXPECT_CALL(listener, OnInactivating(_, _)).Times(0);
 				Manager.DigitalWrite(outputs[0], Thing::Core::DigitalValue::High);
 
 				EXPECT_CALL(outputs[0], GetState()).Times(2).WillOnce(Return(Thing::Core::DigitalValue::High)).WillOnce(Return(Thing::Core::DigitalValue::Low));
 				EXPECT_CALL(listener, OnActivating(_, _)).Times(0);
-				EXPECT_CALL(listener, OnInactivating(0, _)).Times(1);
+				EXPECT_CALL(listener, OnInactivating(&outputs[0], _)).Times(1);
 				Manager.DigitalWrite(outputs[0], Thing::Core::DigitalValue::Low);
 			}
 
@@ -1353,11 +1317,9 @@ namespace Thing {
 				for (int i = 1; i < totalOutputs; ++i)
 				{
 					EXPECT_CALL(outputs[i], GetState()).WillRepeatedly(Return(Thing::Core::DigitalValue::Low));
-					EXPECT_CALL(outputs[i], GetCode()).WillRepeatedly(Return(i));
 					EXPECT_CALL(outputs[i], DigitalWrite(_)).Times(0);
 					Manager.AddDigitalOutput(&outputs[i]);
 				}
-				EXPECT_CALL(outputs[0], GetCode()).WillRepeatedly(Return(0));
 				EXPECT_CALL(outputs[0], DigitalWrite(_)).WillRepeatedly(Return());
 				Manager.AddDigitalOutput(&outputs[0]);
 
@@ -1365,13 +1327,13 @@ namespace Thing {
 				Manager.AddListener(&listener);
 				
 				EXPECT_CALL(outputs[0], GetState()).Times(2).WillOnce(Return(Thing::Core::DigitalValue::Low)).WillOnce(Return(Thing::Core::DigitalValue::High));
-				EXPECT_CALL(listener, OnActivating(0, _)).Times(1);
+				EXPECT_CALL(listener, OnActivating(&outputs[0], _)).Times(1);
 				EXPECT_CALL(listener, OnInactivating(_, _)).Times(0);
 				Manager.DigitalWrite(&outputs[0], Thing::Core::DigitalValue::High);
 
 				EXPECT_CALL(outputs[0], GetState()).Times(2).WillOnce(Return(Thing::Core::DigitalValue::High)).WillOnce(Return(Thing::Core::DigitalValue::Low));
 				EXPECT_CALL(listener, OnActivating(_, _)).Times(0);
-				EXPECT_CALL(listener, OnInactivating(0, _)).Times(1);
+				EXPECT_CALL(listener, OnInactivating(&outputs[0], _)).Times(1);
 				Manager.DigitalWrite(&outputs[0], Thing::Core::DigitalValue::Low);
 			}
 
@@ -1383,7 +1345,6 @@ namespace Thing {
 				EXPECT_CALL(output1, GetState()).Times(2)
 					.WillOnce(Return(Thing::Core::DigitalValue::Low))
 					.WillOnce(Return(Thing::Core::DigitalValue::High));
-				EXPECT_CALL(output1, GetCode()).WillRepeatedly(Return(1));
 				Manager.AddDigitalOutput(output1);
 
 				DigitalOutputMock output2;
@@ -1392,7 +1353,6 @@ namespace Thing {
 					.WillOnce(Return(Thing::Core::DigitalValue::High))
 					.WillOnce(Return(Thing::Core::DigitalValue::Low))
 					.WillOnce(Return(Thing::Core::DigitalValue::High));
-				EXPECT_CALL(output2, GetCode()).WillRepeatedly(Return(2));
 				Manager.AddDigitalOutput(output2);
 
 				DigitalOutputMock output3;
@@ -1403,13 +1363,12 @@ namespace Thing {
 					.WillOnce(Return(Thing::Core::DigitalValue::High))
 					.WillOnce(Return(Thing::Core::DigitalValue::Low))
 					.WillOnce(Return(Thing::Core::DigitalValue::High));
-				EXPECT_CALL(output3, GetCode()).WillRepeatedly(Return(3));
 				Manager.AddDigitalOutput(output3);
 
 				DigitalOutputListenerMock listener;
-				EXPECT_CALL(listener, OnActivating(1, _)).Times(1);
-				EXPECT_CALL(listener, OnActivating(2, _)).Times(2);
-				EXPECT_CALL(listener, OnActivating(3, _)).Times(3);
+				EXPECT_CALL(listener, OnActivating(&output1, _)).Times(1);
+				EXPECT_CALL(listener, OnActivating(&output2, _)).Times(2);
+				EXPECT_CALL(listener, OnActivating(&output3, _)).Times(3);
 				Manager.AddListener(listener);
 
 				Manager.DigitalWrite(output1, Thing::Core::DigitalValue::High);
@@ -1432,7 +1391,6 @@ namespace Thing {
 				EXPECT_CALL(output1, GetState()).Times(2)
 					.WillOnce(Return(Thing::Core::DigitalValue::Low))
 					.WillOnce(Return(Thing::Core::DigitalValue::High));
-				EXPECT_CALL(output1, GetCode()).WillRepeatedly(Return(1));
 				Manager.AddDigitalOutput(&output1);
 
 				DigitalOutputMock output2;
@@ -1441,7 +1399,6 @@ namespace Thing {
 					.WillOnce(Return(Thing::Core::DigitalValue::High))
 					.WillOnce(Return(Thing::Core::DigitalValue::Low))
 					.WillOnce(Return(Thing::Core::DigitalValue::High));
-				EXPECT_CALL(output2, GetCode()).WillRepeatedly(Return(2));
 				Manager.AddDigitalOutput(&output2);
 
 				DigitalOutputMock output3;
@@ -1452,13 +1409,12 @@ namespace Thing {
 					.WillOnce(Return(Thing::Core::DigitalValue::High))
 					.WillOnce(Return(Thing::Core::DigitalValue::Low))
 					.WillOnce(Return(Thing::Core::DigitalValue::High));
-				EXPECT_CALL(output3, GetCode()).WillRepeatedly(Return(3));
 				Manager.AddDigitalOutput(&output3);
 
 				DigitalOutputListenerMock listener;
-				EXPECT_CALL(listener, OnActivating(1, _)).Times(1);
-				EXPECT_CALL(listener, OnActivating(2, _)).Times(2);
-				EXPECT_CALL(listener, OnActivating(3, _)).Times(3);
+				EXPECT_CALL(listener, OnActivating(&output1, _)).Times(1);
+				EXPECT_CALL(listener, OnActivating(&output2, _)).Times(2);
+				EXPECT_CALL(listener, OnActivating(&output3, _)).Times(3);
 				Manager.AddListener(listener);
 
 				Manager.DigitalWrite(&output1, Thing::Core::DigitalValue::High);
@@ -1491,14 +1447,11 @@ namespace Thing {
 
 			TEST_F(IOManagerTest, OneOutputListenerAddedMultipleTimes)
 			{
-				const int code = 1;
-
 				DigitalOutputMock output;
-				EXPECT_CALL(output, GetCode()).WillRepeatedly(Return(code));
 				EXPECT_CALL(output, GetState()).WillOnce(Return(Thing::Core::DigitalValue::Low)).WillOnce(Return(Thing::Core::DigitalValue::High));
 
 				DigitalOutputListenerMock listener;
-				EXPECT_CALL(listener, OnActivating(code, _)).Times(1);
+				EXPECT_CALL(listener, OnActivating(&output, _)).Times(1);
 
 				Thing::Core::IOManager manager;
 				manager.AddDigitalOutput(output);
@@ -1670,7 +1623,6 @@ namespace Thing {
 			TEST_F(IOManagerTest, DigitalOutputListenerRemovedInsideEvent)
 			{
 				DigitalOutputMock output;
-				EXPECT_CALL(output, GetCode()).WillRepeatedly(Return(1));
 
 				Thing::Core::IOManager manager;
 				manager.AddDigitalOutput(output);
@@ -1679,7 +1631,7 @@ namespace Thing {
 				manager.AddListener(listener);
 
 				ON_CALL(listener, OnActivating(_, _)).WillByDefault(testing::Invoke(
-					[&manager, &listener](int code, unsigned int count)
+					[&manager, &listener](Thing::Core::IDigitalIO* io, unsigned int count)
 					{
 						manager.RemoveListener(listener);
 					}
@@ -1708,7 +1660,6 @@ namespace Thing {
 						Thing::Core::IOManager Manager;
 
 						DigitalInputMock input;
-						EXPECT_CALL(input, GetCode()).WillRepeatedly(Return(1));
 						EXPECT_CALL(input, DigitalRead()).WillOnce(Return(Thing::Core::DigitalValue::Low));
 
 						DigitalOutputMock output;
@@ -1768,7 +1719,6 @@ namespace Thing {
 						Thing::Core::IOManager Manager;
 
 						DigitalInputMock input;
-						EXPECT_CALL(input, GetCode()).WillRepeatedly(Return(1));
 						EXPECT_CALL(input, DigitalRead()).WillOnce(Return(Thing::Core::DigitalValue::Low));
 
 						DigitalOutputMock output;
@@ -1829,9 +1779,7 @@ namespace Thing {
 
 						DigitalInputMock input;
 						DigitalInputMock inputNever;
-						EXPECT_CALL(input, GetCode()).WillRepeatedly(Return(1));
 						EXPECT_CALL(input, DigitalRead()).WillOnce(Return(Thing::Core::DigitalValue::Low));
-						EXPECT_CALL(inputNever, GetCode()).WillRepeatedly(Return(2));
 						EXPECT_CALL(inputNever, DigitalRead()).WillOnce(Return(Thing::Core::DigitalValue::Low));
 						DigitalOutputMock output;
 						EXPECT_CALL(output, GetState()).WillRepeatedly(Return(Thing::Core::DigitalValue::Low));
@@ -1889,9 +1837,7 @@ namespace Thing {
 
 				DigitalInputMock input;
 				DigitalInputMock inputChangingState;
-				EXPECT_CALL(input, GetCode()).WillRepeatedly(Return(1));
 				EXPECT_CALL(input, DigitalRead()).WillOnce(Return(Thing::Core::DigitalValue::Low));
-				EXPECT_CALL(inputChangingState, GetCode()).WillRepeatedly(Return(2));
 				EXPECT_CALL(inputChangingState, DigitalRead()).WillOnce(Return(Thing::Core::DigitalValue::Low));
 				DigitalOutputMock output;
 				Manager.AddDigitalInput(input);
@@ -1925,7 +1871,6 @@ namespace Thing {
 				Thing::Core::IOManager Manager;
 
 				DigitalInputMock input;
-				EXPECT_CALL(input, GetCode()).WillRepeatedly(Return(1));
 				EXPECT_CALL(input, DigitalRead()).WillOnce(Return(Thing::Core::DigitalValue::Low));
 
 				DigitalOutputMock output;
@@ -1968,11 +1913,9 @@ namespace Thing {
 						Thing::Core::IOManager Manager;
 
 						DigitalInputMock input;
-						EXPECT_CALL(input, GetCode()).WillRepeatedly(Return(1));
 						EXPECT_CALL(input, DigitalRead()).WillOnce(Return(Thing::Core::DigitalValue::Low));
 
 						DigitalOutputMock output;
-						EXPECT_CALL(output, GetCode()).WillRepeatedly(Return(1));
 
 						Manager.AddDigitalInput(input);
 						if(values[j] == Thing::Core::DigitalValue::High)
@@ -2016,11 +1959,9 @@ namespace Thing {
 						Thing::Core::IOManager Manager;
 
 						DigitalInputMock input;
-						EXPECT_CALL(input, GetCode()).WillRepeatedly(Return(1));
 						EXPECT_CALL(input, DigitalRead()).WillOnce(Return(Thing::Core::DigitalValue::High));
 
 						DigitalOutputMock output;
-						EXPECT_CALL(output, GetCode()).WillRepeatedly(Return(1));
 
 						Manager.AddDigitalInput(input);
 						if (values[j] == Thing::Core::DigitalValue::High)
@@ -2064,11 +2005,9 @@ namespace Thing {
 						Thing::Core::IOManager Manager;
 
 						DigitalInputMock input;
-						EXPECT_CALL(input, GetCode()).WillRepeatedly(Return(1));
 						EXPECT_CALL(input, DigitalRead()).WillOnce(Return(Thing::Core::DigitalValue::Low));
 
 						DigitalOutputMock output;
-						EXPECT_CALL(output, GetCode()).WillRepeatedly(Return(1));
 
 						Manager.AddDigitalInput(input);
 						if (values[j] == Thing::Core::DigitalValue::High)
@@ -2098,11 +2037,9 @@ namespace Thing {
 						Thing::Core::IOManager Manager;
 
 						DigitalInputMock input;
-						EXPECT_CALL(input, GetCode()).WillRepeatedly(Return(1));
 						EXPECT_CALL(input, DigitalRead()).WillOnce(Return(Thing::Core::DigitalValue::High));
 
 						DigitalOutputMock output;
-						EXPECT_CALL(output, GetCode()).WillRepeatedly(Return(1));
 
 						Manager.AddDigitalInput(input);
 						if (values[j] == Thing::Core::DigitalValue::High)
@@ -2139,7 +2076,6 @@ namespace Thing {
 						Thing::Core::IOManager Manager;
 
 						DigitalOutputMock in_output;
-						EXPECT_CALL(in_output, GetCode()).WillRepeatedly(Return(1));
 						DigitalOutputMock output;
 						EXPECT_CALL(output, GetState()).WillRepeatedly(Return(Thing::Core::DigitalValue::Low));
 						Manager.AddDigitalOutput(in_output);
@@ -2201,7 +2137,6 @@ namespace Thing {
 						Thing::Core::IOManager Manager;
 
 						DigitalOutputMock in_output;
-						EXPECT_CALL(in_output, GetCode()).WillRepeatedly(Return(1));
 						DigitalOutputMock output;
 						EXPECT_CALL(output, GetState()).WillRepeatedly(Return(Thing::Core::DigitalValue::Low));
 						Manager.AddDigitalOutput(in_output);
@@ -2264,8 +2199,6 @@ namespace Thing {
 
 						DigitalOutputMock in_output;
 						DigitalOutputMock outputNever;
-						EXPECT_CALL(in_output, GetCode()).WillRepeatedly(Return(1));
-						EXPECT_CALL(outputNever, GetCode()).WillRepeatedly(Return(2));
 						DigitalOutputMock output;
 						EXPECT_CALL(output, GetState()).WillRepeatedly(Return(Thing::Core::DigitalValue::Low));
 						Manager.AddDigitalOutput(in_output);
@@ -2334,8 +2267,6 @@ namespace Thing {
 
 				DigitalOutputMock in_output;
 				DigitalOutputMock outputChangingState;
-				EXPECT_CALL(in_output, GetCode()).WillRepeatedly(Return(1));
-				EXPECT_CALL(outputChangingState, GetCode()).WillRepeatedly(Return(2));
 				DigitalOutputMock output;
 				Manager.AddDigitalOutput(in_output);
 				Manager.AddDigitalOutput(outputChangingState);
@@ -2388,7 +2319,6 @@ namespace Thing {
 				DigitalOutputMock in_output;
 				DigitalOutputMock output;
 
-				EXPECT_CALL(in_output, GetCode()).WillRepeatedly(Return(1));
 				EXPECT_CALL(output, GetState()).WillRepeatedly(Return(Thing::Core::DigitalValue::Low));
 
 				Manager.AddDigitalOutput(in_output);
@@ -2427,10 +2357,7 @@ namespace Thing {
 						Thing::Core::IOManager Manager;
 
 						DigitalOutputMock in_output;
-						EXPECT_CALL(in_output, GetCode()).WillRepeatedly(Return(1));
-
 						DigitalOutputMock output;
-						EXPECT_CALL(output, GetCode()).WillRepeatedly(Return(2));
 
 						Manager.AddDigitalOutput(in_output);
 						if (values[j] == Thing::Core::DigitalValue::High)
@@ -2477,10 +2404,7 @@ namespace Thing {
 						Thing::Core::IOManager Manager;
 
 						DigitalOutputMock in_output;
-						EXPECT_CALL(in_output, GetCode()).WillRepeatedly(Return(1));
-
 						DigitalOutputMock output;
-						EXPECT_CALL(output, GetCode()).WillRepeatedly(Return(2));
 
 						Manager.AddDigitalOutput(in_output);
 						if (values[j] == Thing::Core::DigitalValue::High)
@@ -2527,10 +2451,7 @@ namespace Thing {
 						Thing::Core::IOManager Manager;
 
 						DigitalOutputMock in_output;
-						EXPECT_CALL(in_output, GetCode()).WillRepeatedly(Return(1));
-
 						DigitalOutputMock output;
-						EXPECT_CALL(output, GetCode()).WillRepeatedly(Return(2));
 
 						Manager.AddDigitalOutput(in_output);
 						if (values[j] == Thing::Core::DigitalValue::High)
@@ -2560,10 +2481,7 @@ namespace Thing {
 						Thing::Core::IOManager Manager;
 
 						DigitalOutputMock in_output;
-						EXPECT_CALL(in_output, GetCode()).WillRepeatedly(Return(1));
-
 						DigitalOutputMock output;
-						EXPECT_CALL(output, GetCode()).WillRepeatedly(Return(2));
 
 						Manager.AddDigitalOutput(in_output);
 						if (values[j] == Thing::Core::DigitalValue::High)
@@ -2593,7 +2511,6 @@ namespace Thing {
 						Thing::Core::IOManager Manager;
 
 						DigitalOutputMock in_output;
-						EXPECT_CALL(in_output, GetCode()).WillRepeatedly(Return(1));
 
 						Manager.AddDigitalOutput(in_output);
 						if (values[j] == Thing::Core::DigitalValue::High)

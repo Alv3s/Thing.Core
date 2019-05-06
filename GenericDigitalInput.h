@@ -10,7 +10,7 @@ namespace Thing
 		class GenericDigitalInput : public GenericDigitalInputBase<false>, public virtual IDigitalInput
 		{
 		public:
-			GenericDigitalInput(int gpio, int code);
+			GenericDigitalInput(int gpio);
 		};
 	}
 }

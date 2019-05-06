@@ -4,7 +4,7 @@ namespace Thing
 {
 	namespace Core
 	{
-		GenericDigitalInput::GenericDigitalInput(int gpio, int code) : GenericDigitalInputBase(gpio, code)
+		GenericDigitalInput::GenericDigitalInput(int gpio) : GenericDigitalInputBase(gpio)
 		{
 
 		}

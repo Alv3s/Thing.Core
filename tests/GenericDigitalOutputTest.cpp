@@ -22,14 +22,12 @@ namespace Thing {
 			TEST_F(GenericDigitalOutputTest, InitializeTest)
 			{
 				const int gpio[] = { 10, 12 };
-				const int code[] = { 15, 9 };
 				const Thing::Core::DigitalValue initValue[] = { Thing::Core::DigitalValue::Low, Thing::Core::DigitalValue::High };
 
 				for (int i = 0; i < 2; ++i)
 				{
 					EXPECT_CALL(HardwareMock, ConfigurePin(gpio[i], Thing::Core::PinMode::Output)).Times(1);
-					Thing::Core::GenericDigitalOutput output(gpio[i], code[i], initValue[i]);
-					EXPECT_EQ(code[i], output.GetCode());
+					Thing::Core::GenericDigitalOutput output(gpio[i], initValue[i]);
 				}
 			}
 
@@ -37,9 +35,8 @@ namespace Thing {
 			{
 				const Thing::Core::DigitalValue initValue[] = { Thing::Core::DigitalValue::Low, Thing::Core::DigitalValue::High };
 				const int gpio = 1;
-				const int code = 1;
 
-				Thing::Core::GenericDigitalOutput output(gpio, code);
+				Thing::Core::GenericDigitalOutput output(gpio);
 
 				for (int i = 0; i < sizeof(initValue) / sizeof(Thing::Core::DigitalValue); ++i)
 				{
@@ -53,11 +50,9 @@ namespace Thing {
 			{
 				const int totalToggles = 3;
 				const int gpio = 1;
-				const int code = 1;
-
 
 				Thing::Core::DigitalValue state = DigitalValue::High;
-				Thing::Core::GenericDigitalOutput output(gpio, code, state);
+				Thing::Core::GenericDigitalOutput output(gpio, state);
 
 				for (int i = 0; i < totalToggles; ++i)
 				{
@@ -67,13 +62,6 @@ namespace Thing {
 					EXPECT_EQ(nextValue, output.GetState());
 					state = nextValue;
 				}
-			}
-
-			TEST_F(GenericDigitalOutputTest, SetCodeTest)
-			{
-				const int gpio = 1;
-				Thing::Core::GenericDigitalOutput output(gpio, gpio);
-				IDigitalOutputTest::TestCode(output);
 			}
 		}
 	}

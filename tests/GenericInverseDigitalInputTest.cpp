@@ -23,17 +23,14 @@ namespace Thing {
 			TEST_F(GenericInverseDigitalInputTest, InitializeTest)
 			{
 				const int gpio = 10;
-				const int code = 5;
 
 				EXPECT_CALL(HardwareMock, ConfigurePin(gpio, Thing::Core::PinMode::Input)).Times(1);
-				Thing::Core::GenericInverseDigitalInput input(gpio, code);
-				EXPECT_EQ(code, input.GetCode());
+				Thing::Core::GenericInverseDigitalInput input(gpio);
 			}
 
 			TEST_F(GenericInverseDigitalInputTest, ReadValueTest)
 			{
 				const int gpio = 10;
-				const int code = 5;
 
 				EXPECT_CALL(HardwareMock, DigitalRead(gpio))
 					.Times(3)
@@ -41,15 +38,8 @@ namespace Thing {
 					.WillOnce(Return(Thing::Core::DigitalValue::Low))
 					.WillOnce(Return(Thing::Core::DigitalValue::High));
 
-				Thing::Core::GenericInverseDigitalInput input(gpio, code);
+				Thing::Core::GenericInverseDigitalInput input(gpio);
 				IDigitalInputTest::TestDigitalRead(input);
-			}
-
-			TEST_F(GenericInverseDigitalInputTest, SetCodeTest)
-			{
-				const int gpio = 1;
-				Thing::Core::GenericInverseDigitalInput input(gpio, gpio);
-				IDigitalInputTest::TestCode(input);
 			}
 		}
 	}

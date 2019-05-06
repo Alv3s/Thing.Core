@@ -5,7 +5,7 @@ namespace Thing
 {
 	namespace Core
 	{
-		GenericDigitalOutput::GenericDigitalOutput(int gpio, int code, DigitalValue defaultValue) : GenericDigitalOutputBase(gpio, code, defaultValue)
+		GenericDigitalOutput::GenericDigitalOutput(int gpio, DigitalValue defaultValue) : GenericDigitalOutputBase(gpio, defaultValue)
 		{
 
 		}

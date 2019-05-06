@@ -52,8 +52,6 @@ namespace Thing
 				managerAnalog.AnalogInput = input;
 				managerAnalog.LastReadValue = input->AnalogRead();
 				analogInputs.push_back(managerAnalog);
-
-				Logger->Debug("IOManager.AddAnalogInput -> code = %d", input->GetCode());
 			}
 		}
 
@@ -69,7 +67,6 @@ namespace Thing
 				if (item->AnalogInput == input)
 				{
 					analogInputs.erase(item);
-					Logger->Debug("IOManager.RemoveAnalogInput -> code = %d", input->GetCode());
 					return;
 				}
 			}
@@ -123,8 +120,6 @@ namespace Thing
 				managerInput.DigitalIO = input;
 				managerInput.LastReadValue = input->DigitalRead();
 				digitalInputs.push_back(managerInput);
-
-				Logger->Debug("IOManager.AddDigitalInput -> code = %d", input->GetCode());
 			}
 		}
 
@@ -135,7 +130,6 @@ namespace Thing
 				if (item->DigitalIO == input)
 				{
 					digitalInputs.erase(item);
-					Logger->Debug("IOManager.RemoveDigitalInput -> code = %d", input->GetCode());
 					return;
 				}
 			}
@@ -186,8 +180,6 @@ namespace Thing
 				IOManagerDigitalOutput managerOutput;
 				managerOutput.DigitalIO = output;
 				digitalOutputs.push_back(managerOutput);
-
-				Logger->Debug("IOManager.AddDigitalOutput -> code = %d", output->GetCode());
 			}
 		}
 
@@ -198,7 +190,6 @@ namespace Thing
 				if (item->DigitalIO == output)
 				{
 					digitalOutputs.erase(item);
-					Logger->Debug("IOManager.RemoveDigitalOutput -> code = %d", output->GetCode());
 					return;
 				}
 			}
@@ -216,42 +207,41 @@ namespace Thing
 			DigitalValue currentValue = output->GetState();
 
 			DigitalInputState state = DigitalReadToInputState(previousValue, currentValue);
-			const int code = output->GetCode();
 
 			switch (state)
 			{
 			case DigitalInputState::WasActivated:
-				{
-					auto triggerCount = entry->IncrementWasActivatedCount();
-					for (auto it = digitalOutputListeners.begin(); it != digitalOutputListeners.end();)
-						if (it->shouldDelete)
-							it = digitalOutputListeners.erase(it);
-						else
-						{
-							it->listener.OnActivating(code, triggerCount);
-							++it;
-						}
-					break;
-				}
+			{
+				auto triggerCount = entry->IncrementWasActivatedCount();
+				for (auto it = digitalOutputListeners.begin(); it != digitalOutputListeners.end();)
+					if (it->shouldDelete)
+						it = digitalOutputListeners.erase(it);
+					else
+					{
+						it->listener.OnActivating(output, triggerCount);
+						++it;
+					}
+				break;
+			}
 			case DigitalInputState::WasInactivated:
-				{
-					auto triggerCount = entry->IncrementWasInactivatedCount();
-					for (auto it = digitalOutputListeners.begin(); it != digitalOutputListeners.end();)
-						if (it->shouldDelete)
-							it = digitalOutputListeners.erase(it);
-						else
-						{
-							it->listener.OnInactivating(code, triggerCount);
-							++it;
-						}
-					break;
-				}
+			{
+				auto triggerCount = entry->IncrementWasInactivatedCount();
+				for (auto it = digitalOutputListeners.begin(); it != digitalOutputListeners.end();)
+					if (it->shouldDelete)
+						it = digitalOutputListeners.erase(it);
+					else
+					{
+						it->listener.OnInactivating(output, triggerCount);
+						++it;
+					}
+				break;
+			}
 			}
 		}
 
-		void IOManager::DigitalWrite(IDigitalOutput & output, DigitalValue state)
+		void IOManager::DigitalWrite(IDigitalOutput & output, DigitalValue writeState)
 		{
-			DigitalWrite(&output, state);
+			DigitalWrite(&output, writeState);
 		}
 
 		void IOManager::DigitalWrite(IDigitalOutput * output, DigitalValue state, unsigned long millis)
@@ -382,14 +372,13 @@ namespace Thing
 
 				int currentAnalogValue = input->AnalogRead();
 				int precision = input->GetPrecision();
-				const int code = input->GetCode();
 
 				if (currentAnalogValue == previousAnalogValue)
 					continue;
 
 				if (precision == 0U)
 				{
-					Logger->Warn("The AnalogInput was ignored because precision = 0 is invalid -> code = %d", input->GetCode());
+					Logger->Warn("The AnalogInput was ignored because precision = 0 is invalid -> pointer = %lu", (long)input);
 					continue;
 				}
 
@@ -400,7 +389,7 @@ namespace Thing
 							it = analogInputListeners.erase(it);
 						else
 						{
-							it->listener.OnIncreasingValue(code, currentAnalogValue);
+							it->listener.OnIncreasingValue(input, currentAnalogValue);
 							++it;
 						}
 					entry.LastReadValue = currentAnalogValue;
@@ -412,7 +401,7 @@ namespace Thing
 							it = analogInputListeners.erase(it);
 						else
 						{
-							it->listener.OnDecreasingValue(code, currentAnalogValue);
+							it->listener.OnDecreasingValue(input, currentAnalogValue);
 							++it;
 						}
 					entry.LastReadValue = currentAnalogValue;
@@ -433,7 +422,6 @@ namespace Thing
 				DigitalInputState result = DigitalReadToInputState(previousState, state);
 				entry.LastReadValue = state;
 
-				const int code = input->GetCode();
 				switch (result)
 				{
 				case DigitalInputState::WasActivated:
@@ -444,7 +432,7 @@ namespace Thing
 							it = digitalInputListeners.erase(it);
 						else
 						{
-							it->listener.OnActivating(code, triggerCount);
+							it->listener.OnActivating(input, triggerCount);
 							++it;
 						}
 					break;
@@ -457,7 +445,7 @@ namespace Thing
 							it = digitalInputListeners.erase(it);
 						else
 						{
-							it->listener.OnInactivating(code, triggerCount);
+							it->listener.OnInactivating(input, triggerCount);
 							++it;
 						}
 					break;
@@ -494,17 +482,17 @@ namespace Thing
 			delete this;
 		}
 
-		void IOManager::IOManagerRevertDigitalWrite::OnActivating(int code, unsigned int count)
+		void IOManager::IOManagerRevertDigitalWrite::OnActivating(IDigitalIO* output, unsigned int count)
 		{
-			if (output->GetCode() != code)
+			if (this->output != output)
 				return;
 
 			delete this;
 		}
 
-		void IOManager::IOManagerRevertDigitalWrite::OnInactivating(int code, unsigned int count)
+		void IOManager::IOManagerRevertDigitalWrite::OnInactivating(IDigitalIO* output, unsigned int count)
 		{
-			if (output->GetCode() != code)
+			if (this->output != output)
 				return;
 
 			delete this;

@@ -7,10 +7,8 @@ namespace Thing
 {
 	namespace Core
 	{
-		ThresholdedAnalogInput::ThresholdedAnalogInput(int gpio, int code, int precision) : _gpio(gpio), _threshold(0), _precision(precision)
+		ThresholdedAnalogInput::ThresholdedAnalogInput(int gpio, int precision) : _gpio(gpio), _threshold(0), _precision(precision)
 		{
-			Logger->Debug("Initialize ThresholdedAnalogInput -> Code = %d", code);
-			SetCode(code);
 		}
 
 		ThresholdedAnalogInput::~ThresholdedAnalogInput()
@@ -48,17 +46,6 @@ namespace Thing
 		{
 			return Hardware->AnalogRead(_gpio);
 		}
-
-		int ThresholdedAnalogInput::GetCode() const
-		{
-			return this->_code;
-		}
-
-		void ThresholdedAnalogInput::SetCode(int code)
-		{
-			this->_code = code;
-		}
-
 
 		DigitalValue ThresholdedAnalogInput::privateDigitalRead()
 		{

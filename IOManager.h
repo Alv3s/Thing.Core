@@ -142,8 +142,8 @@ namespace Thing
 
 				virtual void Run() override;
 
-				virtual void OnActivating(int code, unsigned int count) override;
-				virtual void OnInactivating(int code, unsigned int count) override;
+				virtual void OnActivating(IDigitalIO* io, unsigned int count) override;
+				virtual void OnInactivating(IDigitalIO* io, unsigned int count) override;
 			private:
 				IOManager* manager;
 				IDigitalOutput* output;

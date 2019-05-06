@@ -1,5 +1,7 @@
 #pragma once
 
+#include "IAnalogIO.h"
+
 namespace Thing
 {
 	namespace Core
@@ -13,15 +15,15 @@ namespace Thing
 			/// <summary>
 			/// This method is called when the current AnalogInput read value is higher than the previous read value.
 			/// </summary>
-			/// <param name="code">The AnalogInput code.</param>
+			/// <param name="io">The AnalogIO triggering the event.</param>
 			/// <param name="value">The currennt value of AnalogInput.</param>
-			virtual void OnIncreasingValue(int code, int value) = 0;
+			virtual void OnIncreasingValue(IAnalogIO* io, int value) = 0;
 			/// <summary>
 			/// This method is called when the current AnalogInput read value is lower than the previous read value.
 			/// </summary>
-			/// <param name="code">The AnalogInput code.</param>
+			/// <param name="io">The AnalogIO triggering the event.</param>
 			/// <param name="value">The currennt value of AnalogInput.</param>
-			virtual void OnDecreasingValue(int code, int value) = 0;
+			virtual void OnDecreasingValue(IAnalogIO* io, int value) = 0;
 		};
 
 		/// <summary>

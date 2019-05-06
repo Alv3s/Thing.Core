@@ -1,5 +1,4 @@
 #include "MACAddress.h"
-#include <iostream>
 
 namespace Thing
 {

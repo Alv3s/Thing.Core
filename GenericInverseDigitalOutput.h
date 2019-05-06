@@ -10,7 +10,7 @@ namespace Thing
 		class GenericInverseDigitalOutput : public GenericDigitalOutputBase<false>
 		{
 		public: 
-			GenericInverseDigitalOutput(int gpio, int code, DigitalValue defaultValue = DigitalValue::Low);
+			GenericInverseDigitalOutput(int gpio, DigitalValue defaultValue = DigitalValue::Low);
 		};
 	}
 }

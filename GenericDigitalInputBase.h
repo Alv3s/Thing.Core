@@ -11,12 +11,8 @@ namespace Thing
 		class GenericDigitalInputBase : public virtual IDigitalInput
 		{
 		public:
-			GenericDigitalInputBase(int gpio, int code) : _gpio(gpio)
+			GenericDigitalInputBase(int gpio) : _gpio(gpio)
 			{
-				Logger->Debug("Initialize GenericDigitalInput -> Code = %d", code);
-
-				SetCode(code);
-
 				Hardware->ConfigurePin(_gpio, PinMode::Input);
 			}
 
@@ -30,19 +26,8 @@ namespace Thing
 				return (DigitalValue)((uint8_t)Hardware->DigitalRead(_gpio) ^ LOGIC);
 			}
 
-			virtual int GetCode() const override
-			{
-				return this->_code;
-			}
-
-			virtual void SetCode(int code) override
-			{
-				this->_code = code;
-			}
-
 		private:
 			const int _gpio;
-			int _code;
 		};
 	}
 }

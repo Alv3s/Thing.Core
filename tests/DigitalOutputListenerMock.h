@@ -9,8 +9,8 @@ namespace Thing {
 			class DigitalOutputListenerMock : public virtual Thing::Core::IDigitalOutputListener
 			{
 			public:
-				MOCK_METHOD2(OnActivating, void(int code, unsigned int count));
-				MOCK_METHOD2(OnInactivating, void(int code, unsigned int count));
+				MOCK_METHOD2(OnActivating, void(IDigitalIO* io, unsigned int count));
+				MOCK_METHOD2(OnInactivating, void(IDigitalIO* io, unsigned int count));
 			};
 		}
 	}

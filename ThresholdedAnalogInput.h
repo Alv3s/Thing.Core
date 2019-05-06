@@ -9,7 +9,7 @@ namespace Thing
 		class ThresholdedAnalogInput : public virtual IThresholdedAnalogInput
 		{
 		public:
-			ThresholdedAnalogInput(int _gpio, int code, int precision);
+			ThresholdedAnalogInput(int _gpio, int precision);
 			~ThresholdedAnalogInput();
 
 			void SetThresholdHigherThan(int value);
@@ -18,12 +18,8 @@ namespace Thing
 			virtual DigitalValue DigitalRead() override;
 			virtual unsigned int GetPrecision() override;
 			virtual int AnalogRead() override;
-
-			virtual int GetCode() const override;
-			virtual void SetCode(int code) override;
 		private:
 			const int _gpio;
-			int _code;
 			unsigned int _precision;
 
 			DigitalValue privateDigitalRead();

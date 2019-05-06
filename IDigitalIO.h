@@ -7,8 +7,10 @@ namespace Thing
 		class IDigitalIO
 		{
 		public:
-			virtual int GetCode() const = 0;
-			virtual void SetCode(int code) = 0;
+			friend bool operator== (const IDigitalIO& c1, const IDigitalIO& c2)
+			{
+				return &c1 == &c2;
+			}
 		};
 	}
 }

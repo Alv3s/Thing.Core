@@ -11,13 +11,10 @@ namespace Thing
 		class GenericDigitalOutputBase : public virtual IDigitalOutput
 		{
 		public:
-			GenericDigitalOutputBase(int gpio, int code, DigitalValue defaultValue = DigitalValue::Low) : _gpio(gpio)
+			GenericDigitalOutputBase(int gpio, DigitalValue defaultValue = DigitalValue::Low) : _gpio(gpio)
 			{
-				Logger->Debug("Initialize GenericDigitalOutput -> Code = %d", code);
-
 				Hardware->ConfigurePin(_gpio, PinMode::Output);
 				DigitalWrite(defaultValue);
-				SetCode(code);
 			}
 
 			virtual ~GenericDigitalOutputBase()
@@ -36,19 +33,8 @@ namespace Thing
 				return (DigitalValue)_currentValue;
 			}
 
-			virtual int GetCode() const override
-			{
-				return this->_code;
-			}
-
-			virtual void SetCode(int code) override
-			{
-				this->_code = code;
-			}
-
 		private:
 			const int _gpio;
-			int _code;
 
 			bool _currentValue;
 		};
