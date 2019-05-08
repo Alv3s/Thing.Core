@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint> 
+#include <string>
 
 namespace Thing
 {
@@ -15,6 +16,7 @@ namespace Thing
 
 			uint8_t GetOctet(int index);
 			uint8_t* GetAddress();
+			std::string AsString(char delimiter);
 		private:
 			uint8_t address[6];
 		};

@@ -1,4 +1,5 @@
 #include "MACAddress.h"
+#include <cstdio>
 
 namespace Thing
 {
@@ -33,6 +34,13 @@ namespace Thing
 		uint8_t* MACAddress::GetAddress()
 		{
 			return address;
+		}
+
+		std::string MACAddress::AsString(char delimiter)
+		{
+			char str[18];
+			sprintf(str, "%02x%c%02x%c%02x%c%02x%c%02x%c%02x\0", address[0], delimiter, address[1], delimiter, address[2], delimiter, address[3], delimiter, address[4], delimiter, address[5]);
+			return std::string(str);
 		}
 	}
 }

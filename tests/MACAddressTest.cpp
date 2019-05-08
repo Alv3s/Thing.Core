@@ -57,6 +57,37 @@ namespace Thing {
 
 				ASSERT_TRUE(memcmp(address, macAddress.GetAddress(), 6) == 0);
 			}
+
+			TEST_F(MACAddressTest, AsString)
+			{
+				const uint8_t octet1 = 0X0A;
+				const uint8_t octet2 = 0x0B;
+				const uint8_t octet3 = 0x0C;
+				const uint8_t octet4 = 0x0D;
+				const uint8_t octet5 = 0x0E;
+				const uint8_t octet6 = 0x0F;
+
+				const uint8_t address[] = { octet1, octet2, octet3, octet4, octet5, octet6 };
+
+				MACAddress macAddress((uint8_t*)address);
+
+				char delimiter[] = { '-', ':' };
+				for (int i = 0; i < sizeof(delimiter) / sizeof(char); ++i)
+				{
+					std::string result = "0a";
+					result += delimiter[i];
+					result += "0b";
+					result += delimiter[i];
+					result += "0c";
+					result += delimiter[i];
+					result += "0d";
+					result += delimiter[i];
+					result += "0e";
+					result += delimiter[i];
+					result += "0f";
+					ASSERT_EQ(result, macAddress.AsString(delimiter[i]));
+				}
+			}
 		}
 	}
 }
