@@ -10,7 +10,8 @@ namespace Thing
 			outputMonitor(manager),
 			io(input),
 			actionType(action),
-			timePressedMillis(0)
+			timePressedMillis(0),
+			task(this)
 		{
 			manager.AddDigitalInput(input);
 		}
@@ -19,13 +20,15 @@ namespace Thing
 			outputMonitor(manager), 
 			io(output), 
 			actionType(action),
-			timePressedMillis(0)
+			timePressedMillis(0),
+			task(this)
 		{
 			manager.AddDigitalOutput(output);
 		}
 
 		DigitalIOMonitor::~DigitalIOMonitor()
 		{
+			TaskScheduler->Detach(task);
 		}
 
 
@@ -38,9 +41,14 @@ namespace Thing
 			if (timePressedMillis)
 			{
 				if (actionType == DigitalInputState::WasActivated)
-					TaskScheduler->AttachOnce(timePressedMillis, this);
+				{
+					if (task == this)
+						TaskScheduler->AttachOnce(timePressedMillis, task);
+					else
+						TaskScheduler->AttachPeriodic(timePressedMillis, task);
+				}
 				else
-					TaskScheduler->Detach(this);
+					TaskScheduler->Detach(task);
 				return;
 			}
 
@@ -56,9 +64,14 @@ namespace Thing
 			if (timePressedMillis)
 			{
 				if (actionType == DigitalInputState::WasInactivated)
-					TaskScheduler->AttachOnce(timePressedMillis, this);
+				{
+					if (task == this)
+						TaskScheduler->AttachOnce(timePressedMillis, task);
+					else
+						TaskScheduler->AttachPeriodic(timePressedMillis, task);
+				}
 				else
-					TaskScheduler->Detach(this);
+					TaskScheduler->Detach(task);
 				return;
 			}
 
@@ -103,6 +116,22 @@ namespace Thing
 		{
 			timePressedMillis = millis;
 			return *this;
+		}
+
+		IActionableIOMonitor& DigitalIOMonitor::Each(int millis)
+		{
+			timePressedMillis = millis;
+			return *this;
+		}
+
+		void DigitalIOMonitor::Perform(IRunnable& runnable)
+		{
+			Perform(&runnable);
+		}
+
+		void DigitalIOMonitor::Perform(IRunnable* runnable)
+		{
+			task = runnable;
 		}
 
 		void DigitalIOMonitor::Run()

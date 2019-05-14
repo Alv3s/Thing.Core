@@ -11,6 +11,7 @@ namespace Thing
 	{
 		class DigitalIOMonitor :	public virtual IDigitalIOMonitor, 
 									public virtual ITimedDigitalIOMonitor, 
+									public virtual IActionableIOMonitor,
 									private virtual IRunnable, 
 									private virtual IDigitalInputListener, 
 									private virtual IDigitalOutputListener
@@ -29,6 +30,10 @@ namespace Thing
 			IDigitalOutputMonitor& SetLow(IDigitalOutput* output) override;
 
 			IDigitalIOMonitor& For(int millis) override;
+			IActionableIOMonitor& Each(int millis) override;
+
+			void Perform(IRunnable& runnable) override;
+			void Perform(IRunnable* runnable) override;
 		private:
 			DigitalIOMonitor(class IOManager& manager, IDigitalInput* input, DigitalInputState action);
 			DigitalIOMonitor(class IOManager& manager, IDigitalOutput* output, DigitalInputState action);
@@ -37,6 +42,7 @@ namespace Thing
 			unsigned long int timePressedMillis;
 			const IDigitalIO* io;
 			const DigitalInputState actionType;
+			IRunnable* task;
 
 
 			virtual void OnActivating(IDigitalIO* io, unsigned int count) override;

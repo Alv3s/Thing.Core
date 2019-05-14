@@ -9,6 +9,7 @@
 #include "AnalogInputMock.h"
 #include "AppContainerMock.h"
 #include "../AppTaskScheduler.h"
+#include "RunnableMock.h"
 
 using ::testing::Return;
 using ::testing::_;
@@ -2057,6 +2058,126 @@ namespace Thing {
 						Hardware->Delay(1);
 						Manager.Process();
 					}
+			}
+
+			TEST_F(IOManagerTest, ITimedDigitalIOMonitorInputActiveEachViaReference)
+			{
+				const long time[] = { 100, 200, 300 };
+				const int testCount = 4;
+				for (int i = 0; i < sizeof(time) / sizeof(long); ++i)
+				{
+					Thing::Core::IOManager Manager;
+
+					DigitalInputMock input;
+					EXPECT_CALL(input, DigitalRead()).WillOnce(Return(Thing::Core::DigitalValue::Low));
+					Manager.AddDigitalInput(input);
+
+					RunnableMock runnable;
+					Manager.OnActive(input).Each(time[i]).Perform(runnable);
+
+					for (int j = 0; j < testCount; ++j)
+					{
+						EXPECT_CALL(runnable, Run()).Times(0);
+						EXPECT_CALL(input, DigitalRead()).WillRepeatedly(Return(Thing::Core::DigitalValue::High));
+						Manager.Process();
+						Hardware->Delay(time[i] - 1);
+						Manager.Process();
+						EXPECT_CALL(runnable, Run()).Times(1);
+						Hardware->Delay(1);
+						EXPECT_CALL(input, DigitalRead()).WillOnce(Return(Thing::Core::DigitalValue::Low));
+						Manager.Process();
+					}
+				}
+			}
+
+			TEST_F(IOManagerTest, ITimedDigitalIOMonitorInputActiveEachViaPointer)
+			{
+				const long time[] = { 100, 200, 300 };
+				const int testCount = 4;
+				for (int i = 0; i < sizeof(time) / sizeof(long); ++i)
+				{
+					Thing::Core::IOManager Manager;
+
+					DigitalInputMock input;
+					EXPECT_CALL(input, DigitalRead()).WillOnce(Return(Thing::Core::DigitalValue::Low));
+					Manager.AddDigitalInput(input);
+
+					RunnableMock runnable;
+					Manager.OnActive(input).Each(time[i]).Perform(&runnable);
+
+					for (int j = 0; j < testCount; ++j)
+					{
+						EXPECT_CALL(runnable, Run()).Times(0);
+						EXPECT_CALL(input, DigitalRead()).WillRepeatedly(Return(Thing::Core::DigitalValue::High));
+						Manager.Process();
+						Hardware->Delay(time[i] - 1);
+						Manager.Process();
+						EXPECT_CALL(runnable, Run()).Times(1);
+						Hardware->Delay(1);
+						EXPECT_CALL(input, DigitalRead()).WillOnce(Return(Thing::Core::DigitalValue::Low));
+						Manager.Process();
+					}
+				}
+			}
+
+			TEST_F(IOManagerTest, ITimedDigitalIOMonitorInputInactiveEachViaReference)
+			{
+				const long time[] = { 100, 200, 300 };
+				const int testCount = 4;
+				for (int i = 0; i < sizeof(time) / sizeof(long); ++i)
+				{
+					Thing::Core::IOManager Manager;
+
+					DigitalInputMock input;
+					EXPECT_CALL(input, DigitalRead()).WillOnce(Return(Thing::Core::DigitalValue::High));
+					Manager.AddDigitalInput(input);
+
+					RunnableMock runnable;
+					Manager.OnInactive(input).Each(time[i]).Perform(runnable);
+
+					for (int j = 0; j < testCount; ++j)
+					{
+						EXPECT_CALL(runnable, Run()).Times(0);
+						EXPECT_CALL(input, DigitalRead()).WillRepeatedly(Return(Thing::Core::DigitalValue::Low));
+						Manager.Process();
+						Hardware->Delay(time[i] - 1);
+						Manager.Process();
+						EXPECT_CALL(runnable, Run()).Times(1);
+						Hardware->Delay(1);
+						EXPECT_CALL(input, DigitalRead()).WillOnce(Return(Thing::Core::DigitalValue::High));
+						Manager.Process();
+					}
+				}
+			}
+
+			TEST_F(IOManagerTest, ITimedDigitalIOMonitorInputInactiveEachViaPointer)
+			{
+				const long time[] = { 100, 200, 300 };
+				const int testCount = 4;
+				for (int i = 0; i < sizeof(time) / sizeof(long); ++i)
+				{
+					Thing::Core::IOManager Manager;
+
+					DigitalInputMock input;
+					EXPECT_CALL(input, DigitalRead()).WillOnce(Return(Thing::Core::DigitalValue::High));
+					Manager.AddDigitalInput(input);
+
+					RunnableMock runnable;
+					Manager.OnInactive(input).Each(time[i]).Perform(&runnable);
+
+					for (int j = 0; j < testCount; ++j)
+					{
+						EXPECT_CALL(runnable, Run()).Times(0);
+						EXPECT_CALL(input, DigitalRead()).WillRepeatedly(Return(Thing::Core::DigitalValue::Low));
+						Manager.Process();
+						Hardware->Delay(time[i] - 1);
+						Manager.Process();
+						EXPECT_CALL(runnable, Run()).Times(1);
+						Hardware->Delay(1);
+						EXPECT_CALL(input, DigitalRead()).WillOnce(Return(Thing::Core::DigitalValue::High));
+						Manager.Process();
+					}
+				}
 			}
 #pragma endregion
 
