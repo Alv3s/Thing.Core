@@ -8,7 +8,14 @@ namespace Thing
 {
 	namespace Core
 	{
-		class IDigitalIOMonitor
+		class IActionableIOMonitor
+		{
+		public:
+			virtual void Run(IRunnable& runnable) = 0;
+			virtual void Run(IRunnable* runnable) = 0;
+		};
+
+		class IDigitalIOMonitor : public virtual IActionableIOMonitor
 		{
 		public:
 			virtual void Toggle(IDigitalOutput& output) = 0;
@@ -21,18 +28,11 @@ namespace Thing
 			virtual IDigitalOutputMonitor& SetLow(IDigitalOutput* output) = 0;
 		};
 
-		class IActionableIOMonitor
-		{
-		public:
-			virtual void Perform(IRunnable& runnable) = 0;
-			virtual void Perform(IRunnable* runnable) = 0;
-		};
-
 		class ITimedDigitalIOMonitor
 		{
 		public:
 			virtual IDigitalIOMonitor& For(int millis) = 0;
-			virtual IActionableIOMonitor& Each(int millis) = 0;
+			virtual IDigitalIOMonitor& Each(int millis) = 0;
 		};
 
 	}

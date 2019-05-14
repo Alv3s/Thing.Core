@@ -11,7 +11,8 @@ namespace Thing
 			io(input),
 			actionType(action),
 			timePressedMillis(0),
-			task(this)
+			task(this),
+			periodic(false)
 		{
 			manager.AddDigitalInput(input);
 		}
@@ -21,7 +22,8 @@ namespace Thing
 			io(output), 
 			actionType(action),
 			timePressedMillis(0),
-			task(this)
+			task(this),
+			periodic(false)
 		{
 			manager.AddDigitalOutput(output);
 		}
@@ -42,10 +44,10 @@ namespace Thing
 			{
 				if (actionType == DigitalInputState::WasActivated)
 				{
-					if (task == this)
-						TaskScheduler->AttachOnce(timePressedMillis, task);
-					else
+					if (periodic)
 						TaskScheduler->AttachPeriodic(timePressedMillis, task);
+					else
+						TaskScheduler->AttachOnce(timePressedMillis, task);
 				}
 				else
 					TaskScheduler->Detach(task);
@@ -53,7 +55,7 @@ namespace Thing
 			}
 
 			if (actionType == DigitalInputState::WasActivated)
-				outputMonitor.Action();
+				task->Run();
 		}
 
 		void DigitalIOMonitor::OnInactivating(IDigitalIO* io, unsigned int count)
@@ -65,10 +67,10 @@ namespace Thing
 			{
 				if (actionType == DigitalInputState::WasInactivated)
 				{
-					if (task == this)
-						TaskScheduler->AttachOnce(timePressedMillis, task);
-					else
+					if (periodic)
 						TaskScheduler->AttachPeriodic(timePressedMillis, task);
+					else
+						TaskScheduler->AttachOnce(timePressedMillis, task);
 				}
 				else
 					TaskScheduler->Detach(task);
@@ -76,7 +78,7 @@ namespace Thing
 			}
 
 			if (actionType == DigitalInputState::WasInactivated)
-				outputMonitor.Action();
+				task->Run();
 		}
 #pragma endregion
 
@@ -118,18 +120,19 @@ namespace Thing
 			return *this;
 		}
 
-		IActionableIOMonitor& DigitalIOMonitor::Each(int millis)
+		IDigitalIOMonitor& DigitalIOMonitor::Each(int millis)
 		{
 			timePressedMillis = millis;
+			periodic = true;
 			return *this;
 		}
 
-		void DigitalIOMonitor::Perform(IRunnable& runnable)
+		void DigitalIOMonitor::Run(IRunnable& runnable)
 		{
-			Perform(&runnable);
+			Run(&runnable);
 		}
 
-		void DigitalIOMonitor::Perform(IRunnable* runnable)
+		void DigitalIOMonitor::Run(IRunnable* runnable)
 		{
 			task = runnable;
 		}
