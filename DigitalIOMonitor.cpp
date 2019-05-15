@@ -11,7 +11,8 @@ namespace Thing
 			io(input),
 			actionType(action),
 			timePressedMillis(0),
-			task(this),
+			callback(DigitalIOMonitor::RunTask),
+			objCallback(this),
 			periodic(false)
 		{
 			manager.AddDigitalInput(input);
@@ -22,7 +23,8 @@ namespace Thing
 			io(output), 
 			actionType(action),
 			timePressedMillis(0),
-			task(this),
+			callback(DigitalIOMonitor::RunTask),
+			objCallback(this), 
 			periodic(false)
 		{
 			manager.AddDigitalOutput(output);
@@ -30,7 +32,7 @@ namespace Thing
 
 		DigitalIOMonitor::~DigitalIOMonitor()
 		{
-			TaskScheduler->Detach(task);
+			TaskScheduler->Detach(this);
 		}
 
 
@@ -45,17 +47,17 @@ namespace Thing
 				if (actionType == DigitalInputState::WasActivated)
 				{
 					if (periodic)
-						TaskScheduler->AttachPeriodic(timePressedMillis, task);
+						TaskScheduler->AttachPeriodic(timePressedMillis, this);
 					else
-						TaskScheduler->AttachOnce(timePressedMillis, task);
+						TaskScheduler->AttachOnce(timePressedMillis, this);
 				}
 				else
-					TaskScheduler->Detach(task);
+					TaskScheduler->Detach(this);
 				return;
 			}
 
 			if (actionType == DigitalInputState::WasActivated)
-				task->Run();
+				this->Run();
 		}
 
 		void DigitalIOMonitor::OnInactivating(IDigitalIO* io, unsigned int count)
@@ -68,17 +70,17 @@ namespace Thing
 				if (actionType == DigitalInputState::WasInactivated)
 				{
 					if (periodic)
-						TaskScheduler->AttachPeriodic(timePressedMillis, task);
+						TaskScheduler->AttachPeriodic(timePressedMillis, this);
 					else
-						TaskScheduler->AttachOnce(timePressedMillis, task);
+						TaskScheduler->AttachOnce(timePressedMillis, this);
 				}
 				else
-					TaskScheduler->Detach(task);
+					TaskScheduler->Detach(this);
 				return;
 			}
 
 			if (actionType == DigitalInputState::WasInactivated)
-				task->Run();
+				this->Run();
 		}
 #pragma endregion
 
@@ -134,12 +136,32 @@ namespace Thing
 
 		void DigitalIOMonitor::Run(IRunnable* runnable)
 		{
-			task = runnable;
+			objCallback = runnable;
+		}
+
+		void DigitalIOMonitor::Run(RunnableCallback f)
+		{
+			Run(f, NULL);
+		}
+
+		void DigitalIOMonitor::Run(RunnableCallback f, void* obj)
+		{
+			callback = f;
+			objCallback = obj;
 		}
 
 		void DigitalIOMonitor::Run()
 		{
-			outputMonitor.Action();
+			if (objCallback == this)
+				outputMonitor.Action();
+			else
+				callback(objCallback);
+		}
+
+		void DigitalIOMonitor::RunTask(void* obj)
+		{
+			IRunnable* runnable = static_cast<IRunnable*>(obj);
+			runnable->Run();
 		}
 	}
 }

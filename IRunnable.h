@@ -1,9 +1,13 @@
 #pragma once
 
+#include <functional>
+
 namespace Thing
 {
 	namespace Core
 	{		
+		using RunnableCallback = std::function<void (void*)>;
+
 		/// <summary>
 		/// A Runnable interface.
 		/// </summary>

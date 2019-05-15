@@ -34,6 +34,9 @@ namespace Thing
 
 			void Run(IRunnable& runnable) override;
 			void Run(IRunnable* runnable) override;
+			void Run(RunnableCallback f) override;
+			void Run(RunnableCallback f, void* obj) override;
+
 		private:
 			DigitalIOMonitor(class IOManager& manager, IDigitalInput* input, DigitalInputState action);
 			DigitalIOMonitor(class IOManager& manager, IDigitalOutput* output, DigitalInputState action);
@@ -42,13 +45,16 @@ namespace Thing
 			unsigned long int timePressedMillis;
 			const IDigitalIO* io;
 			const DigitalInputState actionType;
-			IRunnable* task;
+			RunnableCallback callback;
+			void* objCallback;
 			bool periodic;
 
 			virtual void OnActivating(IDigitalIO* io, unsigned int count) override;
 			virtual void OnInactivating(IDigitalIO* io, unsigned int count) override;
 
 			void Run() override;
+
+			static void RunTask(void* obj);
 		};
 	}
 }

@@ -13,6 +13,8 @@ namespace Thing
 		public:
 			virtual void Run(IRunnable& runnable) = 0;
 			virtual void Run(IRunnable* runnable) = 0;
+			virtual void Run(RunnableCallback f) = 0;
+			virtual void Run(RunnableCallback f, void* obj) = 0;
 		};
 
 		class IDigitalIOMonitor : public virtual IActionableIOMonitor

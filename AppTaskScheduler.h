@@ -63,6 +63,9 @@ namespace Thing
 			/// <param name="runnable">The runnable task.</param>
 			virtual void AttachOnce(unsigned long milli, Thing::Core::IRunnable& runnable) override;
 
+			virtual void AttachOnce(unsigned long milli, Thing::Core::RunnableCallback runnable) override;
+			virtual void AttachOnce(unsigned long milli, Thing::Core::RunnableCallback runnable, void* obj) override;
+
 			/// <summary>
 			/// Attaches a Task to run periodically.
 			/// </summary>
@@ -75,6 +78,9 @@ namespace Thing
 			/// <param name="milli">The millisseconds interval which this app will periodically run.</param>
 			/// <param name="runnable">The runnable task.</param>
 			virtual void AttachPeriodic(unsigned long milli, Thing::Core::IRunnable& runnable) override;
+
+			virtual void AttachPeriodic(unsigned long milli, Thing::Core::RunnableCallback runnable) override;
+			virtual void AttachPeriodic(unsigned long milli, Thing::Core::RunnableCallback runnable, void* obj) override;
 
 			/// <summary>
 			/// Detaches a task, cancelling further executions.
@@ -94,9 +100,12 @@ namespace Thing
 				unsigned long scheduledTimestamp;
 				unsigned long interval;
 				AppTaskStatus status;
-				IRunnable* runnable;
+				RunnableCallback runnableFunc;
+				void* obj;
 			};
 			std::list<ScheduledTask> tasks;
+
+			static void RunTask(void* obj);
 		};
 	}
 }

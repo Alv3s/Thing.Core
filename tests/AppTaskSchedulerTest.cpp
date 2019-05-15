@@ -54,11 +54,74 @@ namespace Thing {
 				hardwareMock.Delay(1);
 				taskScheduler.OnLoop();
 
-				//Checks if the task will run anymore
+				//Checks if the task will not run anymore
 				EXPECT_CALL(runnable, Run()).Times(0);
 				hardwareMock.Delay(2 * millis);
 				taskScheduler.OnLoop();
 			}
+
+			TEST_F(AppTaskSchedulerTest, AttachOnceRunnableCallback)
+			{
+				const int millis = 100;
+
+				AppTaskScheduler taskScheduler(appContainerMock);
+
+				testing::MockFunction<void(void*)> callbackFunctionMock;
+				taskScheduler.AttachOnce(millis, [&callbackFunctionMock](void* obj) {
+					callbackFunctionMock.Call(obj);
+				});
+
+				//Checks if the task will not run right away
+				EXPECT_CALL(callbackFunctionMock, Call(_)).Times(0);
+				taskScheduler.OnLoop();
+
+				//Checks if the task will not run before the time has passed
+				EXPECT_CALL(callbackFunctionMock, Call(_)).Times(0);
+				hardwareMock.Delay(millis - 1);
+				taskScheduler.OnLoop();
+
+				//Checks if the task will run at least exactly after the interval has passed
+				EXPECT_CALL(callbackFunctionMock, Call(NULL)).Times(1);
+				hardwareMock.Delay(1);
+				taskScheduler.OnLoop();
+
+				//Checks if the task will not run anymore
+				EXPECT_CALL(callbackFunctionMock, Call(_)).Times(0);
+				hardwareMock.Delay(2 * millis);
+				taskScheduler.OnLoop();
+			}
+
+			TEST_F(AppTaskSchedulerTest, AttachOnceRunnableCallbackWithObject)
+			{
+				const int millis = 100;
+
+				AppTaskScheduler taskScheduler(appContainerMock);
+
+				testing::MockFunction<void(void*)> callbackFunctionMock;
+				taskScheduler.AttachOnce(millis, [&callbackFunctionMock](void* obj) {
+					callbackFunctionMock.Call(obj);
+				}, this);
+
+				//Checks if the task will not run right away
+				EXPECT_CALL(callbackFunctionMock, Call(_)).Times(0);
+				taskScheduler.OnLoop();
+
+				//Checks if the task will not run before the time has passed
+				EXPECT_CALL(callbackFunctionMock, Call(_)).Times(0);
+				hardwareMock.Delay(millis - 1);
+				taskScheduler.OnLoop();
+
+				//Checks if the task will run at least exactly after the interval has passed
+				EXPECT_CALL(callbackFunctionMock, Call(this)).Times(1);
+				hardwareMock.Delay(1);
+				taskScheduler.OnLoop();
+
+				//Checks if the task will not run anymore
+				EXPECT_CALL(callbackFunctionMock, Call(_)).Times(0);
+				hardwareMock.Delay(2 * millis);
+				taskScheduler.OnLoop();
+			}
+
 
 			/// <summary>
 			/// Tests if a task when scheduled, will be run once after the time has pass.
@@ -175,6 +238,93 @@ namespace Thing {
 			}
 
 			/// <summary>
+			/// Tests if a task when scheduled, will be run periodically after the time has pass.
+			/// </summary>
+			TEST_F(AppTaskSchedulerTest, AttachPeriodicRunnableCallback)
+			{
+				const int millis = 100;
+				const int retries = 4;
+
+				AppTaskScheduler taskScheduler(appContainerMock);
+
+				testing::MockFunction<void(void*)> callbackFunctionMock;
+				taskScheduler.AttachPeriodic(millis, [&callbackFunctionMock](void* obj) {
+					callbackFunctionMock.Call(obj);
+				});
+
+				//Checks if the task will not run right away
+				EXPECT_CALL(callbackFunctionMock, Call(_)).Times(0);
+				taskScheduler.OnLoop();
+
+				//Checks if the task will not run before the time has passed
+				EXPECT_CALL(callbackFunctionMock, Call(_)).Times(0);
+				hardwareMock.Delay(millis - 1);
+				taskScheduler.OnLoop();
+
+				//Checks if the task will run at least exactly after the interval has passed
+				EXPECT_CALL(callbackFunctionMock, Call(NULL)).Times(1);
+				hardwareMock.Delay(1);
+				taskScheduler.OnLoop();
+
+				for (int i = 0; i < retries; ++i)
+				{
+					//Checks if the task will not run before the time has passed
+					EXPECT_CALL(callbackFunctionMock, Call(_)).Times(0);
+					hardwareMock.Delay(millis - 1);
+					taskScheduler.OnLoop();
+
+					//Checks if the task will run at least exactly after the interval has passed
+					EXPECT_CALL(callbackFunctionMock, Call(NULL)).Times(1);
+					hardwareMock.Delay(1);
+					taskScheduler.OnLoop();
+				}
+			}
+
+			/// <summary>
+			/// Tests if a task when scheduled, will be run periodically after the time has pass.
+			/// </summary>
+			TEST_F(AppTaskSchedulerTest, AttachPeriodicRunnableCallbackWithObj)
+			{
+				const int millis = 100;
+				const int retries = 4;
+
+				AppTaskScheduler taskScheduler(appContainerMock);
+
+				testing::MockFunction<void(void*)> callbackFunctionMock;
+				taskScheduler.AttachPeriodic(millis, [&callbackFunctionMock](void* obj) {
+					callbackFunctionMock.Call(obj);
+				}, this);
+
+				//Checks if the task will not run right away
+				EXPECT_CALL(callbackFunctionMock, Call(_)).Times(0);
+				taskScheduler.OnLoop();
+
+				//Checks if the task will not run before the time has passed
+				EXPECT_CALL(callbackFunctionMock, Call(_)).Times(0);
+				hardwareMock.Delay(millis - 1);
+				taskScheduler.OnLoop();
+
+				//Checks if the task will run at least exactly after the interval has passed
+				EXPECT_CALL(callbackFunctionMock, Call(this)).Times(1);
+				hardwareMock.Delay(1);
+				taskScheduler.OnLoop();
+
+				for (int i = 0; i < retries; ++i)
+				{
+					//Checks if the task will not run before the time has passed
+					EXPECT_CALL(callbackFunctionMock, Call(_)).Times(0);
+					hardwareMock.Delay(millis - 1);
+					taskScheduler.OnLoop();
+
+					//Checks if the task will run at least exactly after the interval has passed
+					EXPECT_CALL(callbackFunctionMock, Call(this)).Times(1);
+					hardwareMock.Delay(1);
+					taskScheduler.OnLoop();
+				}
+			}
+
+
+			/// <summary>
 			/// Tests if a task is detached. It will schedule a periodic taks and cancel it to be sure that the task was detached.
 			/// </summary>
 			TEST_F(AppTaskSchedulerTest, DetachViaReferenceTest)
@@ -234,7 +384,7 @@ namespace Thing {
 				RunnableMock runnable;
 				taskScheduler.AttachPeriodic(millis, runnable);
 
-				ASSERT_NO_FATAL_FAILURE(taskScheduler.Detach(NULL));
+				ASSERT_NO_FATAL_FAILURE(taskScheduler.Detach((Thing::Core::IRunnable*)NULL));
 			}
 
 			TEST_F(AppTaskSchedulerTest, DetachRunonceTaskInsideOwnRun)
