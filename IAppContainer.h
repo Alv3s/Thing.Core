@@ -26,6 +26,17 @@ namespace Thing
 		{
 		public:
 			/// <summary>
+			/// Sets the container to run the provided IApp.
+			/// </summary>
+			/// <param name="app">The app to be run.</param>
+			virtual void SetApp(IApp* app) = 0;
+			/// <summary>
+			/// Sets the container to run the provided IApp.
+			/// </summary>
+			/// <param name="app">The app to be run.</param>
+			virtual void SetApp(IApp& app) = 0;
+
+			/// <summary>
 			/// Adds a listener to this IApp. The listener will have code called after each Loop call.
 			/// </summary>
 			/// <param name="listener">The listener.</param>

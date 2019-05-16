@@ -4,6 +4,7 @@
 #include "ILoggerListener.h"
 #include <list>
 #include <stdarg.h>
+#include <stdio.h>
 
 namespace Thing
 {
