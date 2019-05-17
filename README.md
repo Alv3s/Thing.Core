@@ -1,6 +1,6 @@
 # Thing.Core
 
-Thing.Core is an IoT framework created for productivity over performance. With the rise of faster microcontrollers, such as ESP, code can be made in such way that losing a bit of performance over simplicity might be a good approach. Thing.Core was built to abstract completly from the machine you are programming, and you could even use it to run on Windows or even Linux, enabling you to mock your microcontroller and even debug your code in a Windows/Linux environment.
+Thing.Core is an IoT framework created for productivity over performance. With the rise of faster microcontrollers, such as ESP, code can be made in such way that losing a bit of performance over simplicity might be a good approach. Thing.Core was built to abstract completely from the machine you are programming, and you could even use it to run on Windows or even Linux, enabling you to mock your microcontroller and even debug your code in a Windows/Linux environment.
 
 ## How does it work?
 Thing.Core, by itself isn't capable on anything extraordinary, so it should be used on top of another framework such as Arduino. The tutorials ahead focus on the use of the arduino, but they can also be used with any other framework as long as you tell Thing.Core how to deal with your target framework.
@@ -13,32 +13,32 @@ Thing.Core relies on the following things:
   
 ## Why should I use it?
 Although Thing.Core is something new and may be probably missing a few features, it allow us to easily program stuff. A few things Thing.Core can do are:
-  - You can program with a single line to toogle a led every time you press a button:
-  ```
+  - You can program with a single line to toggle a led every time you press a button:
+  ```cpp
   Manager.OnActivating(button).Toggle(led);
   ```
   - You can schedule a function to run when a button is pressed:
-  ```
+  ```cpp
   Manager.OnActivating(button).Run([](void* obj){
     //Code here will run automatically when the button is pressed.
   });
   ```
   - You can schedule a function to run when an output turns inactive:
-  ```
+  ```cpp
   Manager.OnInactivating(output).Run([](void* obj){
     //Code here will run automatically when output changes from High to Low.
   });
   ```
   - You can turn off a relay when another relay is turned on (useful for blinds):
-  ```
+  ```cpp
   Manager.OnActivating(someRelay).SetLow(anotherRelay);
   ```
   - You can even program in a single line to turn a LED on only after 5 seconds since a button has been pressed:
-  ```
+  ```cpp
   Manager.OnActive(button).For(5000).SetHigh(led);
   ```
   - You can schedule things:
-  ```
+  ```cpp
   TaskScheduler.AttachOnce(5000, [](void* obj){
     //Code here will be run after 5 seconds
   });
@@ -57,7 +57,7 @@ Thing.Core will handle most of our setup and loop for us, but we will need to te
 
 Paste the following code inside ```App.h```:
 
-```
+```cpp
 #pragma once
 
 #include "IApp.h"
@@ -91,7 +91,7 @@ Also, we have declared the following:
 - ```Thing::Core::GenericDigitalOutput led;``` we have declared a General Purpose Output that will represent our led.
 
 Paste the following code inside ```App.cpp```:
-```
+```cpp
 #include "App.h"
 
 App::App() :
@@ -127,7 +127,7 @@ In the function ```void App::Setup()``` we will find the following lines:
 In the function ```void App::Loop()``` we will only find the line ```Manager.Process();```. This line will do everything for you. The IOManager works in a non-blocking way, meaning that you can add lines afterwards or bellow and still be sure that ```Manager.Process()``` will not be waiting for something to happen.
 
 One last thing, you should change your ```main.cpp``` to the following:
-```
+```cpp
 #include "ArduinoMain.h"
 #include "App.h"
 
