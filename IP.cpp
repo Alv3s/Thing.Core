@@ -1,4 +1,5 @@
 #include "IP.h"
+#include <cstdio>
 
 namespace Thing
 {
@@ -25,6 +26,13 @@ namespace Thing
 		uint32_t IPAddress::GetIP()
 		{
 			return ip;
+		}
+
+		std::string IPAddress::ToString()
+		{
+			char result[16];
+			sprintf(result, "%d.%d.%d.%d", GetOctet(0), GetOctet(1), GetOctet(2), GetOctet(3));
+			return std::string(result);
 		}
 	}
 }
