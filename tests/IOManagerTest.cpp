@@ -3,12 +3,12 @@
 #include "DigitalOutputListenerMock.h"
 #include "DigitalInputMock.h"
 #include "DigitalOutputMock.h"
-#include "../IoC.h"
-#include "../IOManager.h"
+#include "../Thing.Core/IoC.h"
+#include "../Thing.Core/IOManager.h"
 #include "AnalogInputListenerMock.h"
 #include "AnalogInputMock.h"
 #include "AppContainerMock.h"
-#include "../AppTaskScheduler.h"
+#include "../Thing.Core/AppTaskScheduler.h"
 #include "RunnableMock.h"
 
 using ::testing::Return;

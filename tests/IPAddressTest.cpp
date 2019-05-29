@@ -1,5 +1,5 @@
 #include "IPAddressTest.h"
-#include "../IP.h"
+#include "../Thing.Core/IP.h"
 
 namespace Thing {
 	namespace Core {
@@ -46,6 +46,17 @@ namespace Thing {
 				ASSERT_EQ(octet4, ipAddress.GetOctet(3));
 
 				ASSERT_EQ(ip, ipAddress.GetIP());
+			}
+
+			TEST_F(IPAddressTest, ToStringTest)
+			{
+				const uint8_t octet1 = 192;
+				const uint8_t octet2 = 168;
+				const uint8_t octet3 = 1;
+				const uint8_t octet4 = 200;
+
+				IPAddress ipAddress(octet1, octet2, octet3, octet4);
+				ASSERT_EQ(std::to_string(octet1)+"."+ std::to_string(octet2)+"."+ std::to_string(octet3)+"."+ std::to_string(octet4), ipAddress.ToString());
 			}
 		}
 	}

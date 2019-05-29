@@ -1,7 +1,7 @@
 #pragma once
 
 #include "gmock/gmock.h"
-#include "../IAnalogIOListener.h"
+#include "../Thing.Core/IAnalogIOListener.h"
 
 namespace Thing {
 	namespace Core {

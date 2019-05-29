@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../ITaskScheduler.h"
+#include "../Thing.Core/ITaskScheduler.h"
 #include <list>
 #include "IMillisListener.h"
-#include "../IoC.h"
+#include "../Thing.Core/IoC.h"
 
 namespace Thing {
 	namespace Core {

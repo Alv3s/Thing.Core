@@ -1,6 +1,6 @@
-#include "../IHardware.h"
-#include "../ITaskScheduler.h"
-#include "../ILoggerManager.h"
+#include "../Thing.Core/IHardware.h"
+#include "../Thing.Core/ITaskScheduler.h"
+#include "../Thing.Core/ILoggerManager.h"
 
 Thing::Core::IHardware* Hardware;
 Thing::Core::ITaskScheduler* TaskScheduler;

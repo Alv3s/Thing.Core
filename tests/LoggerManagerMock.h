@@ -1,7 +1,7 @@
 #pragma once
 
 #include "gmock/gmock.h"
-#include "../ILoggerManager.h"
+#include "../Thing.Core/ILoggerManager.h"
 #include "LoggerMock.h"
 
 namespace Thing {

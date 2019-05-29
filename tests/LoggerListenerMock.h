@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../ILoggerListener.h"
+#include "../Thing.Core/ILoggerListener.h"
 #include "gmock/gmock.h"
 
 namespace Thing {

@@ -1,7 +1,7 @@
 #include "GenericDigitalInputTest.h"
-#include "../Ioc.h"
+#include "../Thing.Core/Ioc.h"
 #include "IDigitalInputTest.h"
-#include "../GenericDigitalInput.h"
+#include "../Thing.Core/GenericDigitalInput.h"
 
 using ::testing::Return;
 using ::testing::_;

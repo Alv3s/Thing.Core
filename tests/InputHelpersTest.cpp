@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "../InputHelpers.h"
+#include "../Thing.Core/InputHelpers.h"
 
 namespace Thing {
 	namespace Core {

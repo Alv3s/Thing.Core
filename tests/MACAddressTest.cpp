@@ -1,5 +1,5 @@
 #include "MACAddressTest.h"
-#include "../MACAddress.h"
+#include "../Thing.Core/MACAddress.h"
 
 namespace Thing {
 	namespace Core {

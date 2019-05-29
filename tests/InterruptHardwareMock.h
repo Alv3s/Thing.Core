@@ -2,8 +2,8 @@
 
 #include "TimedHardwareMock.h"
 #include <map>
-#include "IDigitalInput.h"
-#include "InputHelpers.h"
+#include "../Thing.Core/IDigitalInput.h"
+#include "../Thing.Core/InputHelpers.h"
 
 namespace Thing {
 	namespace Core {

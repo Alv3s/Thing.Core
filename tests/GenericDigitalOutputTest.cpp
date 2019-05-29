@@ -1,7 +1,7 @@
 #include "GenericDigitalOutputTest.h"
 #include "IDigitalOutputTest.h"
-#include "../Ioc.h"
-#include "../GenericDigitalOutput.h"
+#include "../Thing.Core/Ioc.h"
+#include "../Thing.Core/GenericDigitalOutput.h"
 
 using ::testing::Return;
 using ::testing::_;

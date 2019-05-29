@@ -83,7 +83,6 @@
     <ClInclude Include="IAppListenerMock.h" />
     <ClInclude Include="AppContainerTest.h" />
     <ClInclude Include="IDigitalInputTest.h" />
-    <ClInclude Include="IDigitalOutputTest.h" />
     <ClInclude Include="IMillisListener.h" />
     <ClInclude Include="IPAddressTest.h" />
     <ClInclude Include="IWiFiListenerMock.h" />

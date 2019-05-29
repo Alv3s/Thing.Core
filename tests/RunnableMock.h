@@ -1,7 +1,7 @@
 #pragma once
 
 #include "gmock/gmock.h"
-#include "../IRunnable.h"
+#include "../Thing.Core/IRunnable.h"
 
 namespace Thing {
 	namespace Core {

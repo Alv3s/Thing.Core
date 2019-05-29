@@ -87,9 +87,6 @@
     <ClInclude Include="IOManagerTest.h" />
     <ClInclude Include="LoggerManagerTest.h" />
     <ClInclude Include="UtilsTest.h" />
-    <ClInclude Include="IDigitalOutputTest.h">
-      <Filter>Outputs</Filter>
-    </ClInclude>
     <ClInclude Include="GenericDigitalOutputTest.h">
       <Filter>Outputs</Filter>
     </ClInclude>
@@ -126,8 +123,10 @@
       <Filter>Mocks</Filter>
     </ClInclude>
     <ClInclude Include="WiFiBaseMock.h" />
-    <ClInclude Include="AppContainerMock.h" />
     <ClInclude Include="AppContainerTest.h" />
     <ClInclude Include="MACAddressTest.h" />
+    <ClInclude Include="AppContainerMock.h">
+      <Filter>Mocks</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

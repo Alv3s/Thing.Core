@@ -1,7 +1,7 @@
 #pragma once
 
 #include "gtest/gtest.h"
-#include "../AppContainer.h"
+#include "../Thing.Core/AppContainer.h"
 #include "AppMock.h"
 
 namespace Thing {

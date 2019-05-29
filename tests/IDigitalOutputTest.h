@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../IDigitalOutput.h"
+#include "../Thing.Core/IDigitalOutput.h"
 #include "gtest/gtest.h"
 
 namespace Thing {

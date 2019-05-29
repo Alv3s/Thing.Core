@@ -4,7 +4,7 @@
 #include "TaskSchedulerMock.h"
 #include "TimedHardwareMock.h"
 #include "LoggerManagerMock.h"
-#include "../IOManager.h"
+#include "../Thing.Core/IOManager.h"
 #include "AnalogInputListenerMock.h"
 #include "AnalogInputMock.h"
 

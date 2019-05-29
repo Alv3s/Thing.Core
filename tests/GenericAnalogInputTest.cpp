@@ -1,6 +1,6 @@
 #include "GenericAnalogInputTest.h"
-#include "../IoC.h"
-#include "../GenericAnalogInput.h"
+#include "../Thing.Core/IoC.h"
+#include "../Thing.Core/GenericAnalogInput.h"
 
 using ::testing::Return;
 using ::testing::_;

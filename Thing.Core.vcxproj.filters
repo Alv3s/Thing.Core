@@ -30,199 +30,196 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="InputHelpers.cpp">
+    <ClCompile Include="Thing.Core\AppContainer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ThresholdedAnalogInput.cpp">
+    <ClCompile Include="Thing.Core\AppTaskScheduler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Thing.Core\DigitalIOMonitor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Thing.Core\DigitalOutputMonitor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Thing.Core\InputHelpers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Thing.Core\IOManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Thing.Core\IOManagerAnalogInput.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Thing.Core\IP.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Thing.Core\MACAddress.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Thing.Core\Utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Thing.Core\WiFiBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Thing.Core\GenericAnalogInput.cpp">
       <Filter>Source Files\Inputs</Filter>
     </ClCompile>
-    <ClCompile Include="IOManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GenericDigitalInput.cpp">
+    <ClCompile Include="Thing.Core\GenericDigitalInput.cpp">
       <Filter>Source Files\Inputs</Filter>
     </ClCompile>
-    <ClCompile Include="DigitalOutputMonitor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DigitalIOMonitor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GenericAnalogInput.cpp">
+    <ClCompile Include="Thing.Core\GenericInverseDigitalInput.cpp">
       <Filter>Source Files\Inputs</Filter>
     </ClCompile>
-    <ClCompile Include="Utils.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Thing.Core\ThresholdedAnalogInput.cpp">
+      <Filter>Source Files\Inputs</Filter>
     </ClCompile>
-    <ClCompile Include="GenericInverseDigitalOutput.cpp">
+    <ClCompile Include="Thing.Core\GenericInverseDigitalOutput.cpp">
       <Filter>Source Files\Outputs</Filter>
     </ClCompile>
-    <ClCompile Include="GenericDigitalOutput.cpp">
+    <ClCompile Include="Thing.Core\GenericDigitalOutput.cpp">
       <Filter>Source Files\Outputs</Filter>
-    </ClCompile>
-    <ClCompile Include="AppTaskScheduler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="IP.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="IOManagerAnalogInput.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GenericInverseDigitalInput.cpp">
-      <Filter>Source Files\Inputs</Filter>
-    </ClCompile>
-    <ClCompile Include="WiFiBase.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AppContainer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MACAddress.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="HardwareEnumerations.h">
+    <ClInclude Include="Thing.Core\AppContainer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="InputHelpers.h">
+    <ClInclude Include="Thing.Core\AppTaskScheduler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IoC.h">
+    <ClInclude Include="Thing.Core\DigitalIOMonitor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ThresholdedAnalogInput.h">
+    <ClInclude Include="Thing.Core\DigitalOutputMonitor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\HardwareEnumerations.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\InputHelpers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\IoC.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\IOManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\IOManagerAnalogInput.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\IOManagerDigitalInput.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\IOManagerDigitalIO.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\IOManagerDigitalOutput.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\IP.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\LoggerManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\LogLevel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\MACAddress.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\Utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\WiFiBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\GenericAnalogInput.h">
       <Filter>Header Files\Inputs</Filter>
     </ClInclude>
-    <ClInclude Include="IOManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GenericDigitalInput.h">
+    <ClInclude Include="Thing.Core\GenericDigitalInput.h">
       <Filter>Header Files\Inputs</Filter>
     </ClInclude>
-    <ClInclude Include="GenericDigitalOutput.h">
+    <ClInclude Include="Thing.Core\GenericDigitalInputBase.h">
+      <Filter>Header Files\Inputs</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\GenericInverseDigitalInput.h">
+      <Filter>Header Files\Inputs</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\ThresholdedAnalogInput.h">
+      <Filter>Header Files\Inputs</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\IAnalogInput.h">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\IAnalogIO.h">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\IAnalogIOListener.h">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\IApp.h">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\IAppContainer.h">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\IDigitalInput.h">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\IDigitalIO.h">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\IDigitalIOListeners.h">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\IDigitalIOMonitor.h">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\IDigitalOutput.h">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\IDigitalOutputMonitor.h">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\IHardware.h">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\ILogger.h">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\ILoggerListener.h">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\ILoggerManager.h">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\IPrinter.h">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\IRunnable.h">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\ITaskScheduler.h">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\IThresholdedAnalogInput.h">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\IWiFi.h">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\GenericDigitalOutput.h">
       <Filter>Header Files\Outputs</Filter>
     </ClInclude>
-    <ClInclude Include="DigitalOutputMonitor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LogLevel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LoggerManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DigitalIOMonitor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GenericAnalogInput.h">
-      <Filter>Header Files\Inputs</Filter>
-    </ClInclude>
-    <ClInclude Include="GenericInverseDigitalOutput.h">
+    <ClInclude Include="Thing.Core\GenericDigitalOutputBase.h">
       <Filter>Header Files\Outputs</Filter>
     </ClInclude>
-    <ClInclude Include="GenericDigitalOutputBase.h">
+    <ClInclude Include="Thing.Core\GenericInverseDigitalOutput.h">
       <Filter>Header Files\Outputs</Filter>
-    </ClInclude>
-    <ClInclude Include="IAnalogInput.h">
-      <Filter>Header Files\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="IAnalogIO.h">
-      <Filter>Header Files\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="IAnalogIOListener.h">
-      <Filter>Header Files\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="IApp.h">
-      <Filter>Header Files\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="IDigitalInput.h">
-      <Filter>Header Files\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="IDigitalIO.h">
-      <Filter>Header Files\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="IDigitalIOListeners.h">
-      <Filter>Header Files\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="IDigitalIOMonitor.h">
-      <Filter>Header Files\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="IDigitalOutput.h">
-      <Filter>Header Files\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="IDigitalOutputMonitor.h">
-      <Filter>Header Files\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="ILogger.h">
-      <Filter>Header Files\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="IHardware.h">
-      <Filter>Header Files\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="ILoggerListener.h">
-      <Filter>Header Files\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="IPrinter.h">
-      <Filter>Header Files\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="IRunnable.h">
-      <Filter>Header Files\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="ITaskScheduler.h">
-      <Filter>Header Files\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="IThresholdedAnalogInput.h">
-      <Filter>Header Files\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="IWiFi.h">
-      <Filter>Header Files\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="AppTaskScheduler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ILoggerManager.h">
-      <Filter>Header Files\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="IP.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IOManagerDigitalInput.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IOManagerAnalogInput.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IDigitalCounter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GenericDigitalInputBase.h">
-      <Filter>Header Files\Inputs</Filter>
-    </ClInclude>
-    <ClInclude Include="GenericInverseDigitalInput.h">
-      <Filter>Header Files\Inputs</Filter>
-    </ClInclude>
-    <ClInclude Include="WiFiBase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IAppContainer.h">
-      <Filter>Header Files\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="AppContainer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MACAddress.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IOManagerDigitalIO.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IOManagerDigitalOutput.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

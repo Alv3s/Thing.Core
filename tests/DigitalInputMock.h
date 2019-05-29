@@ -1,7 +1,7 @@
 #pragma once
 
 #include "gmock/gmock.h"
-#include "../IDigitalInput.h"
+#include "../Thing.Core/IDigitalInput.h"
 
 namespace Thing {
 	namespace Core {

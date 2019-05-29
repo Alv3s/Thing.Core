@@ -1,7 +1,7 @@
 #include "ThresholdedAnalogInputTest.h"
-#include "../Ioc.h"
+#include "../Thing.Core/Ioc.h"
 #include "IDigitalInputTest.h"
-#include "../ThresholdedAnalogInput.h"
+#include "../Thing.Core/ThresholdedAnalogInput.h"
 
 using ::testing::Return;
 using ::testing::_;

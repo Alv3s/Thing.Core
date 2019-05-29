@@ -1,7 +1,7 @@
 #pragma once
 
 #include "gtest/gtest.h"
-#include "../LoggerManager.h"
+#include "../Thing.Core/LoggerManager.h"
 
 namespace Thing {
 	namespace Core {

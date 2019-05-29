@@ -1,6 +1,6 @@
 #include "UtilsTest.h"
 #include "gtest/gtest.h"
-#include "../Utils.h"
+#include "../Thing.Core/Utils.h"
 #include <string>
 
 namespace Thing {

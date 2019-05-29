@@ -1,7 +1,7 @@
 #pragma once
 
 #include "gmock/gmock.h"
-#include "../ILogger.h"
+#include "../Thing.Core/ILogger.h"
 
 namespace Thing {
 	namespace Core {

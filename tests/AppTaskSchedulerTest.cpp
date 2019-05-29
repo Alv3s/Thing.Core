@@ -1,7 +1,7 @@
 #include "AppTaskSchedulerTest.h"
-#include "../IoC.h"
+#include "../Thing.Core/IoC.h"
 #include "RunnableMock.h"
-#include "../AppTaskScheduler.h"
+#include "../Thing.Core/AppTaskScheduler.h"
 
 using ::testing::Return;
 using ::testing::_;
