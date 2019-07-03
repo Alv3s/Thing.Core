@@ -81,6 +81,36 @@
     <ClCompile Include="Thing.Core\GenericDigitalOutput.cpp">
       <Filter>Source Files\Outputs</Filter>
     </ClCompile>
+    <ClCompile Include="Thing.Core\Windows\ConsoleInterface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Thing.Core\Windows\FakeHardware.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Thing.Core\Windows\pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Thing.Core\Windows\Thing.Core.Windows.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Thing.Core\Windows\WindowsWiFi.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Thing.Core\ESP8266\ArduinoHardware.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Thing.Core\ESP8266\ArduinoMain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Thing.Core\ESP8266\ArduinoSerialLogger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Thing.Core\ESP8266\ESP8266TaskScheduler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Thing.Core\ESP8266\ESPWiFi.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Thing.Core\AppContainer.h">
@@ -220,6 +250,36 @@
     </ClInclude>
     <ClInclude Include="Thing.Core\GenericInverseDigitalOutput.h">
       <Filter>Header Files\Outputs</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\Windows\CLI11.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\Windows\ConsoleInterface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\Windows\FakeHardware.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\Windows\pch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\Windows\WindowsWiFi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\ESP8266\ArduinoHardware.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\ESP8266\ArduinoMain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\ESP8266\ArduinoSerialLogger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\ESP8266\ESP8266TaskScheduler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\ESP8266\ESPWiFi.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

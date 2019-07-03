@@ -49,7 +49,7 @@ These are only a few things you can do with a single line of code.
 ## Getting Started
 We recommend to use Thing.Core with Platform IO. For those who don't know it, Platform IO is an IDE for microcontrollers and it can be used with Arduino and many other frameworks. Instructions on how to install it [here](https://docs.platformio.org/en/latest/ide/vscode.html#installation).
 
-After the installation create a new Platform IO and copy this repository onto lib folder. Since we will be using ESP8266, we will also need to clone Thing.Core implementation for ESP8266 available [here](https://github.com/Alv3s/Thing.Core.ESP8266). By now, your new project should contain a ```Thing.Core``` and ```Thing.Core.ESP8266``` folders inside ```lib``` folder. We are now ready to use Thing.Core framework!
+After the installation create a new Platform IO and copy this repository onto lib folder. By now, your new project should contain a ```Thing.Core``` folder inside ```lib``` folder. We are now ready to use Thing.Core framework!
 
 Thing.Core will handle most of our setup and loop for us, but we will need to tell Thing.Core what is the application it should run. For this, we will create into ```src``` folder two files:
   - ```App.h```
@@ -60,10 +60,10 @@ Paste the following code inside ```App.h```:
 ```cpp
 #pragma once
 
-#include "IApp.h"
-#include "GenericDigitalOutput.h"
-#include "GenericDigitalInput.h"
-#include "IOManager.h"
+#include "Thing.Core/IApp.h"
+#include "Thing.Core/GenericDigitalOutput.h"
+#include "Thing.Core/GenericDigitalInput.h"
+#include "Thing.Core/IOManager.h"
 
 class App : public virtual Thing::Core::IApp
 {
@@ -128,7 +128,7 @@ In the function ```void App::Loop()``` we will only find the line ```Manager.Pro
 
 One last thing, you should change your ```main.cpp``` to the following:
 ```cpp
-#include "ArduinoMain.h"
+#include "Thing.Core/ESP8266/ArduinoMain.h"
 #include "App.h"
 
 Thing::Core::IApp* InitializeApp()

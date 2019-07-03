@@ -23,6 +23,11 @@
     <ClCompile Include="Thing.Core\AppTaskScheduler.cpp" />
     <ClCompile Include="Thing.Core\DigitalIOMonitor.cpp" />
     <ClCompile Include="Thing.Core\DigitalOutputMonitor.cpp" />
+    <ClCompile Include="Thing.Core\ESP8266\ArduinoHardware.cpp" />
+    <ClCompile Include="Thing.Core\ESP8266\ArduinoMain.cpp" />
+    <ClCompile Include="Thing.Core\ESP8266\ArduinoSerialLogger.cpp" />
+    <ClCompile Include="Thing.Core\ESP8266\ESP8266TaskScheduler.cpp" />
+    <ClCompile Include="Thing.Core\ESP8266\ESPWiFi.cpp" />
     <ClCompile Include="Thing.Core\GenericAnalogInput.cpp" />
     <ClCompile Include="Thing.Core\GenericDigitalInput.cpp" />
     <ClCompile Include="Thing.Core\GenericDigitalOutput.cpp" />
@@ -36,12 +41,22 @@
     <ClCompile Include="Thing.Core\ThresholdedAnalogInput.cpp" />
     <ClCompile Include="Thing.Core\Utils.cpp" />
     <ClCompile Include="Thing.Core\WiFiBase.cpp" />
+    <ClCompile Include="Thing.Core\Windows\ConsoleInterface.cpp" />
+    <ClCompile Include="Thing.Core\Windows\FakeHardware.cpp" />
+    <ClCompile Include="Thing.Core\Windows\pch.cpp" />
+    <ClCompile Include="Thing.Core\Windows\Thing.Core.Windows.cpp" />
+    <ClCompile Include="Thing.Core\Windows\WindowsWiFi.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Thing.Core\AppContainer.h" />
     <ClInclude Include="Thing.Core\AppTaskScheduler.h" />
     <ClInclude Include="Thing.Core\DigitalIOMonitor.h" />
     <ClInclude Include="Thing.Core\DigitalOutputMonitor.h" />
+    <ClInclude Include="Thing.Core\ESP8266\ArduinoHardware.h" />
+    <ClInclude Include="Thing.Core\ESP8266\ArduinoMain.h" />
+    <ClInclude Include="Thing.Core\ESP8266\ArduinoSerialLogger.h" />
+    <ClInclude Include="Thing.Core\ESP8266\ESP8266TaskScheduler.h" />
+    <ClInclude Include="Thing.Core\ESP8266\ESPWiFi.h" />
     <ClInclude Include="Thing.Core\GenericAnalogInput.h" />
     <ClInclude Include="Thing.Core\GenericDigitalInput.h" />
     <ClInclude Include="Thing.Core\GenericDigitalInputBase.h" />
@@ -84,6 +99,11 @@
     <ClInclude Include="Thing.Core\ThresholdedAnalogInput.h" />
     <ClInclude Include="Thing.Core\Utils.h" />
     <ClInclude Include="Thing.Core\WiFiBase.h" />
+    <ClInclude Include="Thing.Core\Windows\CLI11.h" />
+    <ClInclude Include="Thing.Core\Windows\ConsoleInterface.h" />
+    <ClInclude Include="Thing.Core\Windows\FakeHardware.h" />
+    <ClInclude Include="Thing.Core\Windows\pch.h" />
+    <ClInclude Include="Thing.Core\Windows\WindowsWiFi.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
