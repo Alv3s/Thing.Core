@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Thing.Core\Windows\FileSystem.cpp" />
+    <ClCompile Include="Thing.Core\ESP8266\ESPFileSystem.cpp" />
     <ClCompile Include="Thing.Core\AppContainer.cpp" />
     <ClCompile Include="Thing.Core\AppTaskScheduler.cpp" />
     <ClCompile Include="Thing.Core\DigitalIOMonitor.cpp" />
@@ -48,6 +50,8 @@
     <ClCompile Include="Thing.Core\Windows\WindowsWiFi.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Thing.Core\ESP8266\ESPFileSystem.h" />
+    <ClInclude Include="Thing.Core\Windows\FileSystem.h" />
     <ClInclude Include="Thing.Core\AppContainer.h" />
     <ClInclude Include="Thing.Core\AppTaskScheduler.h" />
     <ClInclude Include="Thing.Core\DigitalIOMonitor.h" />
@@ -76,6 +80,7 @@
     <ClInclude Include="Thing.Core\IDigitalIOMonitor.h" />
     <ClInclude Include="Thing.Core\IDigitalOutput.h" />
     <ClInclude Include="Thing.Core\IDigitalOutputMonitor.h" />
+    <ClInclude Include="Thing.Core\IFileSystem.h" />
     <ClInclude Include="Thing.Core\IHardware.h" />
     <ClInclude Include="Thing.Core\ILogger.h" />
     <ClInclude Include="Thing.Core\ILoggerListener.h" />

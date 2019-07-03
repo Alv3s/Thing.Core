@@ -22,6 +22,7 @@ public:
 	virtual void AttachInterrupt(int gpio, Thing::Core::InterruptMode mode, Thing::Core::IRunnable& runnable) override;
 	virtual void DetachInterrupt(int gpio) override;
 
+	virtual void Reset() override;
 private:
 	static Thing::Core::IRunnable* interrupts[16];
 

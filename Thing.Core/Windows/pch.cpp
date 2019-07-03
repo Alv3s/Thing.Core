@@ -7,11 +7,13 @@
 #include "../AppTaskScheduler.h"
 #include "WindowsWiFi.h"
 #include "../AppContainer.h"
+#include "FileSystem.h"
 
 Thing::Core::IAppContainer* AppContainer;
 Thing::Core::ILoggerManager* Logger;
 Thing::Core::IHardware* Hardware;
 Thing::Core::ITaskScheduler* TaskScheduler;
+Thing::Core::IFileSystem* FileSystem;
 Thing::Core::IWiFi* WiFiConnection;
 
 
@@ -33,6 +35,11 @@ Thing::Core::ITaskScheduler* InitializeTaskScheduler()
 Thing::Core::IWiFi* InitializeWiFi()
 {
 	return new Thing::Core::Windows::WiFi();
+}
+
+Thing::Core::IFileSystem* InitializeFileSystem()
+{
+	return new Thing::Core::Windows::FileSystem();
 }
 
 Thing::Core::IAppContainer* InitializeAppContainer()

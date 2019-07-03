@@ -9,7 +9,7 @@
 #include "ConsoleInterface.h"
 
 Thing::Core::Windows::ConsoleInterface ConsoleInterface;
-static void InitializeInstances()
+static void InitializeInstances(int argc, char* argv[])
 {
 	Logger = InitializeLogger();
 	ConsoleInterface.SetMinLevel(Thing::Core::LogLevel::Trace);
@@ -33,8 +33,12 @@ static void InitializeInstances()
 	WiFiConnection = InitializeWiFi();
 	Logger->Debug("WiFi Initialized Successfully");
 
+	Logger->Debug("Initializing File System...");
+	FileSystem = InitializeFileSystem();
+	Logger->Debug("File System Initialized Successfully");
+
 	Logger->Debug("Initializing Application");
-	AppContainer->SetApp(InitializeApp());
+	AppContainer->SetApp(InitializeApp(argc, argv));
 	AppContainer->Setup();
 	Logger->Debug("Setup Finished");
 }
@@ -52,7 +56,7 @@ DWORD WINAPI AppThread(LPVOID lpParameter)
 
 int main(int argc, char* argv[])
 {
-	InitializeInstances();
+	InitializeInstances(argc, argv);
 
 	DWORD appThreadId;
 	HANDLE appHandle = CreateThread(0, 0, AppThread, NULL, 0, &appThreadId);

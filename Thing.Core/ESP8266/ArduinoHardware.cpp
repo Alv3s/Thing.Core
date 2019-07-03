@@ -1,6 +1,7 @@
 #ifdef ESP8266
 #include "ArduinoHardware.h"
 #include <Arduino.h>
+#include <Esp.h>
 
 Thing::Core::IRunnable* ArduinoHardware::interrupts[16];
 
@@ -99,5 +100,10 @@ void ArduinoHardware::DetachInterrupt(int gpio)
 {
 	int interrupt = digitalPinToInterrupt(gpio);
 	detachInterrupt(interrupt);
+}
+
+void ArduinoHardware::Reset()
+{
+	ESP.reset();
 }
 #endif

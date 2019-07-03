@@ -21,6 +21,8 @@ namespace Thing {
 				virtual MOCK_METHOD3(AttachInterrupt, void(int gpio, Thing::Core::InterruptMode mode, Thing::Core::IRunnable* runnable));
 				virtual MOCK_METHOD3(AttachInterrupt, void(int gpio, Thing::Core::InterruptMode mode, Thing::Core::IRunnable& runnable));
 				virtual MOCK_METHOD1(DetachInterrupt, void(int gpio));
+
+				MOCK_METHOD0(Reset, void());
 			};
 		}
 	}

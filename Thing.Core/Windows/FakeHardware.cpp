@@ -103,6 +103,11 @@ namespace Thing
 				gpios[gpio]->ClearInterrupt();
 			}
 
+			void FakeHardware::Reset()
+			{
+				//TODO: Implement Reset. This should restart program
+			}
+
 			void FakeHardware::SetAnalogValue(int gpio, int value)
 			{
 				if (gpios.count(gpio) == 0)

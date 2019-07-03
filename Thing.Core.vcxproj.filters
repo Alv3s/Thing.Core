@@ -111,6 +111,12 @@
     <ClCompile Include="Thing.Core\ESP8266\ESPWiFi.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Thing.Core\ESP8266\ESPFileSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Thing.Core\Windows\FileSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Thing.Core\AppContainer.h">
@@ -279,6 +285,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Thing.Core\ESP8266\ESPWiFi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\IFileSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\Windows\FileSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.Core\ESP8266\ESPFileSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

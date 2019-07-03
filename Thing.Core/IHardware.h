@@ -24,6 +24,8 @@ namespace Thing
 			virtual void AttachInterrupt(int gpio, InterruptMode mode, IRunnable* runnable) = 0;
 			virtual void AttachInterrupt(int gpio, InterruptMode mode, IRunnable& runnable) = 0;
 			virtual void DetachInterrupt(int gpio) = 0;
+
+			virtual void Reset() = 0;
 		};
 	}
 }

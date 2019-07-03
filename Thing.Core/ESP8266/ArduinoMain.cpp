@@ -12,6 +12,7 @@
 #include "ArduinoHardware.h"
 #include "../AppTaskScheduler.h"
 #include "ESPWiFi.h"
+#include "ESPFileSystem.h"
 
 #include "../AppContainer.h"
 
@@ -20,6 +21,7 @@ Thing::Core::ILoggerManager* Logger;
 Thing::Core::IHardware* Hardware;
 Thing::Core::ITaskScheduler* TaskScheduler;
 Thing::Core::IWiFi* WiFiConnection;
+Thing::Core::IFileSystem* FileSystem;
 
 Thing::Core::ILoggerManager* InitializeLogger()
 {
@@ -49,6 +51,12 @@ Thing::Core::IWiFi* InitializeWiFi()
 	ESP8266WiFi* wifi = new ESP8266WiFi();
 	return wifi;
 }
+
+Thing::Core::IFileSystem* InitializeFileSystem()
+{
+	return new ESPFileSystem();
+}
+
 
 Thing::Core::IAppContainer* InitializeAppContainer()
 {
@@ -86,6 +94,23 @@ extern "C" void setup()
 #ifdef INIT_DEBUG
 	Logger->Debug("Hardware Initialized Successfully!");
 #endif
+
+#ifdef INIT_DEBUG
+	Logger->Debug("Initializing WiFi...");
+#endif
+    WiFiConnection = InitializeWiFi();
+#ifdef INIT_DEBUG
+	Logger->Debug("WiFi Initialized Successfully");
+#endif
+
+#ifdef INIT_DEBUG
+	Logger->Debug("Initializing File System...");
+#endif
+    FileSystem = InitializeFileSystem();
+#ifdef INIT_DEBUG
+	Logger->Debug("File System Initialized Successfully");
+#endif
+
 
 #ifdef INIT_DEBUG
 	Logger->Debug("Initializing WiFi...");

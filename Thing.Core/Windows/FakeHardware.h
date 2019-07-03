@@ -37,6 +37,8 @@ namespace Thing
 				virtual void AttachInterrupt(int gpio, Thing::Core::InterruptMode mode, Thing::Core::IRunnable& runnable) override;
 				virtual void DetachInterrupt(int gpio) override;
 
+				virtual void Reset() override;
+
 				void SetAnalogValue(int gpio, int value);
 				void SetInputState(int gpio, Thing::Core::DigitalValue value);
 
