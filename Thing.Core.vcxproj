@@ -19,17 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Thing.Core\Windows\FileSystem.cpp" />
-    <ClCompile Include="Thing.Core\ESP8266\ESPFileSystem.cpp" />
     <ClCompile Include="Thing.Core\AppContainer.cpp" />
     <ClCompile Include="Thing.Core\AppTaskScheduler.cpp" />
     <ClCompile Include="Thing.Core\DigitalIOMonitor.cpp" />
     <ClCompile Include="Thing.Core\DigitalOutputMonitor.cpp" />
-    <ClCompile Include="Thing.Core\ESP8266\ArduinoHardware.cpp" />
-    <ClCompile Include="Thing.Core\ESP8266\ArduinoMain.cpp" />
-    <ClCompile Include="Thing.Core\ESP8266\ArduinoSerialLogger.cpp" />
-    <ClCompile Include="Thing.Core\ESP8266\ESP8266TaskScheduler.cpp" />
-    <ClCompile Include="Thing.Core\ESP8266\ESPWiFi.cpp" />
+    <ClCompile Include="Thing.Core\ESP8266\Main.cpp" />
     <ClCompile Include="Thing.Core\GenericAnalogInput.cpp" />
     <ClCompile Include="Thing.Core\GenericDigitalInput.cpp" />
     <ClCompile Include="Thing.Core\GenericDigitalOutput.cpp" />
@@ -43,24 +37,19 @@
     <ClCompile Include="Thing.Core\ThresholdedAnalogInput.cpp" />
     <ClCompile Include="Thing.Core\Utils.cpp" />
     <ClCompile Include="Thing.Core\WiFiBase.cpp" />
-    <ClCompile Include="Thing.Core\Windows\ConsoleInterface.cpp" />
-    <ClCompile Include="Thing.Core\Windows\FakeHardware.cpp" />
-    <ClCompile Include="Thing.Core\Windows\pch.cpp" />
-    <ClCompile Include="Thing.Core\Windows\Thing.Core.Windows.cpp" />
-    <ClCompile Include="Thing.Core\Windows\WindowsWiFi.cpp" />
+    <ClCompile Include="Thing.Core\Windows\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Thing.Core\ESP8266\ESPFileSystem.h" />
-    <ClInclude Include="Thing.Core\Windows\FileSystem.h" />
+    <ClInclude Include="Thing.Core\ESP\FileSystem.h" />
     <ClInclude Include="Thing.Core\AppContainer.h" />
     <ClInclude Include="Thing.Core\AppTaskScheduler.h" />
     <ClInclude Include="Thing.Core\DigitalIOMonitor.h" />
     <ClInclude Include="Thing.Core\DigitalOutputMonitor.h" />
-    <ClInclude Include="Thing.Core\ESP8266\ArduinoHardware.h" />
-    <ClInclude Include="Thing.Core\ESP8266\ArduinoMain.h" />
-    <ClInclude Include="Thing.Core\ESP8266\ArduinoSerialLogger.h" />
-    <ClInclude Include="Thing.Core\ESP8266\ESP8266TaskScheduler.h" />
-    <ClInclude Include="Thing.Core\ESP8266\ESPWiFi.h" />
+    <ClInclude Include="Thing.Core\Arduino\Hardware.h" />
+    <ClInclude Include="Thing.Core\Arduino\Main.h" />
+    <ClInclude Include="Thing.Core\Arduino\SerialLogger.h" />
+    <ClInclude Include="Thing.Core\ESP\TaskScheduler.h" />
+    <ClInclude Include="Thing.Core\ESP8266\WiFi.h" />
     <ClInclude Include="Thing.Core\GenericAnalogInput.h" />
     <ClInclude Include="Thing.Core\GenericDigitalInput.h" />
     <ClInclude Include="Thing.Core\GenericDigitalInputBase.h" />
@@ -104,11 +93,13 @@
     <ClInclude Include="Thing.Core\ThresholdedAnalogInput.h" />
     <ClInclude Include="Thing.Core\Utils.h" />
     <ClInclude Include="Thing.Core\WiFiBase.h" />
-    <ClInclude Include="Thing.Core\Windows\CLI11.h" />
-    <ClInclude Include="Thing.Core\Windows\ConsoleInterface.h" />
-    <ClInclude Include="Thing.Core\Windows\FakeHardware.h" />
-    <ClInclude Include="Thing.Core\Windows\pch.h" />
-    <ClInclude Include="Thing.Core\Windows\WindowsWiFi.h" />
+    <ClInclude Include="Thing.Core\OS\CLI11.h" />
+    <ClInclude Include="Thing.Core\OS\ConsoleInterface.h" />
+    <ClInclude Include="Thing.Core\OS\FakeHardware.h" />
+    <ClInclude Include="Thing.Core\OS\Main.h" />
+    <ClInclude Include="Thing.Core\Windows\FileSystem.h" />
+    <ClInclude Include="Thing.Core\OS\WiFi.h" />
+    <ClInclude Include="Thing.Core\OS\Utils.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -192,6 +183,7 @@
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalOptions>/D_CRT_SECURE_NO_WARNINGS %(AdditionalOptions)</AdditionalOptions>
+      <ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -211,6 +203,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalOptions>/D_CRT_SECURE_NO_WARNINGS %(AdditionalOptions)</AdditionalOptions>
+      <ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -230,6 +223,7 @@
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalOptions>/D_CRT_SECURE_NO_WARNINGS %(AdditionalOptions)</AdditionalOptions>
+      <ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -249,6 +243,7 @@
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalOptions>/D_CRT_SECURE_NO_WARNINGS %(AdditionalOptions)</AdditionalOptions>
+      <ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

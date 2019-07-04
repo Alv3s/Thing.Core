@@ -1,5 +1,5 @@
 #ifdef ESP8266
-#include "ArduinoMain.h"
+#include "../Arduino/Main.h"
 #include "../IoC.h"
 
 #include "../IHardware.h"
@@ -8,11 +8,11 @@
 
 #include "../LoggerManager.h"
 #include "../LogLevel.h"
-#include "ArduinoSerialLogger.h"
-#include "ArduinoHardware.h"
+#include "../Arduino/SerialLogger.h"
+#include "../Arduino/Hardware.h"
 #include "../AppTaskScheduler.h"
-#include "ESPWiFi.h"
-#include "ESPFileSystem.h"
+#include "WiFi.h"
+#include "../ESP/FileSystem.h"
 
 #include "../AppContainer.h"
 
@@ -27,7 +27,7 @@ Thing::Core::ILoggerManager* InitializeLogger()
 {
 	Thing::Core::ILoggerManager* logger = new Thing::Core::LoggerManager<200>();
 
-	ArduinoSerialLogger* serialLogger = new ArduinoSerialLogger("Arduino Serial", 115200);
+	Thing::Core::Arduino::SerialLogger* serialLogger = new Thing::Core::Arduino::SerialLogger("Arduino Serial", 115200);
 	serialLogger->SetMinLevel(Thing::Core::LogLevel::Trace);
 	logger->AddListener(serialLogger);
 
@@ -36,7 +36,7 @@ Thing::Core::ILoggerManager* InitializeLogger()
 
 Thing::Core::IHardware* InitializeHardware()
 {
-	ArduinoHardware* hardware = new ArduinoHardware();
+	Thing::Core::Arduino::Hardware* hardware = new Thing::Core::Arduino::Hardware();
 	return hardware;
 }
 
@@ -48,13 +48,13 @@ Thing::Core::ITaskScheduler* InitializeTaskScheduler()
 
 Thing::Core::IWiFi* InitializeWiFi()
 {
-	ESP8266WiFi* wifi = new ESP8266WiFi();
+	Thing::Core::ESP_8266::WiFi* wifi = new Thing::Core::ESP_8266::WiFi();
 	return wifi;
 }
 
 Thing::Core::IFileSystem* InitializeFileSystem()
 {
-	return new ESPFileSystem();
+	return new Thing::Core::ESP::FileSystem();
 }
 
 

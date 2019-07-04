@@ -1,14 +1,55 @@
 #ifdef _WIN32
-
-#include "pch.h"
-#include "CLI11.h"
-#include "../IAppContainer.h"
+#include "../OS/Main.h"
 #include "../IoC.h"
-#include <chrono>
-#include <thread>
-#include "ConsoleInterface.h"
 
-Thing::Core::Windows::ConsoleInterface ConsoleInterface;
+#include "../LoggerManager.h"
+#include "../OS/FakeHardware.h"
+#include "../AppTaskScheduler.h"
+#include "../OS/WiFi.h"
+#include "../AppContainer.h"
+#include "FileSystem.h"
+#include "../OS/ConsoleInterface.h"
+#include <thread>
+
+Thing::Core::IAppContainer* AppContainer;
+Thing::Core::ILoggerManager* Logger;
+Thing::Core::IHardware* Hardware;
+Thing::Core::ITaskScheduler* TaskScheduler;
+Thing::Core::IFileSystem* FileSystem;
+Thing::Core::IWiFi* WiFiConnection;
+
+
+Thing::Core::ILoggerManager* InitializeLogger()
+{
+	return new Thing::Core::LoggerManager<200>();
+}
+
+Thing::Core::IHardware* InitializeHardware()
+{
+	return new Thing::Core::OS::FakeHardware();
+}
+
+Thing::Core::ITaskScheduler* InitializeTaskScheduler()
+{
+	return new Thing::Core::AppTaskScheduler(*AppContainer);
+}
+
+Thing::Core::IWiFi* InitializeWiFi()
+{
+	return new Thing::Core::OS::WiFi();
+}
+
+Thing::Core::IFileSystem* InitializeFileSystem()
+{
+	return new Thing::Core::Windows::FileSystem();
+}
+
+Thing::Core::IAppContainer* InitializeAppContainer()
+{
+	return new Thing::Core::AppContainer();
+}
+
+Thing::Core::OS::ConsoleInterface ConsoleInterface;
 static void InitializeInstances(int argc, char* argv[])
 {
 	Logger = InitializeLogger();

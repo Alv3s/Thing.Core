@@ -10,9 +10,10 @@ Thing.Core relies on the following things:
   - TaskScheduler: In order to schedule tasks, we will need to provide and implementation on how we can schedule tasks to run later. Thing.Core already has a built-in implementation for this, allowing us to tell it to run a function after a few seconds or each few seconds.
   - LoggerManager: The logger manager allow us to send logs to whatever we want. It's a good feature that allow us to keep track (and maybe even debug) on what is happening on our device. LoggerManager can be used for us to log things over Serial or any other protocol such as MQTT or CoAP.
   - WiFi: In order for our Thing being truly part of the IoT, it should communicate over WiFi. We should provide Thing.Core on How to do such Thing.
+  - FileSystem: This allows Thing.Core to store and read data.
   
 ## Why should I use it?
-Although Thing.Core is something new and may be probably missing a few features, it allow us to easily program stuff. A few things Thing.Core can do are:
+Although Thing.Core is something new and may miss a few features, it allow us to easily program stuff. A few things Thing.Core can do are:
   - You can program with a single line to toggle a led every time you press a button:
   ```cpp
   Manager.OnActivating(button).Toggle(led);
@@ -49,7 +50,7 @@ These are only a few things you can do with a single line of code.
 ## Getting Started
 We recommend to use Thing.Core with Platform IO. For those who don't know it, Platform IO is an IDE for microcontrollers and it can be used with Arduino and many other frameworks. Instructions on how to install it [here](https://docs.platformio.org/en/latest/ide/vscode.html#installation).
 
-After the installation create a new Platform IO and copy this repository onto lib folder. By now, your new project should contain a ```Thing.Core``` folder inside ```lib``` folder. We are now ready to use Thing.Core framework!
+After the installation create a new Platform IO and copy/clone this repository onto lib folder. By now, your new project should contain a ```Thing.Core``` folder inside ```lib``` folder. We are now ready to use Thing.Core framework!
 
 Thing.Core will handle most of our setup and loop for us, but we will need to tell Thing.Core what is the application it should run. For this, we will create into ```src``` folder two files:
   - ```App.h```
@@ -128,7 +129,7 @@ In the function ```void App::Loop()``` we will only find the line ```Manager.Pro
 
 One last thing, you should change your ```main.cpp``` to the following:
 ```cpp
-#include "Thing.Core/ESP8266/ArduinoMain.h"
+#include "Thing.Core/Arduino/Main.h"
 #include "App.h"
 
 Thing::Core::IApp* InitializeApp()
@@ -136,6 +137,6 @@ Thing::Core::IApp* InitializeApp()
   return new App();
 }
 ```
-In order for Thing.Core running your app, you have to tell it where your app is and how to create one. Thing.Core will find for a the function above ```Thing::Core::IApp* InitializeApp()``` and will run initialize your app when its ready.
+In order for Thing.Core running your app, you have to tell it where your app is and how to create one. Thing.Core will find for above the function ```Thing::Core::IApp* InitializeApp()``` and will run initialize your app when its ready.
 
 After compiling and uploading to ESP, you should see that your led toggles automatically whenever you press the button!
