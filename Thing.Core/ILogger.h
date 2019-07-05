@@ -90,7 +90,7 @@ namespace Thing
 				va_end(values);
 			}
 
-			
+		protected:
 			/// <summary>
 			/// The implementation of the Trace logging method
 			/// </summary>

@@ -25,42 +25,44 @@ Thing::Core::IFileSystem* FileSystem;
 
 Thing::Core::ILoggerManager* InitializeLogger()
 {
-	Thing::Core::ILoggerManager* logger = new Thing::Core::LoggerManager<200>();
+	static Thing::Core::LoggerManager<200> logger;
+	static Thing::Core::Arduino::SerialLogger serialLogger("Arduino Serial", 115200);
 
-	Thing::Core::Arduino::SerialLogger* serialLogger = new Thing::Core::Arduino::SerialLogger("Arduino Serial", 115200);
-	serialLogger->SetMinLevel(Thing::Core::LogLevel::Trace);
-	logger->AddListener(serialLogger);
+	serialLogger.SetMinLevel(Thing::Core::LogLevel::Trace);
+	logger.AddListener(serialLogger);
 
-	return logger;
+	return &logger;
 }
 
 Thing::Core::IHardware* InitializeHardware()
 {
-	Thing::Core::Arduino::Hardware* hardware = new Thing::Core::Arduino::Hardware();
-	return hardware;
+	static Thing::Core::Arduino::Hardware hardware;
+	return &hardware;
 }
 
 Thing::Core::ITaskScheduler* InitializeTaskScheduler()
 {
-	Thing::Core::AppTaskScheduler* scheduler = new Thing::Core::AppTaskScheduler(*AppContainer);
-	return scheduler;
+	static Thing::Core::AppTaskScheduler scheduler(*AppContainer);
+	return &scheduler;
 }
 
 Thing::Core::IWiFi* InitializeWiFi()
 {
-	Thing::Core::ESP_8266::WiFi* wifi = new Thing::Core::ESP_8266::WiFi();
-	return wifi;
+	static Thing::Core::ESP_8266::WiFi wifi;
+	return &wifi;
 }
 
 Thing::Core::IFileSystem* InitializeFileSystem()
 {
-	return new Thing::Core::ESP::FileSystem();
+	static Thing::Core::ESP::FileSystem fileSystem;
+	return &fileSystem;
 }
 
 
 Thing::Core::IAppContainer* InitializeAppContainer()
 {
-    return new Thing::Core::AppContainer();
+    static Thing::Core::AppContainer container;
+	return &container;
 }
 
 extern "C" void setup() 

@@ -21,32 +21,38 @@ Thing::Core::IWiFi* WiFiConnection;
 
 Thing::Core::ILoggerManager* InitializeLogger()
 {
-	return new Thing::Core::LoggerManager<200>();
+	static Thing::Core::LoggerManager<200> logger;
+	return &logger;
 }
 
 Thing::Core::IHardware* InitializeHardware()
 {
-	return new Thing::Core::OS::FakeHardware();
+	static Thing::Core::OS::FakeHardware hardware;
+	return &hardware;
 }
 
 Thing::Core::ITaskScheduler* InitializeTaskScheduler()
 {
-	return new Thing::Core::AppTaskScheduler(*AppContainer);
+	static Thing::Core::AppTaskScheduler taskScheduler(*AppContainer);
+	return &taskScheduler;
 }
 
 Thing::Core::IWiFi* InitializeWiFi()
 {
-	return new Thing::Core::OS::WiFi();
+	static Thing::Core::OS::WiFi wifi;
+	return &wifi;
 }
 
 Thing::Core::IFileSystem* InitializeFileSystem()
 {
-	return new Thing::Core::Windows::FileSystem();
+	static Thing::Core::Windows::FileSystem fileSystem;
+	return &fileSystem;
 }
 
 Thing::Core::IAppContainer* InitializeAppContainer()
 {
-	return new Thing::Core::AppContainer();
+	static Thing::Core::AppContainer container;
+	return &container;
 }
 
 Thing::Core::OS::ConsoleInterface ConsoleInterface;

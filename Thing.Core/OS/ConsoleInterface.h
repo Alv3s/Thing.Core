@@ -29,6 +29,7 @@ namespace Thing
 
 					app.require_subcommand(); // 1 or more
 
+					app.add_subcommand("exit", "Exits simulator.");
 					CLI::App* gpio = app.add_subcommand("gpio", "Select a GPIO to perform operation.");
 					gpio->require_option(1);
 					gpio->require_subcommand(1);
@@ -175,6 +176,7 @@ namespace Thing
 					try {
 						app.parse(command);
 						auto gpio = app.get_subcommand("gpio");
+						auto exit = app.get_subcommand("exit");
 						if (gpio->parsed())
 						{
 							int number = gpio->get_option("number")->as<int>();
@@ -204,6 +206,10 @@ namespace Thing
 								hardware->AddListener(this, number);
 								commandResponse += "GPIO " + std::to_string(number) + " is now being watched\n";
 							}
+						}
+						else if (exit->parsed())
+						{
+							std::exit(0);
 						}
 						else
 							commandResponse += "Command Processed Sucessfully!\n";
