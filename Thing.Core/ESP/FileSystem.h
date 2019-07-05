@@ -13,12 +13,16 @@ namespace Thing
 			class FileSystem : public virtual Thing::Core::IFileSystem
 			{
 			public:
+				FileSystem()
+				{
+					opened = SPIFFS.begin();
+				}
+
 				bool Read(std::string file, std::vector<uint8_t>* bytes) override
 				{
-					bool ret = SPIFFS.begin();
-					if (!ret)
+					if (!opened)
 						return false;
-					ret = SPIFFS.exists(file.c_str());
+					bool ret = SPIFFS.exists(file.c_str());
 					if (!ret)
 						return false;
 
@@ -62,6 +66,8 @@ namespace Thing
 				{
 					SPIFFS.remove(file.c_str());
 				}
+			private:
+				bool opened;
 			};
 		}
 	}
