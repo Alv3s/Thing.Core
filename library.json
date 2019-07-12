@@ -1,0 +1,10 @@
+{
+  "name": "Thing.Core",
+  "keywords": "iot, framework",
+  "description": "Thing.Core framework enables fast development by providing several features out of the box.",
+  "repository":
+  {
+    "type": "git",
+    "url": "https://github.com/Alv3s/Thing.Core.git"
+  }
+}
