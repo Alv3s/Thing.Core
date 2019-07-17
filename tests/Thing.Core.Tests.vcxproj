@@ -43,6 +43,7 @@
   <PropertyGroup Label="UserMacros" />
   <ItemGroup>
     <ClCompile Include="AppTaskSchedulerTest.cpp" />
+    <ClCompile Include="DebouncedInputTest.cpp" />
     <ClCompile Include="GenericAnalogInputTest.cpp" />
     <ClCompile Include="GenericDigitalInputTest.cpp" />
     <ClCompile Include="GenericInverseDigitalInputTest.cpp" />
@@ -68,6 +69,7 @@
     <ClInclude Include="AppContainerMock.h" />
     <ClInclude Include="AppMock.h" />
     <ClInclude Include="AppTaskSchedulerTest.h" />
+    <ClInclude Include="DebouncedInputTest.h" />
     <ClInclude Include="DigitalInputListenerMock.h" />
     <ClInclude Include="DigitalInputMock.h" />
     <ClInclude Include="DigitalOutputListenerMock.h" />

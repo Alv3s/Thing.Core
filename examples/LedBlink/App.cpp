@@ -16,6 +16,7 @@ App::~App()
 
 void App::Setup()
 {
+	//Schedule a Task to run periodically each 1000 milliseconds, toggling the led.
 	TaskScheduler->AttachPeriodic(1000, [this](void* obj) {
 		Manager.DigitalWrite(led, Thing::Core::DigitalValue::Toggle);
 	});

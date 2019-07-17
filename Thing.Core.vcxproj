@@ -40,6 +40,7 @@
     <ClCompile Include="Thing.Core\Windows\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Thing.Core\DebouncedInput.h" />
     <ClInclude Include="Thing.Core\ESP\FileSystem.h" />
     <ClInclude Include="Thing.Core\AppContainer.h" />
     <ClInclude Include="Thing.Core\AppTaskScheduler.h" />

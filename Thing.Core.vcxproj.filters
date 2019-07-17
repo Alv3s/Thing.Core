@@ -269,5 +269,8 @@
     <ClInclude Include="Thing.Core\OS\WiFi.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Thing.Core\DebouncedInput.h">
+      <Filter>Header Files\Inputs</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -23,12 +23,13 @@
     </ClCompile>
     <ClCompile Include="AppTaskSchedulerTest.cpp" />
     <ClCompile Include="IPAddressTest.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gtest\gtest-all.cc" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gmock\gmock-all.cc" />
     <ClCompile Include="GenericInverseDigitalInputTest.cpp" />
     <ClCompile Include="WiFiBaseTest.cpp" />
     <ClCompile Include="AppContainerTest.cpp" />
     <ClCompile Include="MACAddressTest.cpp" />
+    <ClCompile Include="DebouncedInputTest.cpp">
+      <Filter>Inputs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -127,6 +128,9 @@
     <ClInclude Include="MACAddressTest.h" />
     <ClInclude Include="AppContainerMock.h">
       <Filter>Mocks</Filter>
+    </ClInclude>
+    <ClInclude Include="DebouncedInputTest.h">
+      <Filter>Inputs</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

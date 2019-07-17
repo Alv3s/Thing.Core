@@ -17,6 +17,8 @@ App::~App()
 
 void App::Setup()
 {
+	//Here we tell the IOManager each time the button changes state to HIGH, it should toggle the led.
+	// This line will automatically call Manager.AddDigitalInput(button) and Manager.AddDigitalOutput(led)
 	Manager.OnActivating(button).Toggle(led);
 }
 
