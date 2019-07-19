@@ -32,6 +32,16 @@ namespace Thing
 			class FakeHardware : public virtual Thing::Core::IHardware
 			{
 			public:
+				FakeHardware()
+				{
+					auto now = std::chrono::system_clock::now();
+					auto now_ms = std::chrono::time_point_cast<std::chrono::milliseconds>(now);
+					startedMillis = now_ms.time_since_epoch().count();
+
+					auto now_us = std::chrono::time_point_cast<std::chrono::microseconds>(now);
+					startedMicros = now_us.time_since_epoch().count();
+				}
+
 				void ConfigurePin(int gpio, Thing::Core::PinMode mode) override
 				{
 					asureGpio(gpio);
@@ -80,16 +90,14 @@ namespace Thing
 				{
 					auto now = std::chrono::system_clock::now();
 					auto now_ms = std::chrono::time_point_cast<std::chrono::milliseconds>(now);
-					auto epoch = now_ms.time_since_epoch();
-					return epoch.count();
+					return now_ms.time_since_epoch().count() - startedMillis;
 				}
 
 				unsigned long Micros() override
 				{
 					auto now = std::chrono::system_clock::now();
 					auto now_us = std::chrono::time_point_cast<std::chrono::microseconds>(now);
-					auto epoch = now_us.time_since_epoch();
-					return epoch.count();
+					return now_us.time_since_epoch().count() - startedMicros;
 				}
 
 				void Delay(unsigned long millis) override
@@ -246,6 +254,8 @@ namespace Thing
 					int analogValue;
 				};
 
+				unsigned long startedMillis;
+				unsigned long startedMicros;
 				static std::map<int, GPIO*> gpios;
 
 				void asureGpio(int gpio)
