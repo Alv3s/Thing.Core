@@ -1,5 +1,5 @@
 #include "GenericAnalogInput.h"
-#include "Ioc.h"
+#include "IoC.h"
 
 namespace Thing
 {
