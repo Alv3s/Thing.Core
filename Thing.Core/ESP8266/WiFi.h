@@ -21,6 +21,7 @@ namespace Thing
 					Disconnect();
 					::WiFi.persistent(false); // This is very important!! Ensures that the ESP board doesn't crash in case of invalid password.
 					::WiFi.begin(SSID.c_str(), password.c_str());
+					::WiFi.mode(WIFI_STA); //Avoid unwanted open wifi network
 
 					TaskScheduler->AttachPeriodic(1000, this);
 				}
