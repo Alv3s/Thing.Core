@@ -38,7 +38,7 @@ namespace Thing
 					Begin(baudRate);
 				}
 
-				virtual ~SerialLogger()
+				~SerialLogger()
 				{
 
 				}

@@ -18,7 +18,7 @@ namespace Thing
 		{
 			friend class IOManager;
 		public:
-			virtual ~DigitalIOMonitor();
+			~DigitalIOMonitor();
 
 			void Toggle(IDigitalOutput& output) override;
 			void Toggle(IDigitalOutput* output) override;
@@ -49,8 +49,8 @@ namespace Thing
 			void* objCallback;
 			bool periodic;
 
-			virtual void OnActivating(IDigitalIO* io, unsigned int count) override;
-			virtual void OnInactivating(IDigitalIO* io, unsigned int count) override;
+			void OnActivating(IDigitalIO* io, unsigned int count) override;
+			void OnInactivating(IDigitalIO* io, unsigned int count) override;
 
 			void Run() override;
 

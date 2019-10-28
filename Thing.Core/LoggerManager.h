@@ -45,7 +45,7 @@ namespace Thing
 				RemoveListener(&listener);
 			}
 
-			virtual void TraceOverride(const char* message, va_list args) override
+			void TraceOverride(const char* message, va_list args) override
 			{
 				vsprintf(buffer, message, args);
 
@@ -54,7 +54,7 @@ namespace Thing
 						listener->OnTrace(buffer);
 			}
 
-			virtual void DebugOverride(const char* message, va_list args) override
+			void DebugOverride(const char* message, va_list args) override
 			{
 				vsprintf(buffer, message, args);
 
@@ -63,7 +63,7 @@ namespace Thing
 						listener->OnDebug(buffer);
 			}
 
-			virtual void InfoOverride(const char* message, va_list args) override
+			void InfoOverride(const char* message, va_list args) override
 			{
 				vsprintf(buffer, message, args);
 
@@ -72,7 +72,7 @@ namespace Thing
 						listener->OnInfo(buffer);
 			}
 
-			virtual void WarnOverride(const char* message, va_list args) override
+			void WarnOverride(const char* message, va_list args) override
 			{
 				vsprintf(buffer, message, args);
 
@@ -81,7 +81,7 @@ namespace Thing
 						listener->OnWarn(buffer);
 			}
 
-			virtual void ErrorOverride(const char* message, va_list args) override
+			void ErrorOverride(const char* message, va_list args) override
 			{
 				vsprintf(buffer, message, args);
 
@@ -90,7 +90,7 @@ namespace Thing
 						listener->OnError(buffer);
 			}
 
-			virtual void FatalOverride(const char* message, va_list args) override
+			void FatalOverride(const char* message, va_list args) override
 			{
 				vsprintf(buffer, message, args);
 

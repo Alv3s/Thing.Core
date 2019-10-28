@@ -10,11 +10,11 @@ namespace Thing
 		class WiFiBase : public virtual IWiFi
 		{
 		public:
-			virtual void AddListener(IWiFiListener* listener) override;
-			virtual void AddListener(IWiFiListener& listener) override;
+			void AddListener(IWiFiListener* listener) override;
+			void AddListener(IWiFiListener& listener) override;
 
-			virtual void RemoveListener(IWiFiListener* listener) override;
-			virtual void RemoveListener(IWiFiListener& listener) override;
+			void RemoveListener(IWiFiListener* listener) override;
+			void RemoveListener(IWiFiListener& listener) override;
 
 		protected:
 			void SignalOnConnect();

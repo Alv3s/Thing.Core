@@ -17,18 +17,18 @@ namespace Thing
 				DigitalWrite(defaultValue);
 			}
 
-			virtual ~GenericDigitalOutputBase()
+			~GenericDigitalOutputBase()
 			{
 
 			}
 
-			virtual void DigitalWrite(DigitalValue value) override
+			void DigitalWrite(DigitalValue value) override
 			{
 				_currentValue = value == DigitalValue::Toggle ? !_currentValue : (bool)value;
 				Hardware->DigitalWrite(_gpio, _currentValue == LOGIC ? DigitalValue::High : DigitalValue::Low);
 			}
 
-			virtual DigitalValue GetState() override
+			DigitalValue GetState() override
 			{
 				return (DigitalValue)_currentValue;
 			}

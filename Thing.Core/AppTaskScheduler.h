@@ -47,7 +47,7 @@ namespace Thing
 			/// Called automatically whdn IApp Loop is finishing.
 			/// </summary>
 			/// <returns>false if it should still run or true if it shouldn't be called anymore by the parent IApp.</returns>
-			virtual bool OnLoop() override;
+			bool OnLoop() override;
 
 
 			/// <summary>
@@ -55,43 +55,43 @@ namespace Thing
 			/// </summary>
 			/// <param name="milli">The millisseconds this task will have to wait until it runs.</param>
 			/// <param name="runnable">The runnable task.</param>
-			virtual void AttachOnce(unsigned long milli, Thing::Core::IRunnable* runnable) override;
+			void AttachOnce(unsigned long milli, Thing::Core::IRunnable* runnable) override;
 			/// <summary>
 			/// Attaches a Task to run only once after a period of time.
 			/// </summary>
 			/// <param name="milli">The millisseconds this task will have to wait until it runs.</param>
 			/// <param name="runnable">The runnable task.</param>
-			virtual void AttachOnce(unsigned long milli, Thing::Core::IRunnable& runnable) override;
+			void AttachOnce(unsigned long milli, Thing::Core::IRunnable& runnable) override;
 
-			virtual void AttachOnce(unsigned long milli, Thing::Core::RunnableCallback runnable) override;
-			virtual void AttachOnce(unsigned long milli, Thing::Core::RunnableCallback runnable, void* obj) override;
+			void AttachOnce(unsigned long milli, Thing::Core::RunnableCallback runnable) override;
+			void AttachOnce(unsigned long milli, Thing::Core::RunnableCallback runnable, void* obj) override;
 
 			/// <summary>
 			/// Attaches a Task to run periodically.
 			/// </summary>
 			/// <param name="milli">The millisseconds interval which this app will periodically run.</param>
 			/// <param name="runnable">The runnable task.</param>
-			virtual void AttachPeriodic(unsigned long milli, Thing::Core::IRunnable* runnable) override;
+			void AttachPeriodic(unsigned long milli, Thing::Core::IRunnable* runnable) override;
 			/// <summary>
 			/// Attaches a Task to run periodically.
 			/// </summary>
 			/// <param name="milli">The millisseconds interval which this app will periodically run.</param>
 			/// <param name="runnable">The runnable task.</param>
-			virtual void AttachPeriodic(unsigned long milli, Thing::Core::IRunnable& runnable) override;
+			void AttachPeriodic(unsigned long milli, Thing::Core::IRunnable& runnable) override;
 
-			virtual void AttachPeriodic(unsigned long milli, Thing::Core::RunnableCallback runnable) override;
-			virtual void AttachPeriodic(unsigned long milli, Thing::Core::RunnableCallback runnable, void* obj) override;
+			void AttachPeriodic(unsigned long milli, Thing::Core::RunnableCallback runnable) override;
+			void AttachPeriodic(unsigned long milli, Thing::Core::RunnableCallback runnable, void* obj) override;
 
 			/// <summary>
 			/// Detaches a task, cancelling further executions.
 			/// </summary>
 			/// <param name="runnable">The runnable task being cancelled.</param>
-			virtual void Detach(Thing::Core::IRunnable* runnable) override;
+			void Detach(Thing::Core::IRunnable* runnable) override;
 			/// <summary>
 			/// Detaches a task, cancelling further executions.
 			/// </summary>
 			/// <param name="runnable">The runnable task being cancelled.</param>
-			virtual void Detach(Thing::Core::IRunnable& runnable) override;
+			void Detach(Thing::Core::IRunnable& runnable) override;
 		private:
 			const IAppContainer* app;
 

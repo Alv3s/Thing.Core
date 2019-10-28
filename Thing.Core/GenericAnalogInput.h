@@ -12,8 +12,8 @@ namespace Thing
 			GenericAnalogInput(int gpio, int precision);
 			~GenericAnalogInput();
 
-			virtual unsigned int GetPrecision() override;
-			virtual int AnalogRead() override;
+			unsigned int GetPrecision() override;
+			int AnalogRead() override;
 		private:
 			const int _gpio;
 

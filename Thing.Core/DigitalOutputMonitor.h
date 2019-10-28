@@ -13,18 +13,18 @@ namespace Thing
 		{
 			friend class DigitalIOMonitor;
 		public:
-			virtual ~DigitalOutputMonitor();
+			~DigitalOutputMonitor();
 			void For(int millis) override;
 
 		protected:
 			DigitalOutputMonitor(class IOManager& manager);
 			void SetOutput(IDigitalOutput* output, DigitalValue state);
-			virtual void Action();
+			void Action();
 			void Action(DigitalValue state, unsigned long millis);
 
 			IDigitalOutput* GetOutput() const;
 		private:
-			virtual void Run() override;
+			void Run() override;
 
 			IOManager& manager;
 

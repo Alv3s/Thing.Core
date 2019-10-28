@@ -15,9 +15,9 @@ namespace Thing
 			void SetThresholdHigherThan(int value);
 			void SetThresholdLesserThan(int value);
 
-			virtual DigitalValue DigitalRead() override;
-			virtual unsigned int GetPrecision() override;
-			virtual int AnalogRead() override;
+			DigitalValue DigitalRead() override;
+			unsigned int GetPrecision() override;
+			int AnalogRead() override;
 		private:
 			const int _gpio;
 			unsigned int _precision;
