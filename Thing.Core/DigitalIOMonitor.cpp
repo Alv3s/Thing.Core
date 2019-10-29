@@ -139,6 +139,11 @@ namespace Thing
 			objCallback = runnable;
 		}
 
+		void DigitalIOMonitor::RunMe()
+		{
+			objCallback = this;
+		}
+
 		void DigitalIOMonitor::Run(RunnableCallback f)
 		{
 			Run(f, NULL);

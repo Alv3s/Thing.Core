@@ -132,7 +132,7 @@ namespace Thing
 			std::list<IOManagerDigitalOutput> digitalOutputs;
 			std::list<Listener<IDigitalOutputListener> > digitalOutputListeners;
 
-			std::list<DigitalIOMonitor*> monitors;
+			std::list<DigitalIOMonitor> monitors;
 
 			class IOManagerRevertDigitalWrite : public virtual IRunnable, public virtual IDigitalOutputListener
 			{
@@ -140,10 +140,10 @@ namespace Thing
 				IOManagerRevertDigitalWrite(IOManager& manager, IDigitalOutput& output, DigitalValue toState, unsigned long millis);
 				~IOManagerRevertDigitalWrite();
 
-				virtual void Run() override;
+				void Run() override;
 
-				virtual void OnActivating(IDigitalIO* io, unsigned int count) override;
-				virtual void OnInactivating(IDigitalIO* io, unsigned int count) override;
+				void OnActivating(IDigitalIO* io, unsigned int count) override;
+				void OnInactivating(IDigitalIO* io, unsigned int count) override;
 			private:
 				IOManager* manager;
 				IDigitalOutput* output;

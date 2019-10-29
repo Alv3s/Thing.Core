@@ -14,8 +14,6 @@ namespace Thing
 
 		IOManager::~IOManager()
 		{
-			for (auto m : monitors)
-				delete m;
 		}
 
 
@@ -303,8 +301,9 @@ namespace Thing
 		{
 			AddDigitalInput(input);
 
-			DigitalIOMonitor* monitor = new DigitalIOMonitor(*this, &input, state);
-			monitors.push_back(monitor);
+			auto it = monitors.insert(monitors.end(), DigitalIOMonitor(*this, &input, state));
+			DigitalIOMonitor* monitor = &*it;
+			monitor->RunMe();
 			AddListener((IDigitalInputListener*)monitor);
 			return *monitor;
 		}
@@ -313,8 +312,9 @@ namespace Thing
 		{
 			AddDigitalOutput(output);
 
-			DigitalIOMonitor* monitor = new DigitalIOMonitor(*this, &output, state);
-			monitors.push_back(monitor);
+			auto it = monitors.insert(monitors.end(), DigitalIOMonitor(*this, &output, state));
+			DigitalIOMonitor* monitor = &*it;
+			monitor->RunMe();
 			AddListener((IDigitalOutputListener*)monitor);
 			return *monitor;
 		}

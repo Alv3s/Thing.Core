@@ -55,6 +55,7 @@ namespace Thing
 			void Run() override;
 
 			static void RunTask(void* obj);
+			void RunMe();
 		};
 	}
 }
