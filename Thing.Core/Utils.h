@@ -1,7 +1,6 @@
 #pragma once
 
 #include <list>
-#include <map>
 #include <algorithm>
 #include <string>
 
@@ -15,12 +14,6 @@ namespace Thing
 			inline bool Contains(std::list<T>& list, T& element)
 			{
 				return (std::find(list.begin(), list.end(), element) != list.end());
-			}
-
-			template <typename T1, typename T2>
-			inline bool Contains(std::map<T1, T2>& map, T1& key)
-			{
-				return map.find(key) != map.end();
 			}
 
 			std::string IntToString(int value);

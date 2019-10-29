@@ -1,7 +1,6 @@
 #pragma once
 
 #include <list>
-#include <map>
 #include "IAnalogInput.h"
 #include "IDigitalInput.h"
 #include "IAnalogIOListener.h"
