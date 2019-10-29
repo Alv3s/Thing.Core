@@ -377,10 +377,7 @@ namespace Thing
 					continue;
 
 				if (precision == 0U)
-				{
-					Logger->Warn("The AnalogInput was ignored because precision = 0 is invalid -> pointer = %lu", (long)input);
 					continue;
-				}
 
 				if (currentAnalogValue - precision >= previousAnalogValue)
 				{

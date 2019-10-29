@@ -17,7 +17,6 @@ namespace Thing
 			public:
 				void Connect(std::string SSID, std::string password) override
 				{
-					Logger->Debug("Trying to connect WiFi to SSID: %s", SSID.c_str());
 					Disconnect();
 					::WiFi.persistent(false); // This is very important!! Ensures that the ESP board doesn't crash in case of invalid password.
 					::WiFi.begin(SSID.c_str(), password.c_str());
@@ -85,39 +84,32 @@ namespace Thing
 					case WL_CONNECTED:
 					{
 						::IPAddress ip = ::WiFi.localIP();
-						Logger->Info("WiFi connected. IP address: %d.%d.%d.%d", ip[0], ip[1], ip[2], ip[3]);
 						SignalOnConnect();
 						break;
 					}
 					case WL_IDLE_STATUS:
 					{
-						Logger->Info("WiFi is in Iddle Status.");
 						break;
 					}
 					case WL_NO_SSID_AVAIL:
 					{
-						Logger->Info("WiFi has no SSID Available.");
 						break;
 					}
 					case WL_SCAN_COMPLETED:
 					{
-						Logger->Info("WiFi scan was completed.");
 						break;
 					}
 					case WL_CONNECT_FAILED:
 					{
-						Logger->Info("WiFi Connection Failed.");
 						SignalOnFailed();
 						break;
 					}
 					case WL_CONNECTION_LOST:
 					{
-						Logger->Info("WiFi Connection Was Lost.");
 						SignalOnDisconnect();
 						break;
 					}
 					default:
-						Logger->Info("WiFi status unknown.");
 						break;
 					}
 				}

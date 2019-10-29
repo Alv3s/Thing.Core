@@ -122,10 +122,14 @@ extern "C" void setup()
 	Logger->Debug("WiFi Initialized Successfully");
 #endif
 
+#ifdef INIT_DEBUG
 	Logger->Debug("Initializing Application");
+#endif
 	AppContainer->SetApp(InitializeApp());
 	AppContainer->Setup();
+#ifdef INIT_DEBUG
 	Logger->Debug("Setup Finished");
+#endif
 }
 
 extern "C" void loop() {
