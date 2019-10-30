@@ -25,8 +25,8 @@ Thing::Core::IFileSystem* FileSystem;
 
 Thing::Core::ILoggerManager* InitializeLogger()
 {
-	static Thing::Core::LoggerManager<200> logger;
-	static Thing::Core::Arduino::SerialLogger serialLogger("Arduino Serial", 115200);
+	static Thing::Core::LoggerManager<100> logger;
+	static Thing::Core::Arduino::SerialLogger serialLogger("Serial", 115200);
 
 	serialLogger.SetMinLevel(Thing::Core::LogLevel::Trace);
 	logger.AddListener(serialLogger);
