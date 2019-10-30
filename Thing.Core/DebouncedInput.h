@@ -22,6 +22,12 @@ namespace Thing
 				previousState = T::DigitalRead();
 			}
 
+			virtual ~DebouncedInput()
+			{
+				if(timer)
+					delete timer;
+			}
+
 			DigitalValue DigitalRead() override
 			{
 				DigitalValue newState = T::DigitalRead();

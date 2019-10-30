@@ -20,19 +20,16 @@ namespace Thing
 
 				~TaskScheduler()
 				{
-					for (std::list<ScheduledTask*>::iterator it = periodicTasks.begin(); it != periodicTasks.end();)
-					{
-						deleteScheduledTask(*it);
-						it = periodicTasks.erase(it);
-					}
+					for(auto& t : periodicTasks)
+						t.task.detach();
 				}
 
 				void AttachOnce(unsigned long milli, Thing::Core::IRunnable* runnable) override
 				{
 					Detach(runnable);
 
-					ScheduledTask* scheduled = createScheduledTask(runnable);
-					scheduled->task->once_ms(milli, TaskScheduler::taskDelegate, scheduled);
+					ScheduledTask& scheduled = createScheduledTask(runnable);
+					scheduled.task.once_ms(milli, TaskScheduler::taskDelegate, &scheduled);
 				}
 
 				void AttachOnce(unsigned long milli, Thing::Core::IRunnable& runnable) override
@@ -47,8 +44,8 @@ namespace Thing
 
 				void AttachOnce(unsigned long milli, Thing::Core::RunnableCallback runnable, void* obj)
 				{
-					ScheduledTask* scheduled = createScheduledTask(runnable, obj);
-					scheduled->task->once_ms(milli, [runnable, obj](){
+					ScheduledTask& scheduled = createScheduledTask(runnable, obj);
+					scheduled.task.once_ms(milli, [runnable, obj](){
 						runnable(obj);
 					});
 				}
@@ -57,8 +54,8 @@ namespace Thing
 				{
 					Detach(runnable);
 
-					ScheduledTask* scheduled = createScheduledTask(runnable);
-					scheduled->task->attach_ms(milli, TaskScheduler::taskDelegate, scheduled);
+					ScheduledTask& scheduled = createScheduledTask(runnable);
+					scheduled.task.attach_ms(milli, TaskScheduler::taskDelegate, &scheduled);
 				}
 
 				void AttachPeriodic(unsigned long milli, Thing::Core::IRunnable& runnable) override
@@ -73,18 +70,19 @@ namespace Thing
 
 				void AttachPeriodic(unsigned long milli, Thing::Core::RunnableCallback runnable, void* obj)
 				{
-					ScheduledTask* scheduled = createScheduledTask(runnable, obj);
-					scheduled->task->attach_ms(milli, [runnable, obj](){
+					ScheduledTask& scheduled = createScheduledTask(runnable, obj);
+					scheduled.task.attach_ms(milli, [runnable, obj](){
 						runnable(obj);
 					});
 				}
 
 				void Detach(Thing::Core::IRunnable* runnable) override
 				{
-					for(std::list<ScheduledTask*>::iterator it = periodicTasks.begin(); it != periodicTasks.end(); ++it)
-						if((*it)->runnable == runnable)
+					for(auto it = periodicTasks.begin(); it != periodicTasks.end(); ++it)
+						if(it->runnable == runnable)
 						{
-							deleteScheduledTask(*it);
+							it->task.detach();
+							periodicTasks.erase(it);
 							break;
 						}
 				}
@@ -97,7 +95,7 @@ namespace Thing
 				struct ScheduledTask
 				{
 					Thing::Core::IRunnable* runnable;
-					Ticker* task;
+					Ticker task;
 				};
 
 				static void taskDelegate(ScheduledTask* task)
@@ -105,32 +103,23 @@ namespace Thing
 					task->runnable->Run();
 				}
 
-				ScheduledTask* createScheduledTask(Thing::Core::IRunnable* runnable)
+				ScheduledTask& createScheduledTask(Thing::Core::IRunnable* runnable)
 				{
-					ScheduledTask* task = new ScheduledTask;
-					task->runnable = runnable;
-					task->task = new Ticker;
-					periodicTasks.push_back(task);
-					return task;
+					ScheduledTask task;
+					task.runnable = runnable;
+					auto it = periodicTasks.insert(periodicTasks.end(), task);
+					return *it;
 				}
 
-				ScheduledTask* createScheduledTask(Thing::Core::RunnableCallback runnable, void* obj)
+				ScheduledTask& createScheduledTask(Thing::Core::RunnableCallback runnable, void* obj)
 				{
-					ScheduledTask* task = new ScheduledTask;
-					task->runnable = NULL;
-					task->task = new Ticker;
-					periodicTasks.push_back(task);
-					return task;
+					ScheduledTask task;
+					task.runnable = NULL;
+					auto it = periodicTasks.insert(periodicTasks.end(), task);
+					return *it;
 				}
 
-				void deleteScheduledTask(ScheduledTask* task)
-				{
-					task->task->detach();
-					delete task->task;
-					delete task;
-				}
-
-				std::list<ScheduledTask*> periodicTasks;
+				std::list<ScheduledTask> periodicTasks;
 			};
 		}
 	}
