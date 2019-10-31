@@ -24,92 +24,87 @@ namespace Thing
 						t.task.detach();
 				}
 
-				void AttachOnce(unsigned long milli, Thing::Core::IRunnable* runnable) override
+				ScheduledTask AttachOnce(unsigned long milli, Thing::Core::IRunnable* runnable) override
 				{
-					Detach(runnable);
-
-					ScheduledTask& scheduled = createScheduledTask(runnable);
+					TickerScheduledTask& scheduled = createScheduledTask(runnable);
 					scheduled.task.once_ms(milli, TaskScheduler::taskDelegate, &scheduled);
+					return &scheduled.task;
 				}
 
-				void AttachOnce(unsigned long milli, Thing::Core::IRunnable& runnable) override
+				ScheduledTask AttachOnce(unsigned long milli, Thing::Core::IRunnable& runnable) override
 				{
-					AttachOnce(milli, &runnable);
+					return AttachOnce(milli, &runnable);
 				}
 				
-				void AttachOnce(unsigned long milli, Thing::Core::RunnableCallback runnable) override
+				ScheduledTask AttachOnce(unsigned long milli, Thing::Core::RunnableCallback runnable) override
 				{
-					ScheduledTask& scheduled = createScheduledTask(runnable);
+					TickerScheduledTask& scheduled = createScheduledTask(runnable);
 					scheduled.task.once_ms(milli, [runnable](){
 						runnable();
 					});
+					return &scheduled.task;
 				}
 
-				void AttachPeriodic(unsigned long milli, Thing::Core::IRunnable* runnable) override
+				ScheduledTask AttachPeriodic(unsigned long milli, Thing::Core::IRunnable* runnable) override
 				{
-					Detach(runnable);
-
-					ScheduledTask& scheduled = createScheduledTask(runnable);
+					TickerScheduledTask& scheduled = createScheduledTask(runnable);
 					scheduled.task.attach_ms(milli, TaskScheduler::taskDelegate, &scheduled);
+					return &scheduled.task;
 				}
 
-				void AttachPeriodic(unsigned long milli, Thing::Core::IRunnable& runnable) override
+				ScheduledTask AttachPeriodic(unsigned long milli, Thing::Core::IRunnable& runnable) override
 				{
-					AttachPeriodic(milli, &runnable);
+					return AttachPeriodic(milli, &runnable);
 				}
 
-				void AttachPeriodic(unsigned long milli, Thing::Core::RunnableCallback runnable) override
+				ScheduledTask AttachPeriodic(unsigned long milli, Thing::Core::RunnableCallback runnable) override
 				{
-					ScheduledTask& scheduled = createScheduledTask(runnable);
+					TickerScheduledTask& scheduled = createScheduledTask(runnable);
 					scheduled.task.attach_ms(milli, [runnable](){
 						runnable();
 					});
+					return &scheduled.task;
 				}
 
-				void Detach(Thing::Core::IRunnable* runnable) override
+				void Detach(Thing::Core::ScheduledTask task) override
 				{
 					for(auto it = periodicTasks.begin(); it != periodicTasks.end(); ++it)
-						if(it->runnable == runnable)
+						if(&it->task == task)
 						{
 							it->task.detach();
 							periodicTasks.erase(it);
 							break;
 						}
 				}
-
-				void Detach(Thing::Core::IRunnable& runnable) override
-				{
-					Detach(&runnable);
-				}
 			private:
-				struct ScheduledTask
+				struct TickerScheduledTask
 				{
 					Thing::Core::IRunnable* runnable;
 					Ticker task;
 				};
 
-				static void taskDelegate(ScheduledTask* task)
+				static void taskDelegate(TickerScheduledTask* task)
 				{
 					task->runnable->Run();
 				}
 
-				ScheduledTask& createScheduledTask(Thing::Core::IRunnable* runnable)
+				TickerScheduledTask& createScheduledTask(Thing::Core::IRunnable* runnable)
 				{
-					ScheduledTask task;
+					TickerScheduledTask task;
 					task.runnable = runnable;
 					auto it = periodicTasks.insert(periodicTasks.end(), task);
 					return *it;
 				}
 
-				ScheduledTask& createScheduledTask(Thing::Core::RunnableCallback runnable)
+				TickerScheduledTask& createScheduledTask(Thing::Core::RunnableCallback runnable)
 				{
-					ScheduledTask task;
+					TickerScheduledTask task;
 					task.runnable = NULL;
 					auto it = periodicTasks.insert(periodicTasks.end(), task);
 					return *it;
 				}
 
-				std::list<ScheduledTask> periodicTasks;
+				std::list<TickerScheduledTask> periodicTasks;
 			};
 		}
 	}

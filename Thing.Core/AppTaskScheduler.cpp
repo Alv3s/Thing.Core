@@ -17,7 +17,7 @@ namespace Thing
 		bool AppTaskScheduler::OnLoop()
 		{
 			unsigned long currentTimestamp = Hardware->Millis();
-			for (std::list<ScheduledTask>::iterator i = tasks.begin(); i != tasks.end();)
+			for (auto i = tasks.begin(); i != tasks.end();)
 			{
 				if ((bool)(i->status & AppTaskStatus::ShouldDelete))
 				{
@@ -42,73 +42,68 @@ namespace Thing
 			return false;
 		}
 
-		void AppTaskScheduler::AttachOnce(unsigned long milli, Thing::Core::IRunnable* runnable)
+		ScheduledTask AppTaskScheduler::AttachOnce(unsigned long milli, Thing::Core::IRunnable* runnable)
 		{
-			ScheduledTask task;
+			AppScheduledTask task;
 			task.status = AppTaskStatus::Once;
 			task.scheduledTimestamp = Hardware->Millis();
 			task.interval = milli;
 			task.runnableFunc = std::bind(&IRunnable::Run, runnable);
-			task.obj = runnable;
-			tasks.push_back(task);
+			auto it = tasks.insert(tasks.end(), task);
+			return &*it;
 		}
 
-		void AppTaskScheduler::AttachOnce(unsigned long milli, Thing::Core::IRunnable& runnable)
+		ScheduledTask AppTaskScheduler::AttachOnce(unsigned long milli, Thing::Core::IRunnable& runnable)
 		{
-			AttachOnce(milli, &runnable);
+			return AttachOnce(milli, &runnable);
 		}
 
-		void AppTaskScheduler::AttachOnce(unsigned long milli, Thing::Core::RunnableCallback runnable)
+		ScheduledTask AppTaskScheduler::AttachOnce(unsigned long milli, Thing::Core::RunnableCallback runnable)
 		{
-			ScheduledTask task;
+			AppScheduledTask task;
 			task.status = AppTaskStatus::Once;
 			task.scheduledTimestamp = Hardware->Millis();
 			task.interval = milli;
-			task.obj = NULL;
 			task.runnableFunc = runnable;
-			tasks.push_back(task);
+			auto it = tasks.insert(tasks.end(), task);
+			return &*it;
 		}
 
-		void AppTaskScheduler::AttachPeriodic(unsigned long milli, Thing::Core::IRunnable* runnable)
+		ScheduledTask AppTaskScheduler::AttachPeriodic(unsigned long milli, Thing::Core::IRunnable* runnable)
 		{
-			ScheduledTask task;
+			AppScheduledTask task;
 			task.status = AppTaskStatus::Periodic;
 			task.scheduledTimestamp = Hardware->Millis();
 			task.interval = milli;
-			task.obj = runnable;
 			task.runnableFunc = std::bind(&IRunnable::Run, runnable);
-			tasks.push_back(task);
+			auto it = tasks.insert(tasks.end(), task);
+			return &*it;
 		}
 
-		void AppTaskScheduler::AttachPeriodic(unsigned long milli, Thing::Core::IRunnable& runnable)
+		ScheduledTask AppTaskScheduler::AttachPeriodic(unsigned long milli, Thing::Core::IRunnable& runnable)
 		{
-			AttachPeriodic(milli, &runnable);
+			return AttachPeriodic(milli, &runnable);
 		}
 
-		void AppTaskScheduler::AttachPeriodic(unsigned long milli, Thing::Core::RunnableCallback runnable)
+		ScheduledTask AppTaskScheduler::AttachPeriodic(unsigned long milli, Thing::Core::RunnableCallback runnable)
 		{
-			ScheduledTask task;
+			AppScheduledTask task;
 			task.status = AppTaskStatus::Periodic;
 			task.scheduledTimestamp = Hardware->Millis();
 			task.interval = milli;
 			task.runnableFunc = runnable;
-			task.obj = NULL;
-			tasks.push_back(task);
+			auto it = tasks.insert(tasks.end(), task);
+			return &*it;
 		}
 
-		void AppTaskScheduler::Detach(Thing::Core::IRunnable* runnable)
+		void AppTaskScheduler::Detach(ScheduledTask task)
 		{
-			for (std::list<ScheduledTask>::iterator i = tasks.begin(); i != tasks.end(); ++i)
-				if (i->obj == runnable)
+			for (auto i = tasks.begin(); i != tasks.end(); ++i)
+				if (&*i == task)
 				{
 					i->status = i->status | AppTaskStatus::ShouldDelete;
 					return;
 				}
-		}
-
-		void AppTaskScheduler::Detach(Thing::Core::IRunnable& runnable)
-		{
-			Detach(&runnable);
 		}
 	}
 }

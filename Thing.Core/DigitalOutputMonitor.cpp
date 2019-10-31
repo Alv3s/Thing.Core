@@ -6,13 +6,18 @@ namespace Thing
 {
 	namespace Core
 	{
-		DigitalOutputMonitor::DigitalOutputMonitor(IOManager& manager) : manager(manager), output(nullptr), stateDuration_ms(0)
+		DigitalOutputMonitor::DigitalOutputMonitor(IOManager& manager) : 
+			manager(manager), 
+			output(nullptr), 
+			stateDuration_ms(0),
+			handle(NULL)
 		{
 		}
 
 
 		DigitalOutputMonitor::~DigitalOutputMonitor()
 		{
+			TaskScheduler->Detach(handle);
 		}
 
 		void DigitalOutputMonitor::SetOutput(IDigitalOutput * output, DigitalValue state)
@@ -38,7 +43,7 @@ namespace Thing
 
 			manager.DigitalWrite(output, state);
 			if (stateDuration_ms > 0)
-				TaskScheduler->AttachOnce(millis, this);
+				handle = TaskScheduler->AttachOnce(millis, this);
 		}
 
 		void DigitalOutputMonitor::For(int millis)

@@ -13,102 +13,92 @@ namespace Thing {
 			public:
 				~TaskSchedulerMock()
 				{
-					for (auto t : tasks)
-						delete t;
 				}
 
-				virtual void AttachOnce(unsigned long milli, Thing::Core::IRunnable* runnable) override
+				virtual ScheduledTask AttachOnce(unsigned long milli, Thing::Core::IRunnable* runnable) override
 				{
-					PeriodicTask* task = new PeriodicTask;
-					task->next_run_at = Hardware->Millis() + milli;
-					task->period_ms = 0;
-					task->runnable = std::bind(&IRunnable::Run, runnable);
-					task->obj = runnable;
-					task->shouldBeDeleted = false;
+					PeriodicTask task;
+					task.next_run_at = Hardware->Millis() + milli;
+					task.period_ms = 0;
+					task.runnable = std::bind(&IRunnable::Run, runnable);
+					task.shouldBeDeleted = false;
 
-					tasks.push_back(task);
+					auto it = tasks.insert(tasks.end(), task);
+					return &*it;
 				}
 
-				virtual void AttachOnce(unsigned long milli, Thing::Core::IRunnable& runnable) override
+				virtual ScheduledTask AttachOnce(unsigned long milli, Thing::Core::IRunnable& runnable) override
 				{
-					AttachOnce(milli, &runnable);
+					return AttachOnce(milli, &runnable);
 				}
 
-				virtual void AttachOnce(unsigned long milli, Thing::Core::RunnableCallback runnable) override
+				virtual ScheduledTask AttachOnce(unsigned long milli, Thing::Core::RunnableCallback runnable) override
 				{
-					PeriodicTask* task = new PeriodicTask;
-					task->next_run_at = Hardware->Millis() + milli;
-					task->period_ms = 0;
-					task->runnable = runnable;
-					task->obj = NULL;
-					task->shouldBeDeleted = false;
+					PeriodicTask task;
+					task.next_run_at = Hardware->Millis() + milli;
+					task.period_ms = 0;
+					task.runnable = runnable;
+					task.shouldBeDeleted = false;
 
-					tasks.push_back(task);
+					auto it = tasks.insert(tasks.end(), task);
+					return &*it;
 				}
 
-				virtual void AttachPeriodic(unsigned long milli, Thing::Core::IRunnable* runnable) override
+				virtual ScheduledTask AttachPeriodic(unsigned long milli, Thing::Core::IRunnable* runnable) override
 				{
-					PeriodicTask* task = new PeriodicTask;
-					task->next_run_at = Hardware->Millis() + milli;
-					task->period_ms = milli;
-					task->runnable = std::bind(&IRunnable::Run, runnable);
-					task->obj = runnable;
-					task->shouldBeDeleted = false;
+					PeriodicTask task;
+					task.next_run_at = Hardware->Millis() + milli;
+					task.period_ms = milli;
+					task.runnable = std::bind(&IRunnable::Run, runnable);
+					task.shouldBeDeleted = false;
 
-					tasks.push_back(task);
+					auto it = tasks.insert(tasks.end(), task);
+					return &*it;
 				}
 
-				virtual void AttachPeriodic(unsigned long milli, Thing::Core::IRunnable& runnable) override
+				virtual ScheduledTask AttachPeriodic(unsigned long milli, Thing::Core::IRunnable& runnable) override
 				{
-					AttachPeriodic(milli, &runnable);
+					return AttachPeriodic(milli, &runnable);
 				}
 
-				virtual void AttachPeriodic(unsigned long milli, Thing::Core::RunnableCallback runnable) override
+				virtual ScheduledTask AttachPeriodic(unsigned long milli, Thing::Core::RunnableCallback runnable) override
 				{
-					PeriodicTask* task = new PeriodicTask;
-					task->next_run_at = Hardware->Millis() + milli;
-					task->period_ms = milli;
-					task->runnable = runnable;
-					task->obj = NULL;
-					task->shouldBeDeleted = false;
+					PeriodicTask task;
+					task.next_run_at = Hardware->Millis() + milli;
+					task.period_ms = milli;
+					task.runnable = runnable;
+					task.shouldBeDeleted = false;
 
-					tasks.push_back(task);
+					auto it = tasks.insert(tasks.end(), task);
+					return &*it;
 				}
 
-				virtual void Detach(Thing::Core::IRunnable* runnable) override
+				virtual void Detach(ScheduledTask task) override
 				{
-					std::list<PeriodicTask*> removeTasks;
-					for (auto t : tasks)
-						if (t->obj == runnable)
+					for(auto t = tasks.begin(); t != tasks.end(); ++t)
+						if (&*t == task)
 						{
 							t->shouldBeDeleted = true;
 							break;
 						}
 				}
 
-				virtual void Detach(Thing::Core::IRunnable& runnable) override
-				{
-					Detach(&runnable);
-				}
-
 				virtual void OnMillisChange(unsigned long millis) override
 				{
 					for (auto it = tasks.begin(); it != tasks.end();)
 					{
-						auto t = *it;
-						if (t->shouldBeDeleted)
+						if (it->shouldBeDeleted)
 						{
 							it = tasks.erase(it);
-							delete t;
 							continue;
 						}
-						else if (t->next_run_at == millis)
+						else if (it->next_run_at == millis)
 						{
-							t->runnable();
-							if (t->period_ms > 0)
-								t->next_run_at = millis + t->period_ms;
+							it->runnable();
+							if (it->period_ms > 0)
+								it->next_run_at = millis + it->period_ms;
 							else
-								t->shouldBeDeleted = true;
+								it->shouldBeDeleted = true;
 						}
 						++it;
 					}
@@ -120,11 +110,10 @@ namespace Thing {
 					unsigned long next_run_at;
 					unsigned long period_ms;
 					Thing::Core::RunnableCallback runnable;
-					void* obj;
 					bool shouldBeDeleted;
 				};
 
-				std::list<PeriodicTask*> tasks;
+				std::list<PeriodicTask> tasks;
 			};
 		}
 	}

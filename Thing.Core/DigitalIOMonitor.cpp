@@ -12,7 +12,8 @@ namespace Thing
 			actionType(action),
 			timePressedMillis(0),
 			callback(std::bind(&DigitalIOMonitor::Run2, this)),
-			periodic(false)
+			periodic(false),
+			handle(NULL)
 		{
 			manager.AddDigitalInput(input);
 		}
@@ -23,14 +24,15 @@ namespace Thing
 			actionType(action),
 			timePressedMillis(0),
 			callback(std::bind(&DigitalIOMonitor::Run2, this)),
-			periodic(false)
+			periodic(false),
+			handle(NULL)
 		{
 			manager.AddDigitalOutput(output);
 		}
 
 		DigitalIOMonitor::~DigitalIOMonitor()
 		{
-			TaskScheduler->Detach(this);
+			TaskScheduler->Detach(handle);
 		}
 
 
@@ -45,12 +47,12 @@ namespace Thing
 				if (actionType == DigitalInputState::WasActivated)
 				{
 					if (periodic)
-						TaskScheduler->AttachPeriodic(timePressedMillis, this);
+						handle = TaskScheduler->AttachPeriodic(timePressedMillis, this);
 					else
-						TaskScheduler->AttachOnce(timePressedMillis, this);
+						handle = TaskScheduler->AttachOnce(timePressedMillis, this);
 				}
 				else
-					TaskScheduler->Detach(this);
+					TaskScheduler->Detach(handle);
 				return;
 			}
 
@@ -68,12 +70,12 @@ namespace Thing
 				if (actionType == DigitalInputState::WasInactivated)
 				{
 					if (periodic)
-						TaskScheduler->AttachPeriodic(timePressedMillis, this);
+						handle = TaskScheduler->AttachPeriodic(timePressedMillis, this);
 					else
-						TaskScheduler->AttachOnce(timePressedMillis, this);
+						handle = TaskScheduler->AttachOnce(timePressedMillis, this);
 				}
 				else
-					TaskScheduler->Detach(this);
+					TaskScheduler->Detach(handle);
 				return;
 			}
 

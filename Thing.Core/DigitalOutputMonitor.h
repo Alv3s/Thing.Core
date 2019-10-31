@@ -31,6 +31,7 @@ namespace Thing
 			IDigitalOutput* output;
 			DigitalValue state;
 			unsigned long stateDuration_ms;
+			ScheduledTask handle;
 		};
 	}
 }

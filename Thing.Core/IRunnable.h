@@ -6,6 +6,8 @@ namespace Thing
 {
 	namespace Core
 	{		
+		using ScheduledTask = void*;
+
 		using RunnableCallback = std::function<void ()>;
 
 		/// <summary>

@@ -461,15 +461,16 @@ namespace Thing
 		IOManager::IOManagerRevertDigitalWrite::IOManagerRevertDigitalWrite(IOManager & manager, IDigitalOutput & output, DigitalValue toState, unsigned long millis) :
 			manager(&manager),
 			output(&output),
-			toState(toState)
+			toState(toState),
+			handle(NULL)
 		{
-			TaskScheduler->AttachOnce(millis, this);
+			handle = TaskScheduler->AttachOnce(millis, this);
 			this->manager->AddListener(this);
 		}
 
 		IOManager::IOManagerRevertDigitalWrite::~IOManagerRevertDigitalWrite()
 		{
-			TaskScheduler->Detach(this);
+			TaskScheduler->Detach(handle);
 			manager->RemoveListener(this);
 		}
 

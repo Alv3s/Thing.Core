@@ -55,53 +55,47 @@ namespace Thing
 			/// </summary>
 			/// <param name="milli">The millisseconds this task will have to wait until it runs.</param>
 			/// <param name="runnable">The runnable task.</param>
-			void AttachOnce(unsigned long milli, Thing::Core::IRunnable* runnable) override;
+			ScheduledTask AttachOnce(unsigned long milli, Thing::Core::IRunnable* runnable) override;
 			/// <summary>
 			/// Attaches a Task to run only once after a period of time.
 			/// </summary>
 			/// <param name="milli">The millisseconds this task will have to wait until it runs.</param>
 			/// <param name="runnable">The runnable task.</param>
-			void AttachOnce(unsigned long milli, Thing::Core::IRunnable& runnable) override;
+			ScheduledTask AttachOnce(unsigned long milli, Thing::Core::IRunnable& runnable) override;
 
-			void AttachOnce(unsigned long milli, Thing::Core::RunnableCallback runnable) override;
+			ScheduledTask AttachOnce(unsigned long milli, Thing::Core::RunnableCallback runnable) override;
 
 			/// <summary>
 			/// Attaches a Task to run periodically.
 			/// </summary>
 			/// <param name="milli">The millisseconds interval which this app will periodically run.</param>
 			/// <param name="runnable">The runnable task.</param>
-			void AttachPeriodic(unsigned long milli, Thing::Core::IRunnable* runnable) override;
+			ScheduledTask AttachPeriodic(unsigned long milli, Thing::Core::IRunnable* runnable) override;
 			/// <summary>
 			/// Attaches a Task to run periodically.
 			/// </summary>
 			/// <param name="milli">The millisseconds interval which this app will periodically run.</param>
 			/// <param name="runnable">The runnable task.</param>
-			void AttachPeriodic(unsigned long milli, Thing::Core::IRunnable& runnable) override;
+			ScheduledTask AttachPeriodic(unsigned long milli, Thing::Core::IRunnable& runnable) override;
 
-			void AttachPeriodic(unsigned long milli, Thing::Core::RunnableCallback runnable) override;
+			ScheduledTask AttachPeriodic(unsigned long milli, Thing::Core::RunnableCallback runnable) override;
 
 			/// <summary>
 			/// Detaches a task, cancelling further executions.
 			/// </summary>
-			/// <param name="runnable">The runnable task being cancelled.</param>
-			void Detach(Thing::Core::IRunnable* runnable) override;
-			/// <summary>
-			/// Detaches a task, cancelling further executions.
-			/// </summary>
-			/// <param name="runnable">The runnable task being cancelled.</param>
-			void Detach(Thing::Core::IRunnable& runnable) override;
+			/// <param name="task">The scheduled task being cancelled.</param>
+			void Detach(ScheduledTask task) override;
 		private:
 			const IAppContainer* app;
 
-			struct ScheduledTask
+			struct AppScheduledTask
 			{
 				unsigned long scheduledTimestamp;
 				unsigned long interval;
 				AppTaskStatus status;
 				RunnableCallback runnableFunc;
-				void* obj;
 			};
-			std::list<ScheduledTask> tasks;
+			std::list<AppScheduledTask> tasks;
 		};
 	}
 }

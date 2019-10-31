@@ -46,6 +46,7 @@ namespace Thing
 			const DigitalInputState actionType;
 			RunnableCallback callback;
 			bool periodic;
+			ScheduledTask handle;
 
 			void OnActivating(IDigitalIO* io, unsigned int count) override;
 			void OnInactivating(IDigitalIO* io, unsigned int count) override;

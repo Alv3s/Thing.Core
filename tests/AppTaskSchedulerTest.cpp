@@ -258,7 +258,7 @@ namespace Thing {
 				AppTaskScheduler taskScheduler(appContainerMock);
 
 				RunnableMock runnable;
-				taskScheduler.AttachPeriodic(millis, runnable);
+				auto scheduledTask = taskScheduler.AttachPeriodic(millis, runnable);
 
 				//Checks if the task will run at least exactly after the interval has passed
 				EXPECT_CALL(runnable, Run()).Times(1);
@@ -267,7 +267,7 @@ namespace Thing {
 
 				//Detaches the task and expects it to never be called again
 				EXPECT_CALL(runnable, Run()).Times(0);
-				taskScheduler.Detach(runnable);
+				taskScheduler.Detach(scheduledTask);
 				hardwareMock.Delay(2 * millis);
 				taskScheduler.OnLoop();
 			}
@@ -282,7 +282,7 @@ namespace Thing {
 				AppTaskScheduler taskScheduler(appContainerMock);
 
 				RunnableMock runnable;
-				taskScheduler.AttachPeriodic(millis, runnable);
+				auto scheduledTask = taskScheduler.AttachPeriodic(millis, runnable);
 
 				//Checks if the task will run at least exactly after the interval has passed
 				EXPECT_CALL(runnable, Run()).Times(1);
@@ -291,7 +291,7 @@ namespace Thing {
 
 				//Detaches the task and expects it to never be called again
 				EXPECT_CALL(runnable, Run()).Times(0);
-				taskScheduler.Detach(runnable);
+				taskScheduler.Detach(scheduledTask);
 				hardwareMock.Delay(2 * millis);
 				taskScheduler.OnLoop();
 			}
@@ -308,7 +308,7 @@ namespace Thing {
 				RunnableMock runnable;
 				taskScheduler.AttachPeriodic(millis, runnable);
 
-				ASSERT_NO_FATAL_FAILURE(taskScheduler.Detach((Thing::Core::IRunnable*)NULL));
+				ASSERT_NO_FATAL_FAILURE(taskScheduler.Detach(NULL));
 			}
 
 			TEST_F(AppTaskSchedulerTest, DetachRunonceTaskInsideOwnRun)
@@ -318,12 +318,12 @@ namespace Thing {
 				AppTaskScheduler taskScheduler(appContainerMock);
 
 				RunnableMock runnable;
-				taskScheduler.AttachOnce(millis, runnable);
+				auto scheduledTask = taskScheduler.AttachOnce(millis, runnable);
 
 				ON_CALL(runnable, Run()).WillByDefault(testing::Invoke(
-					[&taskScheduler, &runnable]()
+					[&taskScheduler, &scheduledTask]()
 					{
-						taskScheduler.Detach(runnable);
+						taskScheduler.Detach(scheduledTask);
 					}
 				));
 

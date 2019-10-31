@@ -15,6 +15,11 @@ namespace Thing
 			class WiFi : public Thing::Core::WiFiBase, public virtual Thing::Core::IWiFi, public virtual Thing::Core::IRunnable
 			{
 			public:
+				WiFi() : handle(NULL)
+				{
+
+				}
+
 				void Connect(std::string SSID, std::string password) override
 				{
 					Disconnect();
@@ -22,12 +27,12 @@ namespace Thing
 					::WiFi.begin(SSID.c_str(), password.c_str());
 					::WiFi.mode(WIFI_STA); //Avoid unwanted open wifi network
 
-					TaskScheduler->AttachPeriodic(1000, this);
+					handle = TaskScheduler->AttachPeriodic(1000, this);
 				}
 
 				void Disconnect() override
 				{
-					TaskScheduler->Detach(this);
+					TaskScheduler->Detach(handle);
 					::WiFi.disconnect();
 				}
 
@@ -115,6 +120,7 @@ namespace Thing
 				}
 			private:
 				wl_status_t previousStatus;
+				Thing::Core::ScheduledTask handle;
 			};
 		}
 	}

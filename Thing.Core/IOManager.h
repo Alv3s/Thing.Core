@@ -147,6 +147,7 @@ namespace Thing
 				IOManager* manager;
 				IDigitalOutput* output;
 				DigitalValue toState;
+				ScheduledTask handle;
 			};
 		};
 	}
