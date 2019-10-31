@@ -35,7 +35,6 @@ namespace Thing
 			void Run(IRunnable& runnable) override;
 			void Run(IRunnable* runnable) override;
 			void Run(RunnableCallback f) override;
-			void Run(RunnableCallback f, void* obj) override;
 
 		private:
 			DigitalIOMonitor(class IOManager& manager, IDigitalInput* input, DigitalInputState action);
@@ -46,15 +45,14 @@ namespace Thing
 			const IDigitalIO* io;
 			const DigitalInputState actionType;
 			RunnableCallback callback;
-			void* objCallback;
 			bool periodic;
 
 			void OnActivating(IDigitalIO* io, unsigned int count) override;
 			void OnInactivating(IDigitalIO* io, unsigned int count) override;
 
 			void Run() override;
+			void Run2();
 
-			static void RunTask(void* obj);
 			void RunMe();
 		};
 	}

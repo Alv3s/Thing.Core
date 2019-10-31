@@ -20,13 +20,13 @@ Although Thing.Core is something new and may miss a few features, it allow us to
   ```
   - You can schedule a function to run when a button is pressed:
   ```cpp
-  Manager.OnActivating(button).Run([](void* obj){
+  Manager.OnActivating(button).Run([](){
     //Code here will run automatically when the button is pressed.
   });
   ```
   - You can schedule a function to run when an output turns inactive:
   ```cpp
-  Manager.OnInactivating(output).Run([](void* obj){
+  Manager.OnInactivating(output).Run([](){
     //Code here will run automatically when output changes from High to Low.
   });
   ```
@@ -40,7 +40,7 @@ Although Thing.Core is something new and may miss a few features, it allow us to
   ```
   - You can schedule things:
   ```cpp
-  TaskScheduler.AttachOnce(5000, [](void* obj){
+  TaskScheduler.AttachOnce(5000, [](){
     //Code here will be run after 5 seconds
   });
   ```

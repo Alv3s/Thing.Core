@@ -6,7 +6,7 @@ namespace Thing
 {
 	namespace Core
 	{		
-		using RunnableCallback = std::function<void (void*)>;
+		using RunnableCallback = std::function<void ()>;
 
 		/// <summary>
 		/// A Runnable interface.

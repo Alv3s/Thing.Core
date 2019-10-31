@@ -121,7 +121,6 @@ namespace Thing {
 				// Test: When the input precision is zero
 				EXPECT_CALL(input, AnalogRead()).WillOnce(Return(50));
 				EXPECT_CALL(input, GetPrecision()).WillOnce(Return(0));
-				EXPECT_CALL(LoggerMock, WarnOverride(_, _)).Times(1);
 				for (int i = 0; i < totalListeners; ++i)
 				{
 					EXPECT_CALL(listeners[i], OnIncreasingValue(_, _)).Times(0);
@@ -2889,53 +2888,23 @@ namespace Thing {
 				EXPECT_CALL(input, DigitalRead()).WillRepeatedly(Return(Thing::Core::DigitalValue::Low));
 				Manager.AddDigitalInput(input);
 
-				testing::MockFunction<void(void*)> callbackFunctionMock;
-				Manager.OnActivating(input).Run([&callbackFunctionMock](void* obj) {
-					callbackFunctionMock.Call(obj);
-					});
+				testing::MockFunction<void()> callbackFunctionMock;
+				Manager.OnActivating(input).Run([&callbackFunctionMock]() {
+					callbackFunctionMock.Call();
+				});
 
 				for (int i = 0; i < testCount; ++i)
 				{
 					EXPECT_CALL(input, DigitalRead()).WillOnce(Return(Thing::Core::DigitalValue::Low));
-					EXPECT_CALL(callbackFunctionMock, Call(_)).Times(0);
+					EXPECT_CALL(callbackFunctionMock, Call()).Times(0);
 					Manager.Process();
 
 					EXPECT_CALL(input, DigitalRead()).WillOnce(Return(Thing::Core::DigitalValue::High));
-					EXPECT_CALL(callbackFunctionMock, Call(NULL)).Times(1);
+					EXPECT_CALL(callbackFunctionMock, Call()).Times(1);
 					Manager.Process();
 
 					EXPECT_CALL(input, DigitalRead()).WillOnce(Return(Thing::Core::DigitalValue::Low));
-					EXPECT_CALL(callbackFunctionMock, Call(_)).Times(0);
-					Manager.Process();
-				}
-			}
-
-			TEST_F(IOManagerTest, DigitalIOMonitorOnActivatingRunCallbackWithObj)
-			{
-				const int testCount = 4;
-				Thing::Core::IOManager Manager;
-
-				DigitalInputMock input;
-				EXPECT_CALL(input, DigitalRead()).WillRepeatedly(Return(Thing::Core::DigitalValue::Low));
-				Manager.AddDigitalInput(input);
-
-				testing::MockFunction<void(void*)> callbackFunctionMock;
-				Manager.OnActivating(input).Run([&callbackFunctionMock](void* obj) {
-					callbackFunctionMock.Call(obj);
-				}, this);
-
-				for (int i = 0; i < testCount; ++i)
-				{
-					EXPECT_CALL(input, DigitalRead()).WillOnce(Return(Thing::Core::DigitalValue::Low));
-					EXPECT_CALL(callbackFunctionMock, Call(_)).Times(0);
-					Manager.Process();
-
-					EXPECT_CALL(input, DigitalRead()).WillOnce(Return(Thing::Core::DigitalValue::High));
-					EXPECT_CALL(callbackFunctionMock, Call(this)).Times(1);
-					Manager.Process();
-
-					EXPECT_CALL(input, DigitalRead()).WillOnce(Return(Thing::Core::DigitalValue::Low));
-					EXPECT_CALL(callbackFunctionMock, Call(_)).Times(0);
+					EXPECT_CALL(callbackFunctionMock, Call()).Times(0);
 					Manager.Process();
 				}
 			}
@@ -2949,53 +2918,23 @@ namespace Thing {
 				EXPECT_CALL(input, DigitalRead()).WillRepeatedly(Return(Thing::Core::DigitalValue::High));
 				Manager.AddDigitalInput(input);
 
-				testing::MockFunction<void(void*)> callbackFunctionMock;
-				Manager.OnInactivating(input).Run([&callbackFunctionMock](void* obj) {
-					callbackFunctionMock.Call(obj);
+				testing::MockFunction<void()> callbackFunctionMock;
+				Manager.OnInactivating(input).Run([&callbackFunctionMock]() {
+					callbackFunctionMock.Call();
 				});
 
 				for (int i = 0; i < testCount; ++i)
 				{
 					EXPECT_CALL(input, DigitalRead()).WillOnce(Return(Thing::Core::DigitalValue::High));
-					EXPECT_CALL(callbackFunctionMock, Call(_)).Times(0);
+					EXPECT_CALL(callbackFunctionMock, Call()).Times(0);
 					Manager.Process();
 
 					EXPECT_CALL(input, DigitalRead()).WillOnce(Return(Thing::Core::DigitalValue::Low));
-					EXPECT_CALL(callbackFunctionMock, Call(NULL)).Times(1);
+					EXPECT_CALL(callbackFunctionMock, Call()).Times(1);
 					Manager.Process();
 
 					EXPECT_CALL(input, DigitalRead()).WillOnce(Return(Thing::Core::DigitalValue::High));
-					EXPECT_CALL(callbackFunctionMock, Call(_)).Times(0);
-					Manager.Process();
-				}
-			}
-
-			TEST_F(IOManagerTest, DigitalIOMonitorOnInactivatingRunCallbackWithObj)
-			{
-				const int testCount = 4;
-				Thing::Core::IOManager Manager;
-
-				DigitalInputMock input;
-				EXPECT_CALL(input, DigitalRead()).WillRepeatedly(Return(Thing::Core::DigitalValue::High));
-				Manager.AddDigitalInput(input);
-
-				testing::MockFunction<void(void*)> callbackFunctionMock;
-				Manager.OnInactivating(input).Run([&callbackFunctionMock](void* obj) {
-					callbackFunctionMock.Call(obj);
-				}, this);
-
-				for (int i = 0; i < testCount; ++i)
-				{
-					EXPECT_CALL(input, DigitalRead()).WillOnce(Return(Thing::Core::DigitalValue::High));
-					EXPECT_CALL(callbackFunctionMock, Call(_)).Times(0);
-					Manager.Process();
-
-					EXPECT_CALL(input, DigitalRead()).WillOnce(Return(Thing::Core::DigitalValue::Low));
-					EXPECT_CALL(callbackFunctionMock, Call(this)).Times(1);
-					Manager.Process();
-
-					EXPECT_CALL(input, DigitalRead()).WillOnce(Return(Thing::Core::DigitalValue::High));
-					EXPECT_CALL(callbackFunctionMock, Call(_)).Times(0);
+					EXPECT_CALL(callbackFunctionMock, Call()).Times(0);
 					Manager.Process();
 				}
 			}
@@ -3062,49 +3001,20 @@ namespace Thing {
 				DigitalOutputMock output;
 				Manager.AddDigitalOutput(output);
 
-				testing::MockFunction<void(void*)> callbackFunctionMock;
-				Manager.OnActivating(output).Run([&callbackFunctionMock](void* obj) {
-					callbackFunctionMock.Call(obj);
+				testing::MockFunction<void()> callbackFunctionMock;
+				Manager.OnActivating(output).Run([&callbackFunctionMock]() {
+					callbackFunctionMock.Call();
 				});
 
 				for (int j = 0; j < testCount; ++j)
 				{
-					EXPECT_CALL(callbackFunctionMock, Call(_)).Times(0);
+					EXPECT_CALL(callbackFunctionMock, Call()).Times(0);
 					EXPECT_CALL(output, GetState()).WillOnce(Return(Thing::Core::DigitalValue::High))
 						.WillOnce(Return(Thing::Core::DigitalValue::Low));
 					EXPECT_CALL(output, DigitalWrite(Thing::Core::DigitalValue::Low));
 					Manager.DigitalWrite(output, Thing::Core::DigitalValue::Low);
 
-					EXPECT_CALL(callbackFunctionMock, Call(NULL)).Times(1);
-					EXPECT_CALL(output, GetState()).WillOnce(Return(Thing::Core::DigitalValue::Low))
-						.WillOnce(Return(Thing::Core::DigitalValue::High));
-					EXPECT_CALL(output, DigitalWrite(Thing::Core::DigitalValue::High));
-					Manager.DigitalWrite(output, Thing::Core::DigitalValue::High);
-				}
-			}
-
-			TEST_F(IOManagerTest, ITimedDigitalIOMonitorOutputOnActivatingRunCallbackWithObj)
-			{
-				const int testCount = 4;
-				Thing::Core::IOManager Manager;
-
-				DigitalOutputMock output;
-				Manager.AddDigitalOutput(output);
-
-				testing::MockFunction<void(void*)> callbackFunctionMock;
-				Manager.OnActivating(output).Run([&callbackFunctionMock](void* obj) {
-					callbackFunctionMock.Call(obj);
-				}, this);
-
-				for (int j = 0; j < testCount; ++j)
-				{
-					EXPECT_CALL(callbackFunctionMock, Call(_)).Times(0);
-					EXPECT_CALL(output, GetState()).WillOnce(Return(Thing::Core::DigitalValue::High))
-						.WillOnce(Return(Thing::Core::DigitalValue::Low));
-					EXPECT_CALL(output, DigitalWrite(Thing::Core::DigitalValue::Low));
-					Manager.DigitalWrite(output, Thing::Core::DigitalValue::Low);
-
-					EXPECT_CALL(callbackFunctionMock, Call(this)).Times(1);
+					EXPECT_CALL(callbackFunctionMock, Call()).Times(1);
 					EXPECT_CALL(output, GetState()).WillOnce(Return(Thing::Core::DigitalValue::Low))
 						.WillOnce(Return(Thing::Core::DigitalValue::High));
 					EXPECT_CALL(output, DigitalWrite(Thing::Core::DigitalValue::High));
@@ -3174,49 +3084,20 @@ namespace Thing {
 				DigitalOutputMock output;
 				Manager.AddDigitalOutput(output);
 
-				testing::MockFunction<void(void*)> callbackFunctionMock;
-				Manager.OnInactivating(output).Run([&callbackFunctionMock](void* obj) {
-					callbackFunctionMock.Call(obj);
+				testing::MockFunction<void()> callbackFunctionMock;
+				Manager.OnInactivating(output).Run([&callbackFunctionMock]() {
+					callbackFunctionMock.Call();
 				});
 
 				for (int j = 0; j < testCount; ++j)
 				{
-					EXPECT_CALL(callbackFunctionMock, Call(_)).Times(0);
+					EXPECT_CALL(callbackFunctionMock, Call()).Times(0);
 					EXPECT_CALL(output, GetState()).WillOnce(Return(Thing::Core::DigitalValue::Low))
 						.WillOnce(Return(Thing::Core::DigitalValue::High));
 					EXPECT_CALL(output, DigitalWrite(Thing::Core::DigitalValue::High));
 					Manager.DigitalWrite(output, Thing::Core::DigitalValue::High);
 
-					EXPECT_CALL(callbackFunctionMock, Call(NULL)).Times(1);
-					EXPECT_CALL(output, GetState()).WillOnce(Return(Thing::Core::DigitalValue::High))
-						.WillOnce(Return(Thing::Core::DigitalValue::Low));
-					EXPECT_CALL(output, DigitalWrite(Thing::Core::DigitalValue::Low));
-					Manager.DigitalWrite(output, Thing::Core::DigitalValue::Low);
-				}
-			}
-
-			TEST_F(IOManagerTest, ITimedDigitalIOMonitorOutputOnInactivatingRunCallbackWhithObj)
-			{
-				const int testCount = 4;
-				Thing::Core::IOManager Manager;
-
-				DigitalOutputMock output;
-				Manager.AddDigitalOutput(output);
-
-				testing::MockFunction<void(void*)> callbackFunctionMock;
-				Manager.OnInactivating(output).Run([&callbackFunctionMock](void* obj) {
-					callbackFunctionMock.Call(obj);
-				}, this);
-
-				for (int j = 0; j < testCount; ++j)
-				{
-					EXPECT_CALL(callbackFunctionMock, Call(_)).Times(0);
-					EXPECT_CALL(output, GetState()).WillOnce(Return(Thing::Core::DigitalValue::Low))
-						.WillOnce(Return(Thing::Core::DigitalValue::High));
-					EXPECT_CALL(output, DigitalWrite(Thing::Core::DigitalValue::High));
-					Manager.DigitalWrite(output, Thing::Core::DigitalValue::High);
-
-					EXPECT_CALL(callbackFunctionMock, Call(this)).Times(1);
+					EXPECT_CALL(callbackFunctionMock, Call()).Times(1);
 					EXPECT_CALL(output, GetState()).WillOnce(Return(Thing::Core::DigitalValue::High))
 						.WillOnce(Return(Thing::Core::DigitalValue::Low));
 					EXPECT_CALL(output, DigitalWrite(Thing::Core::DigitalValue::Low));
@@ -3262,9 +3143,9 @@ namespace Thing {
 					DigitalOutputMock in_output;
 					Manager.AddDigitalOutput(in_output);
 
-					testing::MockFunction<void(void*)> callbackFunctionMock;
-					Manager.OnActive(in_output).For(time[i]).Run([&callbackFunctionMock](void* obj) {
-						callbackFunctionMock.Call(obj);
+					testing::MockFunction<void()> callbackFunctionMock;
+					Manager.OnActive(in_output).For(time[i]).Run([&callbackFunctionMock]() {
+						callbackFunctionMock.Call();
 					});
 
 					EXPECT_CALL(in_output, GetState())
@@ -3274,39 +3155,9 @@ namespace Thing {
 					Manager.Process();
 					Hardware->Delay(time[i] - 1);
 					Manager.Process();
-					EXPECT_CALL(callbackFunctionMock, Call(NULL)).Times(1);
+					EXPECT_CALL(callbackFunctionMock, Call()).Times(1);
 					Hardware->Delay(1);
-					EXPECT_CALL(callbackFunctionMock, Call(_)).Times(0);
-					Hardware->Delay(1);
-					Manager.Process();
-				}
-			}
-
-			TEST_F(IOManagerTest, ITimedDigitalIOMonitorOutputActiveForRunCallbackWithObj)
-			{
-				const long time[] = { 1000, 2000, 3000 };
-				for (int i = 0; i < sizeof(time) / sizeof(long); ++i)
-				{
-					Thing::Core::IOManager Manager;
-
-					DigitalOutputMock in_output;
-					Manager.AddDigitalOutput(in_output);
-
-					testing::MockFunction<void(void*)> callbackFunctionMock;
-					Manager.OnActive(in_output).For(time[i]).Run([&callbackFunctionMock](void* obj) {
-						callbackFunctionMock.Call(obj);
-					}, this);
-
-					EXPECT_CALL(in_output, GetState())
-						.WillOnce(Return(Thing::Core::DigitalValue::Low))
-						.WillRepeatedly(Return(Thing::Core::DigitalValue::High));
-					Manager.DigitalWrite(in_output, Thing::Core::DigitalValue::High);
-					Manager.Process();
-					Hardware->Delay(time[i] - 1);
-					Manager.Process();
-					EXPECT_CALL(callbackFunctionMock, Call(this)).Times(1);
-					Hardware->Delay(1);
-					EXPECT_CALL(callbackFunctionMock, Call(_)).Times(0);
+					EXPECT_CALL(callbackFunctionMock, Call()).Times(0);
 					Hardware->Delay(1);
 					Manager.Process();
 				}
@@ -3350,9 +3201,9 @@ namespace Thing {
 					DigitalOutputMock in_output;
 					Manager.AddDigitalOutput(in_output);
 
-					testing::MockFunction<void(void*)> callbackFunctionMock;
-					Manager.OnInactive(in_output).For(time[i]).Run([&callbackFunctionMock](void* obj) {
-						callbackFunctionMock.Call(obj);
+					testing::MockFunction<void()> callbackFunctionMock;
+					Manager.OnInactive(in_output).For(time[i]).Run([&callbackFunctionMock]() {
+						callbackFunctionMock.Call();
 					});
 
 					EXPECT_CALL(in_output, GetState())
@@ -3362,39 +3213,9 @@ namespace Thing {
 					Manager.Process();
 					Hardware->Delay(time[i] - 1);
 					Manager.Process();
-					EXPECT_CALL(callbackFunctionMock, Call(NULL)).Times(1);
+					EXPECT_CALL(callbackFunctionMock, Call()).Times(1);
 					Hardware->Delay(1);
-					EXPECT_CALL(callbackFunctionMock, Call(_)).Times(0);
-					Hardware->Delay(1);
-					Manager.Process();
-				}
-			}
-
-			TEST_F(IOManagerTest, ITimedDigitalIOMonitorOutputInactiveForRunCallbackWithObj)
-			{
-				const long time[] = { 1000, 2000, 3000 };
-				for (int i = 0; i < sizeof(time) / sizeof(long); ++i)
-				{
-					Thing::Core::IOManager Manager;
-
-					DigitalOutputMock in_output;
-					Manager.AddDigitalOutput(in_output);
-
-					testing::MockFunction<void(void*)> callbackFunctionMock;
-					Manager.OnInactive(in_output).For(time[i]).Run([&callbackFunctionMock](void* obj) {
-						callbackFunctionMock.Call(obj);
-					}, this);
-
-					EXPECT_CALL(in_output, GetState())
-						.WillOnce(Return(Thing::Core::DigitalValue::High))
-						.WillRepeatedly(Return(Thing::Core::DigitalValue::Low));
-					Manager.DigitalWrite(in_output, Thing::Core::DigitalValue::Low);
-					Manager.Process();
-					Hardware->Delay(time[i] - 1);
-					Manager.Process();
-					EXPECT_CALL(callbackFunctionMock, Call(this)).Times(1);
-					Hardware->Delay(1);
-					EXPECT_CALL(callbackFunctionMock, Call(_)).Times(0);
+					EXPECT_CALL(callbackFunctionMock, Call()).Times(0);
 					Hardware->Delay(1);
 					Manager.Process();
 				}

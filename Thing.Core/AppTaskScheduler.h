@@ -8,7 +8,7 @@ namespace Thing
 {
 	namespace Core
 	{
-		enum class AppTaskStatus
+		enum class AppTaskStatus : uint8_t
 		{
 			Periodic = 0b1,
 			Once = 0b10,
@@ -64,7 +64,6 @@ namespace Thing
 			void AttachOnce(unsigned long milli, Thing::Core::IRunnable& runnable) override;
 
 			void AttachOnce(unsigned long milli, Thing::Core::RunnableCallback runnable) override;
-			void AttachOnce(unsigned long milli, Thing::Core::RunnableCallback runnable, void* obj) override;
 
 			/// <summary>
 			/// Attaches a Task to run periodically.
@@ -80,7 +79,6 @@ namespace Thing
 			void AttachPeriodic(unsigned long milli, Thing::Core::IRunnable& runnable) override;
 
 			void AttachPeriodic(unsigned long milli, Thing::Core::RunnableCallback runnable) override;
-			void AttachPeriodic(unsigned long milli, Thing::Core::RunnableCallback runnable, void* obj) override;
 
 			/// <summary>
 			/// Detaches a task, cancelling further executions.
@@ -104,8 +102,6 @@ namespace Thing
 				void* obj;
 			};
 			std::list<ScheduledTask> tasks;
-
-			static void RunTask(void* obj);
 		};
 	}
 }

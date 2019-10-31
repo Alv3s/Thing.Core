@@ -37,16 +37,11 @@ namespace Thing
 					AttachOnce(milli, &runnable);
 				}
 				
-				void AttachOnce(unsigned long milli, Thing::Core::RunnableCallback runnable) 
+				void AttachOnce(unsigned long milli, Thing::Core::RunnableCallback runnable) override
 				{
-					AttachOnce(milli, runnable, NULL);
-				}
-
-				void AttachOnce(unsigned long milli, Thing::Core::RunnableCallback runnable, void* obj)
-				{
-					ScheduledTask& scheduled = createScheduledTask(runnable, obj);
-					scheduled.task.once_ms(milli, [runnable, obj](){
-						runnable(obj);
+					ScheduledTask& scheduled = createScheduledTask(runnable);
+					scheduled.task.once_ms(milli, [runnable](){
+						runnable();
 					});
 				}
 
@@ -63,16 +58,11 @@ namespace Thing
 					AttachPeriodic(milli, &runnable);
 				}
 
-				void AttachPeriodic(unsigned long milli, Thing::Core::RunnableCallback runnable)
+				void AttachPeriodic(unsigned long milli, Thing::Core::RunnableCallback runnable) override
 				{
-					AttachPeriodic(milli, runnable, NULL);
-				}
-
-				void AttachPeriodic(unsigned long milli, Thing::Core::RunnableCallback runnable, void* obj)
-				{
-					ScheduledTask& scheduled = createScheduledTask(runnable, obj);
-					scheduled.task.attach_ms(milli, [runnable, obj](){
-						runnable(obj);
+					ScheduledTask& scheduled = createScheduledTask(runnable);
+					scheduled.task.attach_ms(milli, [runnable](){
+						runnable();
 					});
 				}
 
@@ -111,7 +101,7 @@ namespace Thing
 					return *it;
 				}
 
-				ScheduledTask& createScheduledTask(Thing::Core::RunnableCallback runnable, void* obj)
+				ScheduledTask& createScheduledTask(Thing::Core::RunnableCallback runnable)
 				{
 					ScheduledTask task;
 					task.runnable = NULL;

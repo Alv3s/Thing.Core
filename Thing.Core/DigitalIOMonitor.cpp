@@ -11,8 +11,7 @@ namespace Thing
 			io(input),
 			actionType(action),
 			timePressedMillis(0),
-			callback(DigitalIOMonitor::RunTask),
-			objCallback(this),
+			callback(std::bind(&DigitalIOMonitor::Run2, this)),
 			periodic(false)
 		{
 			manager.AddDigitalInput(input);
@@ -23,8 +22,7 @@ namespace Thing
 			io(output), 
 			actionType(action),
 			timePressedMillis(0),
-			callback(DigitalIOMonitor::RunTask),
-			objCallback(this), 
+			callback(std::bind(&DigitalIOMonitor::Run2, this)),
 			periodic(false)
 		{
 			manager.AddDigitalOutput(output);
@@ -136,37 +134,27 @@ namespace Thing
 
 		void DigitalIOMonitor::Run(IRunnable* runnable)
 		{
-			objCallback = runnable;
+			callback = std::function<void()>(std::bind(&IRunnable::Run, runnable));
 		}
 
 		void DigitalIOMonitor::RunMe()
 		{
-			objCallback = this;
+			callback = std::function<void()>(std::bind(&DigitalIOMonitor::Run2, this));
 		}
 
 		void DigitalIOMonitor::Run(RunnableCallback f)
 		{
-			Run(f, NULL);
-		}
-
-		void DigitalIOMonitor::Run(RunnableCallback f, void* obj)
-		{
 			callback = f;
-			objCallback = obj;
 		}
 
 		void DigitalIOMonitor::Run()
 		{
-			if (objCallback == this)
-				outputMonitor.Action();
-			else
-				callback(objCallback);
+			callback();
 		}
 
-		void DigitalIOMonitor::RunTask(void* obj)
+		void DigitalIOMonitor::Run2()
 		{
-			IRunnable* runnable = static_cast<IRunnable*>(obj);
-			runnable->Run();
+			outputMonitor.Action();
 		}
 	}
 }

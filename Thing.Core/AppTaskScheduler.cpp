@@ -27,7 +27,7 @@ namespace Thing
 
 				if (currentTimestamp - i->scheduledTimestamp >= i->interval)
 				{
-					i->runnableFunc(i->obj);
+					i->runnableFunc();
 					if ((bool)(i->status & AppTaskStatus::Once))
 						i = tasks.erase(i);
 					else
@@ -48,7 +48,7 @@ namespace Thing
 			task.status = AppTaskStatus::Once;
 			task.scheduledTimestamp = Hardware->Millis();
 			task.interval = milli;
-			task.runnableFunc = AppTaskScheduler::RunTask;
+			task.runnableFunc = std::bind(&IRunnable::Run, runnable);
 			task.obj = runnable;
 			tasks.push_back(task);
 		}
@@ -60,17 +60,12 @@ namespace Thing
 
 		void AppTaskScheduler::AttachOnce(unsigned long milli, Thing::Core::RunnableCallback runnable)
 		{
-			AttachOnce(milli, runnable, NULL);
-		}
-
-		void AppTaskScheduler::AttachOnce(unsigned long milli, Thing::Core::RunnableCallback runnable, void* obj)
-		{
 			ScheduledTask task;
 			task.status = AppTaskStatus::Once;
 			task.scheduledTimestamp = Hardware->Millis();
 			task.interval = milli;
+			task.obj = NULL;
 			task.runnableFunc = runnable;
-			task.obj = obj;
 			tasks.push_back(task);
 		}
 
@@ -80,8 +75,8 @@ namespace Thing
 			task.status = AppTaskStatus::Periodic;
 			task.scheduledTimestamp = Hardware->Millis();
 			task.interval = milli;
-			task.runnableFunc = AppTaskScheduler::RunTask;
 			task.obj = runnable;
+			task.runnableFunc = std::bind(&IRunnable::Run, runnable);
 			tasks.push_back(task);
 		}
 
@@ -92,17 +87,12 @@ namespace Thing
 
 		void AppTaskScheduler::AttachPeriodic(unsigned long milli, Thing::Core::RunnableCallback runnable)
 		{
-			AttachPeriodic(milli, runnable, NULL);
-		}
-
-		void AppTaskScheduler::AttachPeriodic(unsigned long milli, Thing::Core::RunnableCallback runnable, void* obj)
-		{
 			ScheduledTask task;
 			task.status = AppTaskStatus::Periodic;
 			task.scheduledTimestamp = Hardware->Millis();
 			task.interval = milli;
 			task.runnableFunc = runnable;
-			task.obj = obj;
+			task.obj = NULL;
 			tasks.push_back(task);
 		}
 
@@ -119,12 +109,6 @@ namespace Thing
 		void AppTaskScheduler::Detach(Thing::Core::IRunnable& runnable)
 		{
 			Detach(&runnable);
-		}
-
-		void AppTaskScheduler::RunTask(void* obj)
-		{
-			IRunnable* runnable = static_cast<IRunnable*>(obj);
-			runnable->Run();
 		}
 	}
 }

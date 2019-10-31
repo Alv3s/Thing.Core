@@ -22,27 +22,25 @@ namespace Thing {
 					PeriodicTask* task = new PeriodicTask;
 					task->next_run_at = Hardware->Millis() + milli;
 					task->period_ms = 0;
-					task->runnable = TaskSchedulerMock::RunTask;
+					task->runnable = std::bind(&IRunnable::Run, runnable);
 					task->obj = runnable;
 					task->shouldBeDeleted = false;
 
 					tasks.push_back(task);
 				}
+
 				virtual void AttachOnce(unsigned long milli, Thing::Core::IRunnable& runnable) override
 				{
 					AttachOnce(milli, &runnable);
 				}
+
 				virtual void AttachOnce(unsigned long milli, Thing::Core::RunnableCallback runnable) override
-				{
-					AttachOnce(milli, runnable, NULL);
-				}
-				virtual void AttachOnce(unsigned long milli, Thing::Core::RunnableCallback runnable, void* obj) override
 				{
 					PeriodicTask* task = new PeriodicTask;
 					task->next_run_at = Hardware->Millis() + milli;
 					task->period_ms = 0;
 					task->runnable = runnable;
-					task->obj = obj;
+					task->obj = NULL;
 					task->shouldBeDeleted = false;
 
 					tasks.push_back(task);
@@ -53,28 +51,25 @@ namespace Thing {
 					PeriodicTask* task = new PeriodicTask;
 					task->next_run_at = Hardware->Millis() + milli;
 					task->period_ms = milli;
-					task->runnable = TaskSchedulerMock::RunTask;
+					task->runnable = std::bind(&IRunnable::Run, runnable);
 					task->obj = runnable;
 					task->shouldBeDeleted = false;
 
 					tasks.push_back(task);
 				}
+
 				virtual void AttachPeriodic(unsigned long milli, Thing::Core::IRunnable& runnable) override
 				{
 					AttachPeriodic(milli, &runnable);
 				}
-				virtual void AttachPeriodic(unsigned long milli, Thing::Core::RunnableCallback runnable) override
-				{
-					AttachPeriodic(milli, runnable, NULL);
-				}
 
-				virtual void AttachPeriodic(unsigned long milli, Thing::Core::RunnableCallback runnable, void* obj) override
+				virtual void AttachPeriodic(unsigned long milli, Thing::Core::RunnableCallback runnable) override
 				{
 					PeriodicTask* task = new PeriodicTask;
 					task->next_run_at = Hardware->Millis() + milli;
 					task->period_ms = milli;
 					task->runnable = runnable;
-					task->obj = obj;
+					task->obj = NULL;
 					task->shouldBeDeleted = false;
 
 					tasks.push_back(task);
@@ -109,7 +104,7 @@ namespace Thing {
 						}
 						else if (t->next_run_at == millis)
 						{
-							t->runnable(t->obj);
+							t->runnable();
 							if (t->period_ms > 0)
 								t->next_run_at = millis + t->period_ms;
 							else
@@ -128,12 +123,6 @@ namespace Thing {
 					void* obj;
 					bool shouldBeDeleted;
 				};
-
-				static void RunTask(void* obj)
-				{
-					IRunnable* runnable = static_cast<IRunnable*>(obj);
-					runnable->Run();
-				}
 
 				std::list<PeriodicTask*> tasks;
 			};

@@ -13,13 +13,11 @@ namespace Thing
 			virtual void AttachOnce(unsigned long milli, Thing::Core::IRunnable& runnable) = 0;
 
 			virtual void AttachOnce(unsigned long milli, Thing::Core::RunnableCallback runnable) = 0;
-			virtual void AttachOnce(unsigned long milli, Thing::Core::RunnableCallback runnable, void* obj) = 0;
 
 			virtual void AttachPeriodic(unsigned long milli, Thing::Core::IRunnable* runnable) = 0;
 			virtual void AttachPeriodic(unsigned long milli, Thing::Core::IRunnable& runnable) = 0;
 
 			virtual void AttachPeriodic(unsigned long milli, Thing::Core::RunnableCallback runnable) = 0;
-			virtual void AttachPeriodic(unsigned long milli, Thing::Core::RunnableCallback runnable, void* obj) = 0;
 
 			virtual void Detach(Thing::Core::IRunnable* runnable) = 0;
 			virtual void Detach(Thing::Core::IRunnable& runnable) = 0;
