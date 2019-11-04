@@ -58,8 +58,13 @@ namespace Thing
 
 				bool Write(std::string file, std::vector<uint8_t>& bytes) override
 				{
-					std::string string(bytes.begin(), bytes.end());
-					return Write(file, string);
+					fs::File openFile = SPIFFS.open(file.c_str(), "w");
+					if (!openFile)
+						return false;
+
+					if(bytes.size() <= 0)
+						return false;
+					openFile.write(&bytes[0], bytes.size());
 				}
 
 				void Delete(std::string file) override
