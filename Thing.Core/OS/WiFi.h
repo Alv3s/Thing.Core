@@ -52,6 +52,11 @@ namespace Thing
 				{
 					return MACAddress(0, 0, 0, 0, 0, 0);
 				}
+
+				int GetSignalStrength() override 
+				{
+					return 0;
+				}
 			private:
 				WiFiStatus status;
 			};

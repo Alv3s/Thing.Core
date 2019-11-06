@@ -118,6 +118,11 @@ namespace Thing
 						break;
 					}
 				}
+
+				int GetSignalStrength() override 
+				{
+					return ::WiFi.RSSI();
+				}
 			private:
 				wl_status_t previousStatus;
 				Thing::Core::ScheduledTask handle;

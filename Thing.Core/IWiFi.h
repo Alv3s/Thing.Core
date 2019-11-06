@@ -25,6 +25,7 @@ namespace Thing
 			virtual WiFiStatus Status() = 0;
 			virtual IPAddress GetIP() = 0;
 			virtual MACAddress GetMACAddress() = 0;
+			virtual int GetSignalStrength() = 0;
 
 			virtual void AddListener(IWiFiListener* listener) = 0;
 			virtual void AddListener(IWiFiListener& listener) = 0;
