@@ -12,7 +12,7 @@
 #include "../Arduino/Hardware.h"
 #include "../AppTaskScheduler.h"
 #include "WiFi.h"
-#include "../ESP/FileSystem.h"
+#include "../ESP/LittleFileSystem.h"
 
 #include "../AppContainer.h"
 
@@ -54,7 +54,7 @@ Thing::Core::IWiFi* InitializeWiFi()
 
 Thing::Core::IFileSystem* InitializeFileSystem()
 {
-	static Thing::Core::ESP::FileSystem fileSystem;
+	static Thing::Core::ESP::LittleFileSystem fileSystem;
 	return &fileSystem;
 }
 

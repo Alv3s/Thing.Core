@@ -10,10 +10,10 @@ namespace Thing
 	{
 		namespace ESP
 		{
-			class FileSystem : public virtual Thing::Core::IFileSystem
+			class SPIFFileSystem : public virtual Thing::Core::IFileSystem
 			{
 			public:
-				FileSystem()
+				SPIFFileSystem()
 				{
 					opened = SPIFFS.begin();
 				}
